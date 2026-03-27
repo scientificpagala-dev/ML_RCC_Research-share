@@ -148,6 +148,120 @@ rc_smrf_design:
     spacing_max: 10.0  # db (rebar diameter) spacing for hoops
     transverse_reinforcement_min: 0.12  # fc'/fy volume ratio
 
+# ============================================================================
+# PLASTIC HINGE PROPERTIES (FEMA 356 / ASCE 41-23)
+# ============================================================================
+
+plastic_hinge:
+  # Moment-Rotation Relationships for RC SMRF
+  beam:
+    # Linearly tapered I-section properties (typical)
+    moment_capacity_multiplier: 1.0  # Actual/nominal capacity
+    
+    # Performance Level chord rotations (radians)
+    acceptance_criteria:
+      immediate_occupancy: 0.005  # 0.5%
+      life_safety: 0.020  # 2.0%
+      collapse_prevention: 0.030  # 3.0%
+    
+    # Moment-rotation modeling
+    post_yield_ratio: 0.03  # Hardening = 3% of initial stiffness
+    pinching_factor: 0.70  # Strength degradation factor
+    
+    # Cumulative damage
+    energy_factor: 0.50  # For Park-Ang damage index
+  
+  column:
+    moment_capacity_multiplier: 1.0
+    
+    acceptance_criteria:
+      immediate_occupancy: 0.003  # 0.3%
+      life_safety: 0.010  # 1.0%
+      collapse_prevention: 0.015  # 1.5%
+    
+    post_yield_ratio: 0.03
+    pinching_factor: 0.70
+    energy_factor: 0.50
+  
+  # Shear Hinge Properties (if applicable)
+  shear_hinge:
+    enabled: true
+    acceptance_criteria:
+      immediate_occupancy: 0.004
+      life_safety: 0.006
+      collapse_prevention: 0.008
+    post_yield_ratio: 0.10  # More hardening for shear
+
+# ============================================================================
+# PERFORMANCE LEVELS (FEMA P-58)
+# ============================================================================
+
+performance_levels:
+  # Structural Performance (building-level)
+  structural:
+    # Operational (Fully operational, minor damage)
+    operational:
+      pidr_max: 0.005  # 0.5% maximum inter-story drift
+      acceleration_damage: false
+      description: "Building functional with no structural damage"
+    
+    # Immediate Occupancy (Life safety protected, minor damage)
+    immediate_occupancy:
+      pidr_max: 0.010  # 1.0% maximum inter-story drift
+      description: "Safe to occupy with minor repairs"
+    
+    # Life Safety (Severe damage, life safety protected)
+    life_safety:
+      pidr_max: 0.025  # 2.5% maximum inter-story drift
+      description: "Severe damage but collapse prevented"
+    
+    # Collapse Prevention (Near-collapse, life safety uncertain)
+    collapse_prevention:
+      pidr_max: 0.040  # 4.0% maximum inter-story drift
+      description: "Building near collapse"
+  
+  # Nonstructural Performance
+  nonstructural:
+    # Acceleration-sensitive components
+    acceleration_threshold: 0.50  # g (50% of gravity)
+    
+    # Drift-sensitive components
+    drift_threshold: 0.015  # 1.5%
+
+# ============================================================================
+# ACCEPTANCE CRITERIA (ASCE 41-23 / FEMA 356)
+# ============================================================================
+
+acceptance_criteria:
+  # Flexural Acceptance Criteria for RC Moment Frames
+  flexural:
+    # Beams
+    beam_chord_rotation_io: 0.010  # Immediate Occupancy
+    beam_chord_rotation_ls: 0.020  # Life Safety
+    beam_chord_rotation_cp: 0.030  # Collapse Prevention
+    
+    # Columns (without axial load)
+    column_chord_rotation_io: 0.005
+    column_chord_rotation_ls: 0.015
+    column_chord_rotation_cp: 0.025
+    
+    # Columns (with high axial load P/Pcol > 0.5)
+    column_high_axial_io: 0.002
+    column_high_axial_ls: 0.008
+    column_high_axial_cp: 0.015
+  
+  # Shear Acceptance Criteria
+  shear:
+    element_shear_io: 0.004
+    element_shear_ls: 0.006
+    element_shear_cp: 0.008
+  
+  # Joint Shear Acceptance Criteria
+  joint:
+    beam_column_joint_io: 0.015  # rad
+    beam_column_joint_ls: 0.025
+    beam_column_joint_cp: 0.035
+
 # Default Material Properties (if not specified in model input)
 default_materials:
   concrete:

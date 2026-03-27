@@ -49,6 +49,290 @@ ida:
     pad_post_event: 5.0  # Seconds to pad after motion stops
 
 # ============================================================================
+# RESPONSE SPECTRUM ANALYSIS (RSA) CONFIGURATION
+# ============================================================================
+
+response_spectrum_analysis:
+  enabled: true
+  
+  # Modal Analysis (Eigenvalue Extraction)
+  modal_analysis:
+    n_modes: 20  # Number of modes to extract
+    method: "Shift-and-Invert"  # Eigenvalue extraction method
+    tolerance: 1.0e-8  # Convergence tolerance
+    shift_parameter: 0.0  # For shift-and-invert
+  
+  # Response Spectrum Parameters
+  spectrum:
+    type: "BNBC 2020"  # Spectrum type (BNBC 2020, ASCE 7-22, Custom)
+    damping_ratio: 0.05  # 5% critical damping
+    site_class: "D"  # A, B, C, D, E (default from BNBC config)
+  
+  # Modal Response Combination
+  modal_combination:
+    method: "CQC"  # Complete Quadratic Combination or SRSS
+    # CQC parameters
+    rho_formula: "standard"  # standard or modified
+  
+  # Force Distribution
+  force_distribution:
+    method: "mass_proportional"  # mass_proportional or first_mode
+    include_accidental_torsion: true
+    torsion_uncertainty: 0.05  # 5% of building width
+  
+  # Output Options
+  output:
+    save_eigenvalues: true
+    save_mode_shapes: true
+    save_modal_forces: true
+    save_story_forces: true
+
+# ============================================================================
+# TIME HISTORY ANALYSIS (THA) CONFIGURATION
+# ============================================================================
+
+time_history_analysis:
+  enabled: true
+  
+  # Dynamic Integration Scheme
+  integration:
+    method: "Newmark"  # Newmark, HHT (alpha method), etc.
+    # Newmark parameters
+    gamma: 0.5
+    beta: 0.25
+    use_rayleigh_damping: true
+    # Rayleigh Damping (C = a*M + b*K)
+    rayleigh_a: 0.0  # Mass-proportional coefficient
+    rayleigh_b: 0.0  # Stiffness-proportional coefficient
+  
+  # Time Integration Parameters
+  time_integration:
+    dt: 0.005  # Time step (seconds)
+    duration: 30.0  # Total analysis duration (seconds)
+    record_start: 0.0  # When to start recording (after P-wave)
+    record_interval: 2  # Save every N steps
+  
+  # Ground Motion Scaling
+  scaling:
+    method: "Sa-based"  # Sa-based or PGA-based
+    target_period: 0.5  # Period for Sa scaling
+    intensity_measure: "Sa"  # Sa or PGA
+    scale_factors: [0.5, 1.0, 1.5, 2.0]  # Multiple striping
+  
+  # Nonlinear Analysis
+  nonlinear:
+    algorithm: "Newton"
+    convergence_test: "NormDispIncr"
+    tolerance: 1.0e-8
+    max_iterations: 25
+  
+  # Peak Response Extraction
+  response_tracking:
+    track_nodal_displacement: true
+    track_story_drift: true
+    track_base_reactions: true
+    track_element_forces: true
+    track_element_deformations: true
+    track_plastic_hinge_rotation: true
+  
+  # Output Options
+  output:
+    save_time_history: true
+    save_peak_responses: true
+    save_hysteresis_loops: true
+
+# ============================================================================
+# PUSHOVER ANALYSIS CONFIGURATION
+# ============================================================================
+
+pushover_analysis:
+  enabled: true
+  
+  # Load Pattern Definition
+  load_pattern:
+    type: "proportional"  # uniform, first_mode_proportional, adaptive
+    direction: "horizontal"  # Direction of pushover
+    apply_gravity_first: true  # Apply gravity before pushover
+  
+  # Pushover Control Parameters
+  control:
+    control_node_dof: 3  # DOF to control (3 = horizontal at roof)
+    target_displacement: 0.05  # Target roof displacement (fraction of height)
+    displacement_increment: 0.001  # Increment per step
+    max_steps: 1000  # Maximum number of analysis steps
+  
+  # Analysis Options
+  analysis:
+    include_pdelta: true  # Include P-Delta effects
+    include_gravity: true  # Include gravity loads
+    softening_detection: true  # Detect softening (post-peak)
+    failure_criterion: "residual_capacity"  # When to stop
+    residual_capacity_percent: 0.20  # 20% of peak capacity
+  
+  # Solver Parameters
+  solver:
+    algorithm: "Newton"
+    convergence_test: "NormDispIncr"
+    tolerance: 1.0e-6
+    max_iterations: 100
+  
+  # Performance Point Identification
+  performance_point:
+    method: "eigenvalue_damping"  # eigenvalue_damping or direct_displacement
+    target_damping: 0.05  # Target damping ratio
+  
+  # Output Options
+  output:
+    save_pushover_curve: true
+    save_element_forces: true
+    save_element_deformations: true
+    save_performance_point: true
+
+# ============================================================================
+# P-DELTA (GEOMETRIC NONLINEARITY) CONFIGURATION
+# ============================================================================
+
+pdelta_analysis:
+  enabled: true
+  
+  # P-Delta Options
+  pdelta:
+    include_pdelta: true
+    transformation: "Corotational"  # Corotational or large_displacement
+    consider_initial_imperfections: false
+  
+  # Stability Index (theta)
+  stability_index:
+    compute_theta: true
+    theta_max_allowed: 0.10  # BNBC 2020: max 0.10 or 0.25 depending on code
+    check_per_story: true
+    warn_threshold: 0.05  # Issue warning if theta > 5%
+  
+  # Geometric Stiffness Update
+  geometric_stiffness:
+    update_method: "iterative"  # Iterative or direct
+    update_frequency: "every_step"  # every_step or adaptive
+  
+  # Stability Verification
+  stability:
+    check_instability: true
+    bifurcation_tolerance: 1.0e-6
+    stop_on_instability: true
+  
+  # Output
+  output:
+    save_stability_indices: true
+    save_geometric_stiffness: true
+    report_instability_warnings: true
+
+# ============================================================================
+# PLASTIC HINGE ANALYSIS CONFIGURATION
+# ============================================================================
+
+plastic_hinge_analysis:
+  enabled: true
+  
+  # Hinge Properties
+  hinge_modeling:
+    model_type: "moment_curvature"  # moment_curvature, energy-based, or strength-deformation
+    hinge_location: "beam_ends"  # beam_ends, column_ends, or both
+    # Rotational stiffness parameters
+    initial_stiffness_degradation: true
+    post_yield_stiffness_ratio: 0.03  # 3% hardening
+  
+  # Performance Levels (FEMA P-58 / ASCE 41)
+  performance_levels:
+    # Immediate Occupancy (IO)
+    IO:
+      chord_rotation_limit: 0.005  # 0.5% rad
+      description: "Structure continues to support all loads"
+    # Life Safety (LS)
+    LS:
+      chord_rotation_limit: 0.015  # 1.5% rad
+      description: "Some damage but life safety preserved"
+    # Collapse Prevention (CP)
+    CP:
+      chord_rotation_limit: 0.025  # 2.5% rad
+      description: "Significant damage, near collapse"
+  
+  # Hinge Rotation Tracking
+  rotation_tracking:
+    track_plastic_rotation: true
+    track_cumulative_rotation: true
+    track_damage_index: true
+    damage_index_method: "modified_Park_Ang"  # Park-Ang or Krawinkler
+  
+  # Acceptance Criteria
+  acceptance_criteria:
+    # Column acceptance (ASCE 41-23)
+    column_flexure_io: 0.005
+    column_flexure_ls: 0.015
+    column_flexure_cp: 0.025
+    
+    # Beam acceptance (ASCE 41-23)
+    beam_flexure_io: 0.01
+    beam_flexure_ls: 0.02
+    beam_flexure_cp: 0.03
+    
+    # Shear acceptance
+    shear_io: 0.004
+    shear_ls: 0.006
+    shear_cp: 0.008
+  
+  # Dynamic Damage Assessment
+  damage_assessment:
+    compute_damage_index: true
+    compute_performance_state: true
+    cumulative_damage_tracking: true
+  
+  # Output Options
+  output:
+    save_hinge_rotations: true
+    save_damage_states: true
+    save_fragility_input: true
+    save_hinge_status: true
+
+# ============================================================================
+# COMBINED ANALYSIS METHODS CONFIGURATION
+# ============================================================================
+
+combined_analysis:
+  enabled: true
+  
+  # Capacity Spectrum Method (RSA + Pushover)
+  capacity_spectrum_method:
+    enabled: true
+    # Spectral displacement method
+    method: "ADRS"  # ADRS = Acceleration-Displacement Response Spectrum
+  
+  # Multi-Stripe Analysis (for Phase 2 IDA data generation)
+  multi_stripe:
+    enabled: true
+    # Intensity levels for each ground motion
+    intensity_levels: [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00, 1.20, 1.50]
+    # Intensity measure
+    intensity_measure: "Sa"
+    reference_period: 0.5
+  
+  # Analysis Ensemble
+  ensemble:
+    parallel_processing: true
+    n_processors: -1  # -1 = use all available cores
+    batch_size: 10  # Process 10 analyses per batch
+  
+  # Uncertainty Quantification
+  uncertainty:
+    record_uncertainty: true  # Aleatory uncertainty from GM variability
+    model_uncertainty: false  # Epistemic uncertainty from modeling assumptions
+    sample_size: 100  # Number of realizations
+  
+  # Output Options
+  output:
+    compare_methods: true  # Compare RSA vs THA vs Pushover
+    validation_checks: true  # Cross-method validation
+    combined_results_db: true  # Save all results to database
+
+# ============================================================================
 # MACHINE LEARNING TRAINING CONFIGURATION
 # ============================================================================
 
