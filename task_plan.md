@@ -11,7 +11,9 @@
 
 ## Executive Summary
 
-The ML-Based Seismic Drift Research project is a 4-phase research initiative to develop Python-native machine learning surrogate models for predicting peak inter-story drift ratio (PIDR) of RC moment-resisting frame buildings designed under BNBC 2020.
+The ML-Based Seismic Drift Research project is a comprehensive 5-phase research initiative to:
+1. Develop Python-native machine learning surrogate models for predicting peak inter-story drift ratio (PIDR) of RC moment-resisting frame buildings designed under BNBC 2020
+2. Conduct comparative seismic performance analysis between OMRF and SMRF configurations to identify the cost-benefit "sweet spot" where design complexity yields optimal performance improvement
 
 **Key Analysis Methods Implemented:**
 - **Response Spectrum Analysis (RSA)** — Design-level elastic analysis per BNBC 2020 / ASCE 7-22
@@ -19,9 +21,15 @@ The ML-Based Seismic Drift Research project is a 4-phase research initiative to 
 - **Pushover Analysis** — Static nonlinear (capacity) analysis with P-Delta effects
 - **P-Delta Effects** — Geometric nonlinearity and stability index computation (θ)
 - **Plastic Hinge Analysis** — Formation tracking, damage assessment, performance levels per FEMA P-58
-- **Combined Methods** — Multi-stripe analysis, capacity spectrum method, ensemble analysis
+- **Combined Methods** — Multi-stripe analysis, capacity spectrum method, ensemble analysis, framework comparison
 
-**Current Status:** All project infrastructure + advanced analysis framework ready. Phase 1 implementation begins immediately.
+**Novel Contribution — Phase 5: OMRF/SMRF Comparative Analysis**
+- Performance gradient quantification between OMRF (R=3) and SMRF (R=5) configurations
+- Sweet-spot identification through cost-benefit analysis (Framework Complexity Index vs Performance Gradient)
+- Design decision matrix: "when to specify SMRF vs OMRF" based on building height and seismic zone
+- Visualization of framework-shift transition using performance-versus-complexity graphs
+
+**Current Status:** All project infrastructure + advanced analysis framework + comparative analysis plan ready. Phase 1 implementation begins immediately.
 
 ---
 
@@ -245,6 +253,131 @@ project/
 
 ---
 
+### Phase 5️⃣: OMRF/SMRF Comparative Analysis & Performance Gradient Study
+**Status:** ⏳ Awaits Phase 2 & 3 completion (parallel with Phase 4)  
+**Duration:** ~2–3 weeks  
+**Priority:** High — Critical for design decision-making and novelty
+
+**Research Motivation:**
+Compare seismic performance between OMRF (Ordinary Moment Resisting Frame, R=3) and SMRF (Special Moment Resisting Frame, R=5) configurations to identify the cost-benefit "sweet spot" where design complexity yields optimal performance improvement. This analysis demonstrates why SMRF design is justified (or not) across varying building heights and seismic zones.
+
+**Deliverables:**
+
+**5.1 OMRF Model Creation**
+- [ ] Create OMRF frame templates (5, 7, 10, 12, 15 stories)
+  - Identical geometry to SMRF counterparts
+  - Reduced reinforcement ratios per BNBC 2020 Table 2.7.4 (R=3 design)
+  - Light confinement (per OMRF detailing § 2.3.2.1)
+  - Column bar spacing ≤ 300 mm (vs 150 mm for SMRF)
+  - Reduced beam-column joint shear reinforcement
+- [ ] Store in: `models/openseespy/frame_{n_stories}s_omrf_z{zone}.json`
+- [ ] Verify BNBC compliance for OMRF (R=3 base shear, different story drift limits)
+
+**5.2 Parallel IDA Execution (OMRF)**
+- [ ] Run identical multi-stripe IDA for OMRF buildings
+  - Same 500 ground motion records used for SMRF
+  - Same intensity range (0.05–1.50g)
+  - Same analysis parameters (Rayleigh damping, P-Delta, time step)
+- [ ] Extract PIDR curves for each OMRF building
+- [ ] Store results: `data/processed/ida_results_omrf.csv`
+  - Same format as SMRF results for direct comparison
+
+**5.3 Performance Gradient Computation**
+- [ ] Calculate metrics for each building pair (n_stories, zone):
+  - **Performance Gradient (PG):** (PIDR_OMRF - PIDR_SMRF) / PIDR_OMRF × 100%
+  - **Framework Complexity Index (FCI):** reinforcement volume + fabrication hours ratio
+  - **Cost-Benefit Ratio (CBR):** PG / FCI (identify sweet spots = maximum CBR)
+  - **Framework-Shift Index (FSI):** ln(PIDR_SMRF / PIDR_OMRF)
+- [ ] Statistical tests: t-tests on PIDR differences at each intensity level
+- [ ] Correlation analysis: building height vs performance gradient (expect negative correlation: taller buildings benefit more from SMRF)
+
+**5.4 Visualization & Figures**
+
+**Figure 6a: Performance Gradient Curve**
+- X-axis: Spectral acceleration Sa(T1) [g]
+- Y-axis: Performance improvement of SMRF over OMRF [%]
+- Multiple curves for different building heights (5s, 7s, 10s, 12s, 15s)
+- Highlight "sweet spots" where gradient is steepest (maximum SMRF advantage)
+- Annotation: "Recommended SMRF transition" at where PG plateaus
+
+**Figure 6b: Performance vs Complexity Trade-off (Pareto Frontier)**
+- X-axis: Framework Complexity Index (FCI) — dimensionless measure
+- Y-axis: Performance Gradient [%] or Cost-Benefit Ratio (CBR)
+- Each point = (building height, seismic zone) combination
+- Color-code by zone (I–IV)
+- Shape-code by height (marker size proportional to height)
+- Draw Pareto frontier showing optimal SMRF candidates
+- Label "sweet spot region" (high CBR with moderate FCI)
+
+**Figure 6c: Zone-Dependent Sweet Spot Analysis**
+- 2×2 subplot layout (Zones I–IV)
+- Each subplot: Performance Gradient curves for all building heights
+- Show how seismic zone affects SMRF advantage (expect higher zones show larger gradient)
+- Identify zone-specific "transition points" (where SMRF becomes essential)
+
+**Figure 6d: Fragility Curve Overlay (OMRF vs SMRF)**
+- For each zone: overlay IO, LS, CP fragility curves (OMRF blue, SMRF red)
+- Show rightward shift of SMRF curves (better performance)
+- Annotate median Sa differences at key probability levels
+
+**5.5 Cost-Benefit Analysis Table**
+- [ ] Create summary table: `results/tables/omrf_smrf_comparison.xlsx`
+  - Columns: Building Height | Zone | PIDR_OMRF (median) | PIDR_SMRF (median) | PG (%) | FCI | CBR | Recommendation
+  - Rows: one per building class (5s–15s × Zones I–IV) = 20 rows
+  - Highlight rows where CBR peaks (sweet spots)
+  - Add row summarizing "height threshold for SMRF recommendation" by zone
+
+**5.6 Engineering Recommendations & Decision Matrix**
+- [ ] Create design decision guide:
+  ```
+  IF building_height ≤ 7 stories AND zone ≤ II:  USE OMRF (minimal cost, acceptable performance)
+  IF building_height ≤ 7 stories AND zone ≥ III:  USE OMRF with enhanced detailing
+  IF 7 < building_height ≤ 12 AND zone ≥ III:    CONSIDER SMRF (borderline cost-benefit)
+  IF building_height > 12 OR zone = IV:           USE SMRF (compelling performance gain justifies cost)
+  ```
+- [ ] Produce design flowchart: `results/figures/framework_selection_flowchart.pdf`
+
+**5.7 Integration with ML Models**
+- [ ] Train separate ML models for OMRF:
+  - Reuse Phase 3 ML pipeline (LR, RF, XGBoost, ANN)
+  - Train on OMRF dataset (~5,000–10,000 OMRF records)
+  - Compare model R² and SHAP importances between SMRF and OMRF
+- [ ] Generate comparative SHAP plots:
+  - Figure A1: SMRF SHAP importance vs Figure A2: OMRF SHAP importance
+  - Show feature ranking differences (e.g., reinforcement ratio importance may differ)
+
+**5.8 Supplementary Analysis (Optional Advanced)**
+- [ ] Uncertainty quantification: fragility curve dispersion comparison (β_D|IM for OMRF vs SMRF)
+- [ ] Collapse risk analysis: P(Collapse | Sa) for both frameworks
+- [ ] Sensitivity analysis: how sensitive is sweet spot to concrete strength, steel grade variations?
+- [ ] Economic analysis: rough cost estimate ($/m²) for OMRF vs SMRF (if cost data available)
+
+**Key Files:**
+- `src/modeling/rc_frame.py` — Enhanced with `framework_type` parameter (OMRF vs SMRF)
+- `src/comparison/omrf_smrf_analysis.py` — NEW module for comparative analysis
+- `src/visualization/gradient_plots.py` — NEW module for performance gradient visualization
+- `config/bnbc_parameters.yaml` — Enhanced with OMRF-specific parameter sets
+
+**Configuration Updates:**
+- `config/bnbc_parameters.yaml`:
+  - Add section `omrf_parameters` with R=3, reduced confinement, modified design forces
+  - Add section `framework_comparison_metrics` with FCI, CBR computation parameters
+- `config/analysis_config.yaml`:
+  - Add section `omrf_analysis` (analysis parameters for OMRF buildings)
+  - Note: IDA parameters identical to SMRF; only model differs
+
+**Output Artifacts:**
+- Figures: `results/figures/fig_6a_performance_gradient*.pdf`, `fig_6b_pareto_frontier*.pdf`, `fig_6c_zone_dependent*.pdf`, `fig_6d_fragility_overlay*.pdf`, `framework_selection_flowchart.pdf`
+- Tables: `results/tables/omrf_smrf_comparison.xlsx`, `design_recommendations.csv`
+- Data: `data/processed/ida_results_omrf.csv`, `comparative_metrics.csv`
+- Models: `models/openseespy/frame_*_omrf_z*.json`, `models/ml_models/omrf_xgboost_*.joblib`
+
+**Reference:**
+- README.md Section 3.6 — Framework Comparative Analysis: OMRF vs SMRF Seismic Performance Gradient
+- BNBC 2020 § 2.3.2 (SMRF/OMRF definitions) and § 2.7.4 (Response Modification Factors)
+
+---
+
 ## Integration of Analysis Methods
 
 ### Architecture Diagram
@@ -301,7 +434,39 @@ Generate Fragility Curves Using ML
     ↓
 Publication Figures & Tables
     ↓
+═════════════════════════════════════════════════════
+Phase 5: OMRF/SMRF Comparative Analysis (PARALLEL/POST-Phase 3)
+    ↓
+Create OMRF Frame Templates (5–15 stories, R=3 design)
+    ├─ Reduced reinforcement ratios
+    ├─ Light confinement
+    └─ Modified base shear (higher demand than SMRF)
+    ↓
+Run Parallel Multi-Stripe IDA for OMRF
+    ├─ Same GMs, same intensities, same analysis params
+    └─ Extract PIDR curves (parallel to SMRF)
+    ↓
+Compute Performance Gradient Metrics
+    ├─ PG (Performance Gradient %) = (PIDR_OMRF - PIDR_SMRF) / PIDR_OMRF
+    ├─ FCI (Framework Complexity Index)
+    ├─ CBR (Cost-Benefit Ratio) = PG / FCI
+    └─ FSI (Framework-Shift Index) = ln(PIDR_SMRF / PIDR_OMRF)
+    ↓
+Comparative Visualization
+    ├─ Figure 6a: Performance Gradient Curve (PG vs Sa, by height)
+    ├─ Figure 6b: Pareto Frontier (FCI vs PG, point cloud with sweet-spot region)
+    ├─ Figure 6c: Zone-Dependent Sweet Spot (4 subplots for Zones I–IV)
+    └─ Figure 6d: Fragility Overlay (OMRF vs SMRF curves, per zone)
+    ↓
+Engineering Recommendations & Decision Matrix
+    ├─ Cost-benefit summary table (building height × zone × metrics)
+    ├─ Design flowchart: when to use OMRF vs SMRF
+    └─ Identified sweet-spot threshold heights per zone
+    ↓
 Research Paper (MDPI Buildings / Elsevier Structures)
+    ├─ Sections 2 & 6a: OMRF/SMRF framework comparison
+    ├─ Discussions: Design rationale, cost-benefit trade-offs, practical guidelines
+    └─ Implications: Guidance for Bangladesh structural engineers
 ```
 
 ---

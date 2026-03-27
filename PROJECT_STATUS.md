@@ -2,26 +2,45 @@
 PROJECT STATUS SUMMARY
 ML-Based Seismic Drift Prediction — BNBC 2020
 Last Updated: March 27, 2026
-Status: PHASE 1 READY TO BEGIN
+Status: PHASE 1 READY TO BEGIN | PHASE 5 (COMPARATIVE ANALYSIS) PLANNED
 """
 
 # ============================================================
 # EXECUTIVE SUMMARY
 # ============================================================
 
-RESEARCH GOAL
-=============
-Develop the first open-source Python ML surrogate model to predict Peak 
-Inter-Story Drift Ratio (PIDR) of RC moment frame buildings designed under 
-BNBC 2020, trained on OpenSeesPy incremental dynamic analysis (IDA) data 
-across all four seismic zones of Bangladesh.
+RESEARCH GOAL (5-PHASE INVESTIGATION)
+=====================================================
+Primary Objective:
+  Develop the first open-source Python ML surrogate model to predict Peak 
+  Inter-Story Drift Ratio (PIDR) of RC moment frame buildings designed under 
+  BNBC 2020, trained on OpenSeesPy incremental dynamic analysis (IDA) data 
+  across all four seismic zones of Bangladesh.
 
-TARGET OUTPUT: Publication in MDPI Buildings or Structures journal
-  - Title: "ML Surrogate Models for Seismic Drift Prediction of 
-           Bangladesh RC Buildings Under BNBC 2020"
-  - Length: 6,000–7,500 words
-  - Figures: IDA curves, fragility diagrams, SHAP plots, comparison tables
-  - Timeline: Phase 1 complete → Phase 2 start (est. 3–4 months for data gen)
+Novel Secondary Objective (Phase 5 — OMRF/SMRF Comparative Analysis):
+  Conduct comprehensive comparative seismic performance analysis between 
+  OMRF (Ordinary Moment Resisting Frame, R=3) and SMRF (Special Moment 
+  Resisting Frame, R=5) configurations to:
+    ✓ Identify performance gradient (% improvement of SMRF over OMRF)
+    ✓ Establish cost-benefit analysis (Framework Complexity Index vs PG)
+    ✓ Determine "sweet spot" where design complexity yields optimal return
+    ✓ Provide design decision matrix: "When to use SMRF vs OMRF"
+    ✓ Visualize framework-shift transition using performance graphs
+
+TARGET OUTPUT: 
+  Publication in MDPI Buildings or Elsevier Structures journal
+  - Title: "ML Surrogate Models for Seismic Drift Prediction of Bangladesh 
+           RC Buildings Under BNBC 2020: With Framework Comparative Analysis"
+  - Length: 7,000–8,500 words (expanded for comparative section)
+  - Figures: IDA curves, fragility diagrams, SHAP plots, OMRF/SMRF comparison, 
+             performance gradient graphs, cost-benefit Pareto frontier
+  - Timeline: 
+      Phase 1 complete (3–4 weeks) 
+    → Phase 2 complete (3–4 weeks) 
+    → Phase 3 complete (2–3 weeks)
+    → Phase 4 complete (1–2 weeks) 
+    → Phase 5 parallel (2–3 weeks, can overlap with 4)
+    = Total: ~3–4 months
 
 
 # ============================================================
