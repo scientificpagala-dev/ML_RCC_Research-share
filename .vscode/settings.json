@@ -1,0 +1,16 @@
+{
+    "python.defaultInterpreterPath": "${workspaceFolder}/project/.venv/bin/python",
+    "python.analysis.typeCheckingMode": "standard",
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/project"
+    ],
+    "python.linting.enabled": true,
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingImports": "information",
+        "reportGeneralTypeIssues": "information"
+    },
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python",
+        "editor.formatOnSave": true
+    }
+}

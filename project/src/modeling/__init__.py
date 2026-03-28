@@ -1,13 +1,15 @@
 """OpenSeesPy Structural Modeling Module
 
-This module provides classes and functions for creating parametric RC 
-moment-resisting frame models (SMRF) in OpenSeesPy, compliant with 
-BNBC 2020 seismic design provisions.
+This module provides classes and functions for creating parametric RC
+moment-resisting frame models in OpenSeesPy, compliant with BNBC 2020
+seismic design provisions for multiple framework types.
 
 Key Classes:
-- RCFrame: Base class for RC multi-story frames
-- RCBeam, RCColumn: Individual structural elements
-- BNBCCompliance: BNBC 2020 design verification
+- RCFrame: Parametric RC frame generator for different framework types
+- FrameGeometry: Frame geometric properties
+- FrameMaterials: Material definitions with framework-specific properties
+- MaterialManager: Manager for framework-specific material creation
+- BNBCComplianceChecker: BNBC 2020 design verification and base shear calculation
 
 Usage:
     from src.modeling import RCFrame
@@ -22,4 +24,16 @@ Usage:
     frame.save_model('models/openseespy/frame_10s_z3.json')
 """
 
-__all__ = []
+from .rc_frame import RCFrame, FrameGeometry, FrameMaterials
+from .materials import MaterialManager, ConcreteMaterial, SteelMaterial
+from .bnbc_compliance import BNBCComplianceChecker
+
+__all__ = [
+    'RCFrame',
+    'FrameGeometry',
+    'FrameMaterials',
+    'MaterialManager',
+    'ConcreteMaterial',
+    'SteelMaterial',
+    'BNBCComplianceChecker'
+]

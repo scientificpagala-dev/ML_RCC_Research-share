@@ -333,6 +333,72 @@ combined_analysis:
     combined_results_db: true  # Save all results to database
 
 # ============================================================================
+# FRAMEWORK ANALYSIS CONFIGURATION
+# ============================================================================
+
+framework_analysis:
+  enabled: true
+  
+  # Framework Types to Analyze
+  frameworks:
+    - "nonsway"
+    - "omrf"
+    - "imrf"
+    - "smrf"
+  
+  # Analysis Parameters per Framework
+  framework_specific:
+    nonsway:
+      p_delta_enabled: false
+      damping_ratio: 0.05
+      convergence_tolerance: 1.0e-6  # Less strict for non-sway
+      max_iterations: 20
+    
+    omrf:
+      p_delta_enabled: true
+      damping_ratio: 0.05
+      convergence_tolerance: 1.0e-8
+      max_iterations: 25
+    
+    imrf:
+      p_delta_enabled: true
+      damping_ratio: 0.05
+      convergence_tolerance: 1.0e-8
+      max_iterations: 25
+    
+    smrf:
+      p_delta_enabled: true
+      damping_ratio: 0.05
+      convergence_tolerance: 1.0e-8
+      max_iterations: 25
+  
+  # Comparative Analysis Settings
+  comparison:
+    reference_framework: "nonsway"
+    metrics_to_compare:
+      - "pidr_median"
+      - "pidr_dispersion"
+      - "collapse_capacity"
+      - "fragility_curves"
+    
+    statistical_tests:
+      anova_enabled: true
+      pairwise_t_tests: true
+      significance_level: 0.05
+  
+  # Parallel Processing for Multiple Frameworks
+  parallel_processing:
+    enabled: true
+    max_concurrent_frameworks: 2  # Process 2 frameworks simultaneously
+    framework_batch_size: 5  # Process 5 buildings per framework batch
+  
+  # Output Organization
+  output:
+    separate_directories: true  # Create framework-specific output dirs
+    comparative_summary: true  # Generate cross-framework comparison tables
+    framework_prefix: true  # Prefix files with framework name
+
+# ============================================================================
 # MACHINE LEARNING TRAINING CONFIGURATION
 # ============================================================================
 

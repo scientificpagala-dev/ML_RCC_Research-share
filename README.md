@@ -45,15 +45,15 @@
 - **Objective 3:** Train and compare ML models (LR, RF, XGBoost, ANN) to predict PIDR
 - **Objective 4:** Generate seismic fragility curves for IO, LS, CP performance levels
 - **Objective 5:** Identify key structural and seismic parameters driving drift using SHAP analysis
-- **Objective 6:** Conduct comparative seismic performance analysis between OMRF and SMRF configurations to identify the cost-benefit "sweet spot" of model complexity vs. performance improvement
+- **Objective 6:** Conduct comparative seismic performance analysis between Non-Sway, OMRF, IMRF, and SMRF configurations to identify the cost-benefit "sweet spot" of framework complexity vs. performance improvement across all BNBC 2020 seismic zones
 
 ### 1.4 Research Questions
 1. Can ML models accurately predict PIDR from structural and seismic features with R² > 0.90?
 2. Which features (period, zone, soil class, height) are most influential on seismic drift?
 3. How do fragility curves differ across BNBC 2020 seismic zones (Z = 0.12 to 0.36)?
 4. Does building height or seismic zone coefficient dominate drift response?
-5. What is the seismic performance gradient between OMRF and SMRF configurations across different building heights?
-6. What is the optimal balance between design complexity (OMRF vs SMRF) and seismic performance improvement? (i.e., where does marginal performance gain plateau relative to code compliance cost?)
+5. What is the seismic performance gradient between Non-Sway, OMRF, IMRF, and SMRF configurations across different building heights?
+6. What is the optimal framework selection (Non-Sway/OMRF/IMRF/SMRF) balancing design complexity and seismic performance improvement across BNBC 2020 zones?
 
 ---
 
@@ -80,7 +80,7 @@
 | 4. Ground Motions & IDA | GM selection, scaling, IDA procedure | 600–800 |
 | 5. Dataset & ML Framework | Feature engineering, model training, validation | 800–1000 |
 | 6. Results | IDA curves, fragility, ML performance, SHAP | 1200–1500 |
-| 6a. Framework Comparative Analysis | OMRF vs SMRF seismic performance gradient, cost-benefit analysis, sweet-spot identification | 800–1000 |
+| 6a. Framework Comparative Analysis | Non-Sway, OMRF, IMRF, SMRF seismic performance gradients, multi-framework cost-benefit analysis, optimal framework selection guide | 800–1000 |
 | 7. Discussion | Implications, SMRF design rationale, practical use, framework selection guide | 600–800 |
 | 8. Conclusions | Key findings, framework recommendations, future work | 300–400 |
 | References | 45–65 citations | — |
@@ -312,98 +312,112 @@ where:
 
 ---
 
-### 3.6 Framework Comparative Analysis: OMRF vs SMRF Seismic Performance Gradient
+### 3.6 Framework Comparative Analysis: Non-Sway, OMRF, IMRF, SMRF Seismic Performance
 
 **Context:**
-The research focuses on SMRF (Special Moment Resisting Frame) design per BNBC 2020, which has higher detailing requirements and code compliance costs than OMRF (Ordinary Moment Resisting Frame). A critical engineering question emerges: **What is the performance "sweet spot" where code complexity yields maximum seismic benefit?**
+The research extends beyond SMRF to conduct a comprehensive comparative analysis of four RC moment frame types under BNBC 2020: Non-Sway Frames, Ordinary Moment Resisting Frames (OMRF), Intermediate Moment Resisting Frames (IMRF), and Special Moment Resisting Frames (SMRF). This analysis identifies performance gradients, cost-benefit trade-offs, and optimal design selections across building heights and seismic zones.
 
 **Framework Definitions (BNBC 2020 Section 2.3.2 & Table 2.7.4):**
 
-| Property | OMRF | SMRF |
-|----------|------|------|
-| Response Reduction Factor R | 3.0 | 5.0 |
-| Detailing Ductility | Moderate (3Δ) | High (8Δ) |
-| Column Bar Spacing | 300 mm max | 150 mm max |
-| Concrete Confinement | Light | Heavy (Mander model) |
-| Beam-Column Joint Shear Reinforcement | Minimal | Full double-layers |
-| Design Base Shear | V = (Sa/R)×W, R=3 | V = (Sa/R)×W, R=5 |
+| Property | Non-Sway Frame | OMRF | IMRF | SMRF |
+|----------|----------------|------|------|------|
+| Response Reduction Factor R | 1.5 | 3.0 | 4.0 | 5.0 |
+| Detailing Ductility | Low (2Δ) | Moderate (3Δ) | Moderate-High (5Δ) | High (8Δ) |
+| Column Bar Spacing | 450 mm max | 300 mm max | 200 mm max | 150 mm max |
+| Concrete Confinement | None | Light | Moderate | Heavy (Mander model) |
+| Beam-Column Joint Shear Reinforcement | None | Minimal | Partial | Full double-layers |
+| P-Delta Effects | Negligible | Considered | Considered | Considered |
+| Design Base Shear | V = Sa×W | V = (Sa/R)×W, R=3 | V = (Sa/R)×W, R=4 | V = (Sa/R)×W, R=5 |
+
+**Non-Sway Frames:** Buildings where lateral displacement is minimal and P-Delta effects are negligible. Typically low-rise structures or those with high stiffness. Analysis assumes no geometric nonlinearity.
+
+**OMRF:** Ordinary Moment Resisting Frames with basic detailing requirements. Suitable for low to moderate seismic zones.
+
+**IMRF:** Intermediate Moment Resisting Frames with enhanced detailing compared to OMRF but less stringent than SMRF. Balances cost and performance.
+
+**SMRF:** Special Moment Resisting Frames with highest ductility and detailing requirements. Required for high seismic zones or tall buildings.
 
 **Comparative Analysis Metrics:**
 
 1. **Performance Gradient (ΔDrift):**
    ```
-   Performance_Gradient = (PIDR_OMRF - PIDR_SMRF) / PIDR_OMRF × 100%
-                        → measures % improvement of SMRF over OMRF
+   Performance_Gradient_Framework_A_vs_B = (PIDR_B - PIDR_A) / PIDR_B × 100%
+                        → measures % improvement of Framework A over Framework B
    ```
 
 2. **Framework Complexity Index (FCI):**
    ```
-   FCI = (Reinforcement_Volume_SMRF / Reinforcement_Volume_OMRF) 
-       × (Fabrication_Hours_SMRF / Fabrication_Hours_OMRF)
-       → normalized measure of design/construction complexity increase
+   FCI_Framework = (Reinforcement_Volume / Reinforcement_Volume_NonSway) 
+                 × (Fabrication_Hours / Fabrication_Hours_NonSway)
+       → normalized measure of design/construction complexity relative to Non-Sway
    ```
 
 3. **Cost-Benefit Ratio (Performance per Unit Complexity):**
    ```
-   Cost_Benefit = Performance_Gradient / FCI
-               → sweet spot = maximum value of this ratio
+   Cost_Benefit_Framework = Performance_Gradient_vs_NonSway / FCI_Framework
+               → sweet spot = maximum value of this ratio across frameworks
    ```
 
 4. **Framework-Shift Index (FSI):**
    ```
-   FSI = ln(PIDR_SMRF / PIDR_OMRF)
-      → logarithmic performance transition measure
+   FSI_Framework_vs_Reference = ln(PIDR_Framework / PIDR_Reference)
+      → logarithmic performance transition measure relative to reference framework
    ```
 
 **Comparative Analysis Methodology:**
 
 1. **Model Creation:**
-   - Create identical building archetype pairs: OMRF (R=3) vs SMRF (R=5)
+   - Create identical building archetype sets for all four frameworks: Non-Sway, OMRF, IMRF, SMRF
    - Same floor heights, bay widths, story counts (5, 7, 10, 12, 15)
-   - Scale reinforcement ratios per BNBC 2020 design equations
-   - OMRF: minimal confinement; SMRF: Mander confinement
+   - Scale reinforcement ratios and detailing per BNBC 2020 design equations for each framework type
+   - Non-Sway: no confinement, minimal reinforcement; OMRF: light confinement; IMRF: moderate; SMRF: heavy Mander confinement
 
 2. **IDA Execution (Parallel):**
-   - Run identical multi-stripe IDA for both frameworks
+   - Run identical multi-stripe IDA for all four frameworks
    - Same ground motion records, same intensity range
-   - Extract PIDR curves for direct comparison
+   - For Non-Sway: exclude P-Delta effects in analysis
+   - Extract PIDR curves for direct comparison across all types
 
 3. **Performance Gradient Computation:**
-   - Compute median IDA curves for each building class
-   - Plot OMRF vs SMRF side-by-side
-   - Calculate % improvement at multiple intensity levels
-   - Identify intensity range where SMRF provides maximum advantage
+   - Compute median IDA curves for each building class and framework type
+   - Plot all four frameworks side-by-side for each building height
+   - Calculate % improvement relative to Non-Sway at multiple intensity levels
+   - Identify intensity ranges where higher framework types provide maximum advantage
 
 4. **Visualization & Analysis:**
-   - **Figure 6a: Performance Gradient Graph** — PIDR difference vs Sa(T1)
+   - **Figure 6a: Multi-Framework Performance Gradient Graph** — PIDR vs Sa(T1) for all frameworks
      - X-axis: Spectral acceleration Sa (g)
-     - Y-axis: Performance improvement (%)
-     - Show curves for different building heights
-     - Highlight "sweet spot" where gradient is steepest
+     - Y-axis: PIDR (%)
+     - Show curves for Non-Sway, OMRF, IMRF, SMRF
+     - Color-code by framework type
    
    - **Figure 6b: Framework-Shift Visualization** — Performance vs Complexity Trade-off
      - X-axis: Framework Complexity Index (FCI)
      - Y-axis: Performance Gradient (%) or Cost-Benefit Ratio
-     - Each point = one building height × zone combination
-     - Show Pareto frontier of optimal SMRF candidates
+     - Each point = one framework type × building height × zone combination
+     - Show Pareto frontier of optimal framework selections
    
-   - **Figure 6c: Zone-Dependent Sweet Spot** — Performance gain varies by seismic zone
+   - **Figure 6c: Zone-Dependent Framework Selection** — Performance gain varies by seismic zone
      - Subplots for Zones I–IV
-     - Show performance gradient curves per zone
-     - Demonstrate that higher zones benefit more from SMRF
+     - Show performance gradient curves per zone for all frameworks
+     - Demonstrate optimal framework choice based on zone and height
+   
+   - **Figure 6d: Fragility Curve Comparison** — P(LS | Sa) for all frameworks
+     - Overlay fragility curves for Non-Sway, OMRF, IMRF, SMRF
+     - Show rightward shift with increasing framework sophistication
 
 5. **Statistical Comparison:**
-   - T-tests for PIDR differences (SMRF vs OMRF) at each intensity
-   - Correlation: building height vs performance gradient (expect negative: taller = more SMRF benefit)
-   - Fragility curve comparison: P(LS | Sa) for both frameworks
+   - ANOVA for PIDR differences across frameworks at each intensity
+   - Correlation: building height vs performance gradient for each framework type
+   - Fragility curve comparison: P(LS | Sa) across all frameworks
 
 **Key Deliverables (Phase 5):**
-- OMRF model templates (5, 7, 10, 12, 15 stories)
-- IDA results for OMRF buildings (matched with SMRF results)
-- Cost-benefit analysis table (FCI, Performance Gradient, Sweet-Spot Intensity for each building)
-- Performance gradient visualization figures (Figs 6a, 6b, 6c)
-- Fragility curve overlay plots (OMRF vs SMRF for each zone)
-- Engineering recommendations: "Use SMRF when building height > X m in Zone Y" based on sweet-spot analysis
+- Framework model templates for Non-Sway, OMRF, IMRF, SMRF (5, 7, 10, 12, 15 stories each)
+- IDA results for all framework types (matched ground motions and intensities)
+- Multi-framework cost-benefit analysis table (FCI, Performance Gradient, Optimal Framework Selection for each building × zone)
+- Performance gradient visualization figures (Figs 6a, 6b, 6c, 6d)
+- Fragility curve overlay plots (all frameworks for each zone)
+- Engineering recommendations: Framework selection matrix based on building height, seismic zone, and performance requirements
 
 ---
 

@@ -1,12 +1,13 @@
 """Machine Learning Module
 
 This module implements ML models for predicting peak inter-story drift ratio (PIDR)
-of RC buildings from structural and seismic features.
+of RC buildings from structural and seismic features across different framework types.
 
 Key Classes:
-- MLTrainer: Orchestrates model training and evaluation
+- MLTrainer: Trains and evaluates ML models for individual framework types
+- FrameworkComparisonTrainer: Compares model performance across frameworks
 - ModelEvaluator: Computes performance metrics and validation
-- SHAPAnalyzer: Generates SHAP-based feature importance
+- SHAPAnalyzer: Generates SHAP-based feature importance analysis
 
 Key Models Implemented:
 - Linear Regression (scikit-learn)
@@ -27,4 +28,9 @@ Usage:
     trainer.save_best_model('models/ml_models/')
 """
 
-__all__ = []
+from .trainer import MLTrainer, FrameworkComparisonTrainer
+
+__all__ = [
+    'MLTrainer',
+    'FrameworkComparisonTrainer'
+]
