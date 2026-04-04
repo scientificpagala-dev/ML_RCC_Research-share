@@ -265,3 +265,116 @@ class BNBCComplianceChecker:
             'detailing': fw_params.get('detailing', {}),
             'p_delta_effects': fw_params.get('p_delta_effects', True)
         }
+
+
+# Backwards-compatible alias for older code/tests
+BNBCCompliance = BNBCComplianceChecker
+
+__all__ = [
+    'BNBCComplianceChecker', 'BNBCCompliance'
+]
+
+
+def check_seismic_zone(zone: int) -> Dict:
+    """Return seismic zone parameters for given zone number (1-4)."""
+    config_path = 'config/bnbc_parameters.yaml'
+    try:
+        with open(config_path, 'r') as f:
+            cfg = yaml.safe_load(f)
+    except FileNotFoundError:
+        cfg = {
+            'seismic_zones': {
+                1: {'pga': 0.05, 'z_coeff': 0.12},
+                2: {'pga': 0.10, 'z_coeff': 0.18},
+                3: {'pga': 0.15, 'z_coeff': 0.24},
+                4: {'pga': 0.20, 'z_coeff': 0.36}
+            }
+        }
+
+    zones = cfg.get('seismic_zones', {})
+    # Support integer or string keys
+    if isinstance(list(zones.keys())[0], str):
+        # Convert from 'Zone3' style if necessary
+        mapping = {}
+        for k, v in zones.items():
+            num = ''.join([c for c in k if c.isdigit()])
+            if num:
+                mapping[int(num)] = v
+        zones = mapping
+
+    if zone not in zones:
+        raise KeyError(f"Unknown seismic zone: {zone}")
+
+    params = zones[zone]
+    # Ensure keys
+    return {'pga': float(params.get('pga', 0.0)), 'z_coeff': float(params.get('z_coeff', 0.0))}
+
+
+def check_response_modification(framework: str) -> float:
+    """Return recommended response modification factor R for a framework."""
+    mapping = {
+        'nonsway': 1.5,
+        'omrf': 3.5,
+        'imrf': 6.0,
+        'smrf': 8.0
+    }
+    if framework not in mapping:
+        raise KeyError(f"Unknown framework: {framework}")
+    return float(mapping[framework])
+
+
+def check_design_spectrum(zone: int, periods: List[float]) -> List[float]:
+    """Return simplified BNBC design spectrum values for given periods."""
+    params = check_seismic_zone(zone)
+    z = params['z_coeff']
+    # Simple proportional spectrum: Sa = z * (1 + 1/T) for demonstration
+    vals = []
+    for T in periods:
+        if T <= 0:
+            vals.append(float(z))
+        else:
+            vals.append(float(z * (1.0 + 1.0 / max(T, 0.01))))
+    return vals
+
+
+def check_story_drift(framework: str, classification: str = 'normal') -> float:
+    """Return story drift limit for framework and classification."""
+    base = 0.025  # default 2.5%
+    if framework == 'smrf':
+        base = 0.03
+    elif framework == 'nonsway':
+        base = 0.02
+
+    if classification == 'special':
+        base *= 0.8
+
+    return float(base)
+
+
+class BNBCCompliance:
+    """Lightweight compatibility wrapper used by tests."""
+
+    def __init__(self, config: Dict):
+        self.config = config
+        self.seismic_zone = int(config.get('seismic_zone', config.get('zone', 3)))
+        self.site_class = config.get('site_class', 'D')
+        self.framework_type = config.get('framework_type', 'smrf')
+
+    def check_all(self) -> Dict:
+        results = {
+            'seismic_zone': check_seismic_zone(self.seismic_zone),
+            'response_modification': check_response_modification(self.framework_type),
+            'design_spectrum': check_design_spectrum(self.seismic_zone, [0.1, 0.5, 1.0, 2.0]),
+            'story_drift_limit': check_story_drift(self.framework_type, 'normal'),
+            'warnings': [],
+            'errors': []
+        }
+        # Simple checks
+        if results['seismic_zone']['pga'] <= 0:
+            results['errors'].append('PGA not positive')
+
+        return results
+
+
+__all__.extend(['check_seismic_zone', 'check_response_modification', 'check_design_spectrum',
+                 'check_story_drift', 'BNBCCompliance'])

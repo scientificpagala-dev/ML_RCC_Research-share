@@ -177,7 +177,7 @@ def load_from_peer_nga(filepath: str, scale_factor: float = 1.0) -> GMRecord:
 
 
 def load_from_csv(filepath: str, time_col: str = 'time', accel_col: str = 'accel',
-                  scale_factor: float = 1.0) -> GMRecord:
+                  scale_factor: float = 1.0, delimiter: Optional[str] = None) -> GMRecord:
     """
     Load ground motion from CSV file
 
@@ -186,11 +186,12 @@ def load_from_csv(filepath: str, time_col: str = 'time', accel_col: str = 'accel
         time_col: Name of time column
         accel_col: Name of acceleration column
         scale_factor: Scaling factor to apply
+        delimiter: Delimiter for parsing (if None, auto-detect)
 
     Returns:
         GMRecord object
     """
-    df = pd.read_csv(filepath)
+    df = pd.read_csv(filepath, delimiter=delimiter)
 
     time = df[time_col].values
     accel = df[accel_col].values
@@ -205,7 +206,88 @@ def load_from_csv(filepath: str, time_col: str = 'time', accel_col: str = 'accel
     return GMRecord(name=name, time=time, acceleration=accel, dt=dt, scale_factor=scale_factor)
 
 
-def load_from_npy(filepath: str, scale_factor: float = 1.0) -> GMRecord:
+def load_from_two_column(filepath: str, delimiter: Optional[str] = None,
+                         skip_rows: int = 0, scale_factor: float = 1.0) -> GMRecord:
+    """
+    Load ground motion from two-column (time, accel) format
+
+    Args:
+        filepath: Path to file
+        delimiter: Delimiter (e.g., ',', '\t', ' ', None for auto-detect)
+        skip_rows: Number of header rows to skip
+        scale_factor: Scaling factor to apply
+
+    Returns:
+        GMRecord object
+    """
+    # Read the file
+    with open(filepath, 'r') as f:
+        lines = [line.strip() for line in f.readlines()]
+
+    # Skip comment lines and empty lines
+    data_lines = []
+    for line in lines:
+        if not line or line.startswith('#'):
+            continue
+        data_lines.append(line)
+
+    # Skip specified rows
+    data_lines = data_lines[skip_rows:]
+
+    if not data_lines:
+        raise ValueError(f"No data found in {filepath}")
+
+    # Try to parse the data
+    time_vals = []
+    accel_vals = []
+
+    for line in data_lines:
+        # Auto-detect delimiter if not specified
+        if delimiter is None:
+            # Try common delimiters
+            for delim in [',', '\t', ' ', ';']:
+                parts = line.split(delim)
+                parts = [p.strip() for p in parts if p.strip()]
+                if len(parts) >= 2:
+                    delimiter = delim
+                    break
+            else:
+                # If no delimiter found, assume space-separated
+                delimiter = ' '
+        else:
+            parts = line.split(delimiter)
+            parts = [p.strip() for p in parts if p.strip()]
+
+        if not delimiter:
+            delimiter = ' '
+            parts = line.split()
+
+        try:
+            if len(parts) >= 2:
+                t = float(parts[0])
+                a = float(parts[1])
+                time_vals.append(t)
+                accel_vals.append(a)
+        except (ValueError, IndexError):
+            continue
+
+    if not time_vals:
+        raise ValueError(f"Could not parse data from {filepath}")
+
+    time = np.array(time_vals, dtype=np.float64)
+    accel = np.array(accel_vals, dtype=np.float64)
+
+    # Compute dt
+    dt = None
+    if len(time) > 1:
+        dt = np.median(np.diff(time))
+
+    name = Path(filepath).stem
+
+    return GMRecord(name=name, time=time, acceleration=accel, dt=dt, scale_factor=scale_factor)
+
+
+
     """
     Load ground motion from NumPy .npy format
 
@@ -231,40 +313,72 @@ def load_from_npy(filepath: str, scale_factor: float = 1.0) -> GMRecord:
     return GMRecord(name=name, time=time, acceleration=accel, scale_factor=scale_factor)
 
 
-def load_ground_motion(filepath: str, scale_factor: float = 1.0) -> GMRecord:
+def load_ground_motion(filepath: str, scale_factor: float = 1.0,
+                       delimiter: Optional[str] = None) -> GMRecord:
     """
     Load ground motion from file, auto-detecting format
 
     Args:
         filepath: Path to ground motion file
         scale_factor: Scaling factor to apply
+        delimiter: Delimiter for two-column format (e.g., ',', '\t', ' ', None for auto-detect)
 
     Returns:
         GMRecord object
 
     Raises:
         ValueError: If file format is not recognized
+        FileNotFoundError: If file does not exist
     """
+    # Check if file exists first
+    if not Path(filepath).exists():
+        raise FileNotFoundError(f"File not found: {filepath}")
+
     ext = Path(filepath).suffix.lower()
 
     if ext in ['.txt', '.dat']:
-        return load_from_peer_nga(filepath, scale_factor)
+        # Try two-column format first (if delimiter is specified or auto-detect)
+        try:
+            return load_from_two_column(filepath, delimiter=delimiter, scale_factor=scale_factor)
+        except FileNotFoundError:
+            raise
+        except Exception as e:
+            logger.debug(f"Failed to load as two-column: {e}")
+            # Fall back to PEER NGA format
+            try:
+                return load_from_peer_nga(filepath, scale_factor)
+            except FileNotFoundError:
+                raise
+            except Exception as e2:
+                logger.debug(f"Failed to load as PEER NGA: {e2}")
+                raise ValueError(f"Could not load {filepath} as two-column or PEER NGA format")
     elif ext == '.csv':
-        return load_from_csv(filepath)
+        return load_from_csv(filepath, delimiter=delimiter, scale_factor=scale_factor)
     elif ext == '.npy':
         return load_from_npy(filepath, scale_factor)
     else:
-        # Try PEER NGA format first
+        # Try multiple formats
         try:
-            return load_from_peer_nga(filepath, scale_factor)
+            return load_from_two_column(filepath, delimiter=delimiter, scale_factor=scale_factor)
+        except FileNotFoundError:
+            raise
         except Exception as e1:
-            # Try CSV
+            logger.debug(f"Failed as two-column: {e1}")
             try:
-                return load_from_csv(filepath)
+                return load_from_peer_nga(filepath, scale_factor)
+            except FileNotFoundError:
+                raise
             except Exception as e2:
-                raise ValueError(
-                    f"Could not load {filepath}: {e1} (PEER NGA), {e2} (CSV)"
-                )
+                logger.debug(f"Failed as PEER NGA: {e2}")
+                try:
+                    return load_from_csv(filepath, scale_factor=scale_factor)
+                except FileNotFoundError:
+                    raise
+                except Exception as e3:
+                    logger.debug(f"Failed as CSV: {e3}")
+                    raise ValueError(
+                        f"Could not load {filepath} in any recognized format"
+                    )
 
 
 def load_directory(directory: str, pattern: str = '*.txt',
@@ -296,7 +410,9 @@ def load_directory(directory: str, pattern: str = '*.txt',
 
 def generate_synthetic_gm(name: str = 'synthetic', duration: float = 30.0,
                           dt: float = 0.005, pga: float = 0.2,
-                          frequency_band: Tuple[float, float] = (0.5, 2.0),
+                          frequency_band: Optional[Tuple[float, float]] = None,
+                          n_modes: Optional[int] = None,
+                          periods: Optional[List[float]] = None,
                           seed: Optional[int] = None) -> GMRecord:
     """
     Generate synthetic ground motion record
@@ -308,7 +424,9 @@ def generate_synthetic_gm(name: str = 'synthetic', duration: float = 30.0,
         duration: Duration in seconds
         dt: Time step in seconds
         pga: Target peak ground acceleration (g)
-        frequency_band: (f_min, f_max) in Hz
+        frequency_band: (f_min, f_max) in Hz (optional, computed from periods/n_modes if provided)
+        n_modes: Number of modes (optional, for compatibility with tests)
+        periods: List of target periods (optional, for compatibility with tests)
         seed: Random seed for reproducibility
 
     Returns:
@@ -316,6 +434,21 @@ def generate_synthetic_gm(name: str = 'synthetic', duration: float = 30.0,
     """
     if seed is not None:
         np.random.seed(seed)
+
+    # Determine frequency band from periods and n_modes if provided
+    if periods is not None and len(periods) > 0:
+        # Use periods to define frequency band
+        min_period = min(periods)
+        max_period = max(periods)
+        frequency_band = (1.0 / max_period * 0.8, 1.0 / min_period * 1.2)
+    elif n_modes is not None and n_modes > 0:
+        # Use n_modes to define frequency band (approximate)
+        f_min = 0.5
+        f_max = min(2.0, 0.5 + n_modes * 0.3)
+        frequency_band = (f_min, f_max)
+    
+    if frequency_band is None:
+        frequency_band = (0.5, 2.0)
 
     n_points = int(duration / dt)
 

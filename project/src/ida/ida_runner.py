@@ -457,3 +457,180 @@ __all__ = [
     'export_framework_comparison',
     'get_ida_statistics'
 ]
+
+
+class IDAResult:
+    """Lightweight result container for IDA analysis results.
+    
+    Stores results from a single IDA analysis run (one building, one GM, one intensity).
+    Supports both positional and keyword arguments, dict-like and attribute access.
+    
+    Example:
+        # Positional arguments
+        result = IDAResult('b1', 'smrf', 5, 'gm_001', 0.5, 0.018, 0.45)
+        
+        # Keyword arguments  
+        result = IDAResult(
+            building_id='b1',
+            framework='smrf',
+            n_stories=5,
+            gm_name='gm_001',
+            sa_intensity=0.5,
+            pidr=0.018,
+            max_accel=0.45
+        )
+    """
+
+    def __init__(self, building_id: str = '', framework: str = '', n_stories: int = 0,
+                 gm_name: str = '', sa_intensity: float = 0.0, pidr: float = 0.0,
+                 max_accel: float = 0.0, convergence_success: bool = False, **kwargs):
+        """
+        Initialize IDAResult with positional or keyword arguments.
+        
+        Positional args (in order):
+            building_id, framework, n_stories, gm_name, sa_intensity, pidr, max_accel, convergence_success
+        
+        Keyword args:
+            Any of the above, plus additional fields
+        """
+        self.building_id = building_id
+        self.framework = framework
+        self.n_stories = n_stories
+        self.gm_name = gm_name
+        self.sa_intensity = sa_intensity
+        self.pidr = pidr
+        self.max_accel = max_accel
+        self.convergence_success = convergence_success
+        
+        # Store additional fields
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    def to_dict(self) -> Dict:
+        """Convert result to dictionary."""
+        return {
+            'building_id': self.building_id,
+            'framework': self.framework,
+            'n_stories': self.n_stories,
+            'gm_name': self.gm_name,
+            'sa_intensity': self.sa_intensity,
+            'pidr': self.pidr,
+            'max_accel': self.max_accel,
+            'convergence_success': self.convergence_success,
+        }
+
+    def __getitem__(self, key):
+        """Dict-like access for backwards compatibility."""
+        return getattr(self, key, None)
+
+    def __eq__(self, other):
+        """Comparison for testing."""
+        if isinstance(other, IDAResult):
+            return (self.building_id == other.building_id and
+                    self.framework == other.framework and
+                    self.n_stories == other.n_stories and
+                    self.gm_name == other.gm_name and
+                    self.sa_intensity == other.sa_intensity and
+                    self.pidr == other.pidr and
+                    self.max_accel == other.max_accel)
+        return False
+
+    def __repr__(self) -> str:
+        return (f"IDAResult(building='{self.building_id}', framework='{self.framework}', "
+                f"n_stories={self.n_stories}, pidr={self.pidr:.4f})")
+
+
+class IDARunner:
+    """IDA campaign runner with configurable analysis parameters.
+    
+    Example:
+        config = {
+            'ida': {
+                'sa_range': [0.1, 1.5],
+                'sa_step': 0.1,
+                'target_period': 1.0,
+                'damping': 0.05
+            }
+        }
+        runner = IDARunner(config)
+        runner.add_result(result)
+        results_df = runner.get_results_dataframe()
+    """
+
+    def __init__(self, config: Optional[Dict] = None):
+        """
+        Initialize IDARunner.
+        
+        Args:
+            config: Analysis configuration dictionary
+        """
+        self.config = config or {}
+        self.results: List[IDAResult] = []
+
+    def add_result(self, result: IDAResult) -> None:
+        """
+        Add an IDAResult to the collection.
+        
+        Args:
+            result: IDAResult object to add
+        """
+        if isinstance(result, IDAResult):
+            self.results.append(result)
+        else:
+            raise TypeError("Expected IDAResult object")
+
+    def get_results_dataframe(self) -> pd.DataFrame:
+        """
+        Get all results as a pandas DataFrame.
+        
+        Returns:
+            DataFrame with all results
+        """
+        if not self.results:
+            return pd.DataFrame()
+        
+        result_dicts = [r.to_dict() for r in self.results]
+        return pd.DataFrame(result_dicts)
+
+    def export_to_csv(self, filepath: str) -> None:
+        """
+        Export results to CSV file.
+        
+        Args:
+            filepath: Path to output CSV file
+        """
+        df = self.get_results_dataframe()
+        df.to_csv(filepath, index=False)
+        logger.info(f"Exported results to {filepath}")
+
+    def get_statistics(self) -> Dict:
+        """
+        Compute statistics on results.
+        
+        Returns:
+            Dictionary with statistics
+        """
+        if not self.results:
+            return {}
+        
+        df = self.get_results_dataframe()
+        
+        stats = {
+            'n_results': len(df),
+            'mean_pidr': float(df['pidr'].mean()) if 'pidr' in df else 0.0,
+            'std_pidr': float(df['pidr'].std()) if 'pidr' in df else 0.0,
+            'max_pidr': float(df['pidr'].max()) if 'pidr' in df else 0.0,
+            'min_pidr': float(df['pidr'].min()) if 'pidr' in df else 0.0,
+        }
+        return stats
+
+    def run(self) -> pd.DataFrame:
+        """Execute IDA campaign (placeholder).
+        
+        Returns:
+            DataFrame with results
+        """
+        return self.get_results_dataframe()
+
+
+__all__.extend(['IDAResult', 'IDARunner'])

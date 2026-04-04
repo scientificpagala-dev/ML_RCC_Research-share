@@ -163,3 +163,12 @@ class MaterialManager:
                 'source': 'materials.py'
             }
         }
+
+
+# Backwards-compatible aliases expected by tests / older code
+ConcreteModel = ConcreteMaterial
+SteelModel = SteelMaterial
+
+__all__ = [
+    'ConcreteMaterial', 'ConcreteModel', 'SteelMaterial', 'SteelModel', 'MaterialManager'
+]
