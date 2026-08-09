@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Index — ML‑BNBC PIDR Surrogate Research Set</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ SHARED DESIGN SYSTEM ============ */
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --paper:#F3ECDC; --paper2:#EAE0C7; --paper3:#E3D6B8;
+  --ink:#241C15; --ink2:#5B5142; --ink3:#8A7F6B;
+  --rust:#C1521A; --rust2:#96380F;
+  --brick:#7A2E2E; --brick2:#5E2222;
+  --steel:#3B5166; --steel2:#28394A;
+  --moss:#5C6E4A; --moss2:#3F4E31;
+  --line:#D8CBB0; --line2:#E7DCC3;
+  --z1:#E8C468; --z2:#DB9A4E; --z3:#C1521A; --z4:#7A2E2E;
+  --disp:'Space Grotesk',sans-serif; --serif:'Source Serif 4',Georgia,serif; --mono:'IBM Plex Mono',monospace;
+  --maxw:1120px;
+}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}}
+body{margin:0;background:var(--paper);
+  background-image:repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(36,28,21,.032) 28px),repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(36,28,21,.022) 28px);
+  color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;}
+a{color:var(--rust2)} a:hover{color:var(--rust)}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--paper);padding:.6rem 1rem;z-index:100}
+.skip-link:focus{left:1rem;top:1rem}
+:focus-visible{outline:2px solid var(--steel);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--disp);color:var(--ink);margin:0 0 .5em;letter-spacing:-.01em}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rust2);font-weight:600}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 1.75rem}
+code{font-family:var(--mono)}
+.sheetnav{background:var(--ink);color:var(--paper2)}
+.sheetnav .wrap{display:flex;gap:0;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:0 1.75rem}
+.sheetnav-links{display:flex;flex-wrap:wrap}
+.sheetnav a{font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;color:var(--paper3);text-decoration:none;padding:.75rem .95rem;border-right:1px solid rgba(243,236,220,.14);display:block}
+.sheetnav a:hover{background:rgba(243,236,220,.08);color:var(--paper)}
+.sheetnav a.active{background:var(--rust2);color:var(--paper)}
+.sheetnav a.home{background:var(--brick2);color:var(--paper)}
+.sheetnav a.home:hover{background:var(--brick)}
+.sheetnav a.home.active{background:var(--rust2)}
+.sheetnav .repo-link{font-family:var(--mono);font-size:.7rem;color:var(--paper3);text-decoration:none;padding:.75rem 0}
+.sheetnav .repo-link:hover{color:var(--paper)}
+.titleblock{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;border:1.5px solid var(--ink);font-family:var(--mono);font-size:.7rem;background:var(--paper2)}
+.titleblock>div{padding:.55rem .7rem;border-right:1px solid var(--line)}
+.titleblock>div:last-child{border-right:none}
+.tb-label{display:block;text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);font-size:.6rem;margin-bottom:.2rem}
+.tb-value{font-weight:600;color:var(--ink)}
+@media(max-width:720px){.titleblock{grid-template-columns:1fr 1fr}}
+.masthead{padding:2.6rem 0 2rem;border-bottom:1px solid var(--line)}
+.masthead h1{font-size:clamp(1.9rem,4.4vw,3rem);line-height:1.06;margin:.5rem 0 1rem;text-transform:uppercase}
+.masthead h1 span{color:var(--rust2)}
+.thesis{font-size:1.14rem;color:var(--ink2);max-width:66ch;margin:0 0 1.5rem}
+.masthead .titleblock{margin-bottom:1.75rem}
+.hero-panel{border:1px solid var(--ink);background:var(--paper2);padding:1.1rem 1.2rem 0.6rem;display:grid;grid-template-columns:1.3fr 1fr;gap:1.5rem;align-items:center}
+@media(max-width:820px){.hero-panel{grid-template-columns:1fr}}
+.hero-caption{font-family:var(--mono);font-size:.74rem;color:var(--ink2);line-height:1.7}
+.hero-caption b{color:var(--ink)}
+.ida-svg path.curve{fill:none;stroke-width:2.4;stroke-linecap:round;stroke-dasharray:520;stroke-dashoffset:520;animation:draw 2.1s ease forwards}
+.ida-svg path.curve.c2{animation-delay:.15s}
+.ida-svg path.curve.c3{animation-delay:.3s}
+.ida-svg path.curve.c4{animation-delay:.45s}
+@keyframes draw{to{stroke-dashoffset:0}}
+.ida-svg text{font-family:var(--mono);font-size:9px;fill:var(--ink2)}
+.ida-svg .axis{stroke:var(--ink3);stroke-width:1}
+.ida-svg .thresh{stroke:var(--brick);stroke-width:1;stroke-dasharray:3 3}
+section{padding:2.75rem 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.sec-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.sec-head h2{font-size:1.5rem;text-transform:uppercase}
+.sec-num{font-family:var(--mono);color:var(--rust2);font-size:1.5rem;font-weight:700}
+.lede{max-width:70ch;color:var(--ink2);margin-bottom:1.5rem}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.reveal.is-visible{opacity:1;transform:translateY(0)}
+footer{padding:2rem 0 3rem}
+footer p{font-family:var(--mono);font-size:.72rem;color:var(--ink3);max-width:70ch}
+.zonebar{display:flex;height:6px;margin:2rem 0 0}
+.zonebar span{flex:1}
+/* sheet index cards (reused component) */
+.sheetcards{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem}
+@media(max-width:980px){.sheetcards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.sheetcards{grid-template-columns:1fr}}
+.sheetcard{border:1px solid var(--ink);background:var(--paper2);padding:1.3rem;display:flex;flex-direction:column;gap:.6rem;text-decoration:none;color:var(--ink);transition:transform .18s ease, box-shadow .18s ease}
+.sheetcard:hover{transform:translateY(-3px);box-shadow:4px 4px 0 var(--rust2)}
+.sheetcard .sheetno{font-family:var(--mono);color:var(--rust2);font-weight:700;font-size:.8rem}
+.sheetcard h4{font-family:var(--disp);text-transform:uppercase;font-size:1.05rem;margin:0}
+.sheetcard p{margin:0;color:var(--ink2);font-size:.9rem;flex:1}
+.sheetcard .stat{font-family:var(--mono);font-size:.68rem;color:var(--steel2);background:var(--paper3);display:inline-block;padding:.15rem .5rem;border-radius:2px;width:fit-content}
+.sheetcard .go{font-family:var(--mono);font-size:.72rem;color:var(--rust2)}
+.card-progress{display:flex;align-items:center;gap:.5rem}
+.card-progress .cp-bar{flex:1;height:6px;border:1px solid var(--ink);background:var(--paper);border-radius:2px;overflow:hidden}
+.card-progress .cp-fill{height:100%;background:var(--moss);width:0%;transition:width .5s ease}
+.card-progress .cp-label{font-family:var(--mono);font-size:.62rem;color:var(--ink2);white-space:nowrap}
+/* live progress dashboard */
+.progress-dash{display:flex;flex-direction:column;gap:1.4rem}
+.pd-overall{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.pd-overall .pd-num{font-family:var(--disp);font-weight:700;font-size:2rem;color:var(--rust2);flex:0 0 auto}
+.pd-overall .pd-bar{flex:1;min-width:180px}
+.pd-overall .pd-label{font-family:var(--mono);font-size:.75rem;color:var(--ink2);white-space:nowrap}
+.pd-bar{height:12px;border:1px solid var(--ink);background:var(--paper2);border-radius:2px;overflow:hidden}
+.pd-fill{height:100%;background:linear-gradient(90deg,var(--z2),var(--rust));width:0%;transition:width .6s ease}
+.pd-sheets{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+@media(max-width:820px){.pd-sheets{grid-template-columns:1fr}}
+.pd-sheet{border:1px solid var(--line);background:var(--paper2);padding:.85rem 1rem;display:flex;flex-direction:column;gap:.5rem}
+.pd-sheet-label{font-family:var(--mono);font-size:.72rem;color:var(--ink2);text-transform:uppercase;letter-spacing:.03em}
+.pd-count{font-family:var(--mono);font-size:.7rem;color:var(--ink3);align-self:flex-end}
+.progress-dash-empty{border:1px dashed var(--steel);background:var(--paper2);padding:1rem 1.2rem;font-size:.92rem;color:var(--ink2);max-width:70ch}
+.progress-dash-empty code{background:var(--paper3);padding:.05em .3em;border-radius:2px}
+/* fast facts (reused, condensed) */
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--ink);border:1px solid var(--ink)}
+@media(max-width:820px){.facts{grid-template-columns:repeat(2,1fr)}}
+.fact{background:var(--paper);padding:1.15rem 1.1rem}
+.fact .num{font-family:var(--disp);font-weight:700;font-size:1.6rem;color:var(--rust2);display:block}
+.fact .lbl{font-family:var(--mono);font-size:.68rem;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em}
+/* quick start numlist */
+.numlist{list-style:none;margin:0;padding:0;display:grid;gap:.1rem;max-width:78ch}
+.numlist li{display:grid;grid-template-columns:2.2rem 1fr;gap:.9rem;padding:.75rem 0;border-bottom:1px dashed var(--line)}
+.numlist li:last-child{border-bottom:none}
+.numlist .n{font-family:var(--mono);color:var(--rust2);font-weight:700}
+.numlist p{margin:0}
+/* revision table (reused) */
+table.reg{width:100%;border-collapse:collapse;font-size:.9rem}
+table.reg th,table.reg td{border:1px solid var(--line);padding:.55rem .65rem;text-align:left;vertical-align:top}
+table.reg th{background:var(--ink);color:var(--paper2);font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.04em}
+table.reg tr:nth-child(even) td{background:var(--paper2)}
+table.reg td.rev{font-family:var(--mono);font-weight:700;color:var(--rust2);white-space:nowrap}
+table.reg td.date{font-family:var(--mono);font-size:.82rem;color:var(--ink2);white-space:nowrap}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<nav class="sheetnav" aria-label="Sheet navigation">
+  <div class="wrap">
+    <div class="sheetnav-links">
+      <a href="./" class="home active">⌂ Set Index</a>
+      <a href="./overview/">Sheet 01 · Overview</a>
+      <a href="./research-roadmap/">Sheet 02 · Roadmap</a>
+      <a href="./preparation-projects/">Sheet 03 · Prep Projects</a>
+      <a href="./skills-tracker/">Sheet 04 · Skills Tracker</a>
+    </div>
+    <a class="repo-link" href="https://github.com/AnwayDiptaPaul/ML-RCC-Research" target="_blank" rel="noopener">↗ source repo</a>
+  </div>
+</nav>
+
+<main id="main">
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Cover Sheet — Set of 4</div>
+    <h1>ML Surrogate Modelling<br>of Seismic Drift in <span>BNBC&nbsp;2020</span> RC Frames</h1>
+    <p class="thesis">A working plan for turning <code style="font-family:var(--mono);font-style:normal;background:var(--paper2);padding:.05em .3em;">ML_RCC_Research-share</code> into a submitted paper — four cross-linked sheets, each tracking its own progress. This page is the front door; it doesn't repeat their content, it points to it.</p>
+
+    <div class="titleblock reveal">
+      <div><span class="tb-label">Project</span><span class="tb-value">ML Surrogate — Peak Inter-story Drift (PIDR), RC Frames, BNBC 2020</span></div>
+      <div><span class="tb-label">Prepared for</span><span class="tb-value">Anway Dipta Paul · Civion BD</span></div>
+      <div><span class="tb-label">Set</span><span class="tb-value">4 sheets · ./ + 01–04</span></div>
+      <div><span class="tb-label">Current revision</span><span class="tb-value">Rev 3 · 08 Aug 2026</span></div>
+    </div>
+
+    <div class="hero-panel reveal">
+      <svg class="ida-svg" viewBox="0 0 420 260" role="img" aria-labelledby="idatitle idadesc">
+        <title id="idatitle">Incremental Dynamic Analysis stripes</title>
+        <desc id="idadesc">Four schematic IDA curves rising from the origin, one reaching a collapse plateau — the core method behind the dataset this whole set is built around.</desc>
+        <line class="axis" x1="50" y1="230" x2="400" y2="230"/>
+        <line class="axis" x1="50" y1="230" x2="50" y2="20"/>
+        <text x="330" y="245">Sa(T1) →</text>
+        <text x="10" y="28">PIDR</text>
+        <text x="10" y="40">↑</text>
+        <line class="thresh" x1="50" y1="46" x2="400" y2="46"/>
+        <text x="322" y="42">collapse · PIDR ≥ 10%</text>
+        <path class="curve c1" d="M50,230 C120,225 220,190 340,140" stroke="#3B5166"/>
+        <path class="curve c2" d="M50,230 C110,222 200,175 300,110" stroke="#5C6E4A"/>
+        <path class="curve c3" d="M50,230 C100,220 180,150 260,80" stroke="#C1521A"/>
+        <path class="curve c4" d="M50,230 C90,215 140,120 170,70 C185,45 260,45 320,44" stroke="#7A2E2E"/>
+      </svg>
+      <div class="hero-caption">
+        <b>Four sheets, one project.</b> Overview tells you what's real. Roadmap tells you what's next. Prep Projects get you ready. Skills Tracker tells you what to learn to get there.<br><br>
+        <b>New here?</b> Start with Sheet 01 — its "reality check" is the one section worth reading before anything else on this site, including this page.
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="index">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">01</span><h2>Sheet index</h2></div>
+    <div class="sheetcards reveal">
+      <a class="sheetcard" href="./overview/">
+        <span class="sheetno">Sheet 01 / 04</span>
+        <h4>Overview</h4>
+        <p>The research goal in plain language, plus a reality check — six specific places the repo's own documents disagree with themselves or claim more than they've verified.</p>
+        <span class="stat">6 verification flags</span>
+        <span class="go">Open →</span>
+      </a>
+      <a class="sheetcard" href="./research-roadmap/">
+        <span class="sheetno">Sheet 02 / 04</span>
+        <h4>Research Roadmap</h4>
+        <p>Ten phases from environment setup to submission — each with a checklist, success criteria, two duration estimates, plus milestones and a risk register.</p>
+        <span class="stat">~22 wks · 10 phases</span>
+        <div class="card-progress" data-sheet="02" hidden><div class="cp-bar"><div class="cp-fill"></div></div><span class="cp-label"></span></div>
+        <span class="go">Open →</span>
+      </a>
+      <a class="sheetcard" href="./preparation-projects/">
+        <span class="sheetno">Sheet 03 / 04</span>
+        <h4>Preparation Projects</h4>
+        <p>Four required hands-on projects — structural scripting, nonlinear dynamics, an ML sprint, a fragility micro-paper — plus one optional Abaqus cross-check.</p>
+        <span class="stat">4 required + 1 optional</span>
+        <div class="card-progress" data-sheet="03" hidden><div class="cp-bar"><div class="cp-fill"></div></div><span class="cp-label"></span></div>
+        <span class="go">Open →</span>
+      </a>
+      <a class="sheetcard" href="./skills-tracker/">
+        <span class="sheetno">Sheet 04 / 04</span>
+        <h4>Skills &amp; Expertise Tracker</h4>
+        <p>Eight required skill domains calibrated to your background, plus one optional domain, cross-linked to the exact projects and phases that need each one.</p>
+        <span class="stat">8 required + 1 optional</span>
+        <div class="card-progress" data-sheet="04" hidden><div class="cp-bar"><div class="cp-fill"></div></div><span class="cp-label"></span></div>
+        <span class="go">Open →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="live-progress">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">02</span><h2>Live progress</h2></div>
+    <p class="lede reveal">Pulled from <code>progress.md</code> in this folder. Check things off on any sheet, hit Export there, and replace this file — reload here and these numbers move.</p>
+    <div id="progressDash" class="progress-dash reveal" hidden>
+      <div class="pd-overall">
+        <span class="pd-num" id="pdOverallNum">0%</span>
+        <div class="pd-bar"><div class="pd-fill" id="pdOverallFill"></div></div>
+        <span class="pd-label" id="pdOverallLabel">0 / 0 items across all sheets</span>
+      </div>
+      <div class="pd-sheets">
+        <div class="pd-sheet"><span class="pd-sheet-label">Sheet 02 · Roadmap</span><div class="pd-bar"><div class="pd-fill" id="pdFill02"></div></div><span class="pd-count" id="pdCount02">0/58</span></div>
+        <div class="pd-sheet"><span class="pd-sheet-label">Sheet 03 · Prep Projects</span><div class="pd-bar"><div class="pd-fill" id="pdFill03"></div></div><span class="pd-count" id="pdCount03">0/49</span></div>
+        <div class="pd-sheet"><span class="pd-sheet-label">Sheet 04 · Skills Tracker</span><div class="pd-bar"><div class="pd-fill" id="pdFill04"></div></div><span class="pd-count" id="pdCount04">0/44</span></div>
+      </div>
+    </div>
+    <div id="progressDashEmpty" class="progress-dash-empty reveal" hidden>No <code>progress.md</code> found in this folder yet — a starter copy (all 151 items unchecked) ships alongside this set. Once it's in place, and this page is served rather than opened directly, this section fills in on its own.</div>
+  </div>
+</section>
+
+<section id="facts">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">03</span><h2>At a glance</h2></div>
+    <div class="facts reveal">
+      <div class="fact"><span class="num">80</span><span class="lbl">RC buildings modelled</span></div>
+      <div class="fact"><span class="num">~51,200</span><span class="lbl">Target IDA rows</span></div>
+      <div class="fact"><span class="num">R² ≥ 0.90</span><span class="lbl">Stated target (aspirational — see Sheet 01)</span></div>
+      <div class="fact"><span class="num">MDPI Buildings</span><span class="lbl">Primary target journal</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="howto">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">04</span><h2>How to use this set</h2></div>
+    <ol class="numlist reveal">
+      <li><span class="n">01</span><p>Start with Sheet 01 — read the reality check before trusting any status claim, including this page's.</p></li>
+      <li><span class="n">02</span><p>Work Sheet 03's four required projects while skimming Sheet 04 for what each one is building toward.</p></li>
+      <li><span class="n">03</span><p>Once prepared, follow Sheet 02 phase by phase — its checklist is the actual critical path.</p></li>
+      <li><span class="n">04</span><p>Prep Project 05 and Skill Domain 09 (both Abaqus) are bonus — skip them for zero cost to the research, or slot Project 05 in after Project 01 if there's spare time.</p></li>
+      <li><span class="n">05</span><p>Checkboxes are per-session only — they reset on reload. Each sheet is a working-session tool, not a permanent tracker.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="revisions">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">05</span><h2>Revision history</h2></div>
+    <table class="reg reveal">
+      <tr><th>Rev</th><th>Date</th><th>Change</th></tr>
+      <tr><td class="rev">0</td><td class="date">06 Aug 2026</td><td>Initial 4-sheet set — Overview, Research Roadmap, Preparation Projects, Skills Tracker.</td></tr>
+      <tr><td class="rev">1</td><td class="date">07 Aug 2026</td><td>Added optional Prep Project 05 (Abaqus/CDP cross-check against the OpenSeesPy frame from Project 01) and Skill Domain 09 (Abaqus/SIMULIA) — enrichment only, doesn't touch the critical path.</td></tr>
+      <tr><td class="rev">2</td><td class="date">07 Aug 2026</td><td>Added this index page; cross-linked all four sheets back to it via the "⌂ Set Index" nav link.</td></tr>
+      <tr><td class="rev">3</td><td class="date">08 Aug 2026</td><td>Added <code>progress.md</code> as the shared data source. Sheets 02–04 now load their checkbox state from it on open and can export an updated copy; this page and Sheet 01 show a live progress dashboard pulled from it.</td></tr>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Built from a full read of github.com/AndrewDsn/ML_RCC_Research-share (a fork of AnwayDiptaPaul/ML_RCC_Research-share). Keep all six files — this page, Sheets 01–04, and <code>progress.md</code> — in the same folder; the links and the sync both rely on relative paths. Checkbox state on Sheets 02–04 loads from <code>progress.md</code> on open and stays live in the browser until you Export; nothing here uses browser storage.</p>
+    <div class="zonebar" aria-hidden="true"><span style="background:var(--z1)"></span><span style="background:var(--z2)"></span><span style="background:var(--z3)"></span><span style="background:var(--z4)"></span></div>
+  </div>
+</footer>
+</main>
+
+<script>
+(function(){
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+  }, {threshold:.1});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  /* ---- read-only live progress, pulled from progress.md ---- */
+  function parseProgressMd(text){
+    var map = {};
+    var re = /^-\s*\[([ xX])\][^\n]*?<!--\s*id:([a-zA-Z0-9-]+)\s*-->/gm;
+    var m;
+    while((m = re.exec(text))){ map[m[2]] = (m[1].toLowerCase() === 'x'); }
+    return map;
+  }
+  var PREFIX_TO_SHEET = {c:'02', p:'03', s:'04'};
+
+  fetch('progress.md', {cache:'no-store'}).then(function(res){
+    if(!res.ok) throw new Error('not found');
+    return res.text();
+  }).then(function(text){
+    var map = parseProgressMd(text);
+    var ids = Object.keys(map);
+    var buckets = {'02':[], '03':[], '04':[]};
+    ids.forEach(function(id){
+      var sheet = PREFIX_TO_SHEET[id.charAt(0)];
+      if(sheet) buckets[sheet].push(id);
+    });
+    var totalDone = ids.filter(function(id){ return map[id]; }).length;
+    var totalAll = ids.length;
+    var overallPct = totalAll ? Math.round(totalDone / totalAll * 100) : 0;
+
+    document.getElementById('pdOverallNum').textContent = overallPct + '%';
+    document.getElementById('pdOverallFill').style.width = overallPct + '%';
+    document.getElementById('pdOverallLabel').textContent = totalDone + ' / ' + totalAll + ' items across all sheets';
+
+    ['02','03','04'].forEach(function(sheet){
+      var arr = buckets[sheet];
+      var done = arr.filter(function(id){ return map[id]; }).length;
+      var total = arr.length;
+      var pct = total ? Math.round(done / total * 100) : 0;
+      var fillEl = document.getElementById('pdFill' + sheet);
+      var countEl = document.getElementById('pdCount' + sheet);
+      if(fillEl) fillEl.style.width = pct + '%';
+      if(countEl) countEl.textContent = done + '/' + total;
+
+      var card = document.querySelector('.card-progress[data-sheet="' + sheet + '"]');
+      if(card){
+        card.hidden = false;
+        card.querySelector('.cp-fill').style.width = pct + '%';
+        card.querySelector('.cp-label').textContent = done + '/' + total;
+      }
+    });
+
+    document.getElementById('progressDash').hidden = false;
+  }).catch(function(){
+    var empty = document.getElementById('progressDashEmpty');
+    if(empty) empty.hidden = false;
+  });
+})();
+</script>
+</body>
+</html>

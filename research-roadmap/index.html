@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sheet 2/4 — Research Roadmap · ML‑BNBC PIDR Surrogate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ SHARED DESIGN SYSTEM ============ */
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --paper:#F3ECDC; --paper2:#EAE0C7; --paper3:#E3D6B8;
+  --ink:#241C15; --ink2:#5B5142; --ink3:#8A7F6B;
+  --rust:#C1521A; --rust2:#96380F;
+  --brick:#7A2E2E; --brick2:#5E2222;
+  --steel:#3B5166; --steel2:#28394A;
+  --moss:#5C6E4A; --moss2:#3F4E31;
+  --line:#D8CBB0; --line2:#E7DCC3;
+  --z1:#E8C468; --z2:#DB9A4E; --z3:#C1521A; --z4:#7A2E2E;
+  --disp:'Space Grotesk',sans-serif; --serif:'Source Serif 4',Georgia,serif; --mono:'IBM Plex Mono',monospace;
+  --maxw:1120px;
+}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}}
+body{margin:0;background:var(--paper);
+  background-image:repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(36,28,21,.032) 28px),repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(36,28,21,.022) 28px);
+  color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;}
+a{color:var(--rust2)} a:hover{color:var(--rust)}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--paper);padding:.6rem 1rem;z-index:100}
+.skip-link:focus{left:1rem;top:1rem}
+:focus-visible{outline:2px solid var(--steel);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--disp);color:var(--ink);margin:0 0 .5em;letter-spacing:-.01em}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rust2);font-weight:600}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 1.75rem}
+code{font-family:var(--mono)}
+.sheetnav{background:var(--ink);color:var(--paper2)}
+.sheetnav .wrap{display:flex;gap:0;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:0 1.75rem}
+.sheetnav-links{display:flex}
+.sheetnav a{font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;color:var(--paper3);text-decoration:none;padding:.75rem .95rem;border-right:1px solid rgba(243,236,220,.14);display:block}
+.sheetnav a:hover{background:rgba(243,236,220,.08);color:var(--paper)}
+.sheetnav a.active{background:var(--rust2);color:var(--paper)}
+.sheetnav a.home{background:var(--brick2);color:var(--paper)}
+.sheetnav a.home:hover{background:var(--brick)}
+.sheetnav .repo-link{font-family:var(--mono);font-size:.7rem;color:var(--paper3);text-decoration:none;padding:.75rem 0}
+.sheetnav .repo-link:hover{color:var(--paper)}
+.titleblock{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;border:1.5px solid var(--ink);font-family:var(--mono);font-size:.7rem;background:var(--paper2)}
+.titleblock>div{padding:.55rem .7rem;border-right:1px solid var(--line)}
+.titleblock>div:last-child{border-right:none}
+.tb-label{display:block;text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);font-size:.6rem;margin-bottom:.2rem}
+.tb-value{font-weight:600;color:var(--ink)}
+@media(max-width:720px){.titleblock{grid-template-columns:1fr 1fr}}
+.masthead{padding:2.4rem 0 2rem;border-bottom:1px solid var(--line)}
+.masthead h1{font-size:clamp(1.7rem,4vw,2.6rem);line-height:1.08;margin:.5rem 0 1rem;text-transform:uppercase}
+.masthead h1 span{color:var(--rust2)}
+.thesis{font-size:1.08rem;color:var(--ink2);max-width:68ch;margin:0 0 1.5rem}
+section{padding:2.6rem 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.sec-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:1.4rem;flex-wrap:wrap}
+.sec-head h2{font-size:1.4rem;text-transform:uppercase}
+.sec-num{font-family:var(--mono);color:var(--rust2);font-size:1.4rem;font-weight:700}
+.lede{max-width:72ch;color:var(--ink2);margin-bottom:1.4rem}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.reveal.is-visible{opacity:1;transform:translateY(0)}
+footer{padding:2rem 0 3rem}
+footer p{font-family:var(--mono);font-size:.72rem;color:var(--ink3);max-width:70ch}
+.zonebar{display:flex;height:6px;margin:2rem 0 0}
+.zonebar span{flex:1}
+/* checklist + progress (shared component) */
+.progress{height:11px;border:1px solid var(--ink);background:var(--paper2);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--z2),var(--rust));width:0%;transition:width .4s ease}
+.progress-row{display:flex;align-items:center;gap:.8rem;margin:.6rem 0 1rem}
+.progress-row .progress{flex:1}
+.progress-label{font-family:var(--mono);font-size:.72rem;color:var(--ink2);white-space:nowrap}
+.check{display:flex;gap:.7rem;align-items:flex-start;padding:.55rem .1rem;border-bottom:1px dashed var(--line)}
+.check:last-child{border-bottom:none}
+.check input[type=checkbox]{appearance:none;-webkit-appearance:none;width:1.1rem;height:1.1rem;flex:0 0 auto;margin-top:.22rem;border:1.5px solid var(--ink);border-radius:2px;background:var(--paper);cursor:pointer;position:relative}
+.check input[type=checkbox]:checked{background:var(--moss);border-color:var(--moss2)}
+.check input[type=checkbox]:checked::after{content:'';position:absolute;left:2.5px;top:-1.5px;width:5px;height:9px;border:solid var(--paper);border-width:0 2px 2px 0;transform:rotate(40deg)}
+.check label{cursor:pointer;font-size:.97rem}
+.check.done label{color:var(--ink3);text-decoration:line-through;text-decoration-color:var(--line)}
+/* page specific */
+#globalbar{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line);padding:.6rem 0}
+#globalbar .wrap{display:flex;align-items:center;gap:1rem}
+#globalbar .progress{flex:1}
+@media(max-width:640px){#globalbar .wrap{flex-wrap:wrap}.export-btn{margin-left:auto}}
+.export-btn{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.04em;background:var(--ink);color:var(--paper2);border:1px solid var(--ink);padding:.4rem .7rem;border-radius:2px;cursor:pointer;white-space:nowrap}
+.export-btn:hover{background:var(--rust2);border-color:var(--rust2)}
+.export-btn:disabled{opacity:.5;cursor:default}
+.sync-note{background:var(--paper3);border-bottom:1px solid var(--line);padding:.55rem 0}
+.sync-note .wrap{font-family:var(--mono);font-size:.72rem;color:var(--ink2)}
+.sync-note a{color:var(--rust2)}
+.gantt{border:1px solid var(--ink);background:var(--paper2);padding:1.2rem}
+.gantt-axis{display:flex;font-family:var(--mono);font-size:.62rem;color:var(--ink3);margin-bottom:.5rem;padding-left:11.5rem}
+.gantt-axis span{flex:1;border-left:1px solid var(--line)}
+.gantt-row{display:flex;align-items:center;gap:0;margin-bottom:.38rem}
+.gantt-label{width:11.5rem;flex:0 0 auto;font-family:var(--mono);font-size:.68rem;color:var(--ink2);padding-right:.6rem}
+.gantt-track{flex:1;position:relative;height:15px;background:var(--paper3);border-radius:2px}
+.gantt-bar{position:absolute;top:0;height:100%;border-radius:2px;font-family:var(--mono);font-size:.55rem;color:var(--paper);display:flex;align-items:center;padding-left:.35rem;white-space:nowrap;overflow:hidden}
+.gantt-note{font-family:var(--mono);font-size:.7rem;color:var(--ink2);margin-top:1rem;padding-top:.8rem;border-top:1px dashed var(--line)}
+details.phase{border:1px solid var(--ink);background:var(--paper2);margin-bottom:1rem}
+details.phase[open]{background:var(--paper)}
+details.phase summary{list-style:none;cursor:pointer;padding:.95rem 1.15rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+details.phase summary::-webkit-details-marker{display:none}
+details.phase summary::before{content:'▸';font-family:var(--disp);color:var(--rust2);transition:transform .15s ease;flex:0 0 auto}
+details.phase[open] summary::before{transform:rotate(90deg)}
+.phase-num{font-family:var(--mono);font-weight:700;color:var(--rust2);font-size:.85rem;flex:0 0 auto}
+.phase-title{font-family:var(--disp);font-weight:600;font-size:1.05rem;text-transform:uppercase;flex:1 1 240px}
+.status{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;padding:.25rem .55rem;border-radius:2px;white-space:nowrap}
+.status-done{background:var(--moss);color:var(--paper)}
+.status-ready{background:var(--steel);color:var(--paper)}
+.status-reverify{background:var(--rust2);color:var(--paper)}
+.status-pending{background:var(--paper3);color:var(--ink2);border:1px solid var(--line)}
+.phase-dur{font-family:var(--mono);font-size:.68rem;color:var(--ink3);white-space:nowrap}
+.phase-body{padding:0 1.15rem 1.3rem}
+.phase-goal{color:var(--ink2);max-width:74ch}
+.success{background:var(--paper2);border-left:3px solid var(--moss);padding:.7rem .9rem;font-size:.94rem;margin-top:.9rem}
+.est{font-family:var(--mono);font-size:.75rem;color:var(--ink2);margin-top:.6rem}
+table.reg{width:100%;border-collapse:collapse;font-size:.9rem}
+table.reg th,table.reg td{border:1px solid var(--line);padding:.55rem .65rem;text-align:left;vertical-align:top}
+table.reg th{background:var(--ink);color:var(--paper2);font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.04em}
+table.reg tr:nth-child(even) td{background:var(--paper2)}
+.pill{display:inline-block;font-family:var(--mono);font-size:.62rem;text-transform:uppercase;padding:.15rem .4rem;border-radius:2px;color:var(--paper)}
+.pill-hi{background:var(--brick)}
+.pill-med{background:var(--rust2)}
+.pill-lo{background:var(--steel)}
+.stacktable{width:100%;border-collapse:collapse;font-size:.88rem}
+.stacktable th,.stacktable td{border-bottom:1px solid var(--line);padding:.5rem .5rem;text-align:left}
+.stacktable th{font-family:var(--mono);font-size:.65rem;text-transform:uppercase;color:var(--ink2)}
+.stacktable code{background:var(--paper2);padding:.05rem .3rem;border-radius:2px}
+.milegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.9rem}
+.mile{border:1px solid var(--line);background:var(--paper2);padding:.9rem 1rem}
+.mile b{display:block;font-family:var(--disp);font-size:.95rem;text-transform:uppercase;margin-bottom:.25rem}
+.mile span{font-family:var(--mono);font-size:.68rem;color:var(--ink2)}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<nav class="sheetnav" aria-label="Sheet navigation">
+  <div class="wrap">
+    <div class="sheetnav-links">
+      <a href="index.html" class="home">⌂ Set Index</a>
+      <a href="../overview/">Sheet 01 · Overview</a>
+      <a href="../research-roadmap/" class="active">Sheet 02 · Roadmap</a>
+      <a href="../preparation-projects/">Sheet 03 · Prep Projects</a>
+      <a href="../skills-tracker/">Sheet 04 · Skills Tracker</a>
+    </div>
+    <a class="repo-link" href="https://github.com/AnwayDiptaPaul/ML-RCC-Research" target="_blank" rel="noopener">↗ source repo</a>
+  </div>
+</nav>
+
+<div id="globalbar"><div class="wrap">
+  <span class="progress-label">Your progress on this sheet</span>
+  <div class="progress"><div class="progress-fill" id="gfill"></div></div>
+  <span class="progress-label" id="glabel">0 / 0 — 0%</span>
+  <button type="button" id="exportBtn" class="export-btn">⇩ Export progress.md</button>
+</div></div>
+<div id="syncNote" class="sync-note" hidden><div class="wrap">Couldn't load <code>progress.md</code> from this folder — expected if you opened this file directly. Serve the folder instead (GitHub Pages, or <code>python3 -m http.server</code>) for live sync. Checkboxes below still work for this session, and Export will still give you a partial file.</div></div>
+
+<main id="main">
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Sheet 02 / 04 — Research Roadmap</div>
+    <h1>From Verified Code<br>to <span>Submitted Manuscript</span></h1>
+    <p class="thesis">Ten phases, each with a goal, a checklist, success criteria and two duration estimates — the repo's own optimistic number, and a part-time-realistic one. Phase 0.5 doesn't exist in the repo; it's here because Sheet 01 found enough "complete" claims worth independently checking that skipping it would be the single riskiest shortcut in this whole plan.</p>
+    <div class="titleblock reveal">
+      <div><span class="tb-label">Sheet</span><span class="tb-value">02 of 04 — Roadmap</span></div>
+      <div><span class="tb-label">Basis</span><span class="tb-value">README §4/§10 + PROJECT_STATUS.md, adjusted</span></div>
+      <div><span class="tb-label">Assumption</span><span class="tb-value">~10–15 hrs/week, part‑time</span></div>
+      <div><span class="tb-label">Horizon</span><span class="tb-value">~22 weeks active → submission</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="timeline">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">01</span><h2>Timeline</h2></div>
+    <p class="lede reveal">Weeks 1–5 are Sheet 03's preparation projects — not padding, load-bearing. Phases 4 and 5 deliberately overlap; both draw on the same trained model. Phase 2 and Phase 3's bars represent your effort scheduling them and QC'ing the output, not the wall-clock compute itself (that's called out separately below).</p>
+    <div class="gantt reveal">
+      <div class="gantt-axis"><span>0</span><span>5</span><span>10</span><span>15</span><span>20</span></div>
+      <div class="gantt-row"><div class="gantt-label">Prep · Sheet 03</div><div class="gantt-track"><div class="gantt-bar" style="left:0%;width:22.7%;background:var(--ink3)">wks 1–5</div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Ph 0 · Setup</div><div class="gantt-track"><div class="gantt-bar" style="left:22.7%;width:2.3%;background:var(--moss)"></div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Ph 0.5 · Verify</div><div class="gantt-track"><div class="gantt-bar" style="left:25%;width:6.8%;background:var(--rust2)"></div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Ph 1 · Re-verify models</div><div class="gantt-track"><div class="gantt-bar" style="left:31.8%;width:4.5%;background:var(--rust2)"></div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Ph 2 · GM + IDA campaign</div><div class="gantt-track"><div class="gantt-bar" style="left:36.4%;width:15.9%;background:var(--steel)">wks 8–11.5</div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Ph 3 · ML training</div><div class="gantt-track"><div class="gantt-bar" style="left:52.3%;width:9.1%;background:var(--steel)"></div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Ph 4 · Fragility &amp; figures</div><div class="gantt-track"><div class="gantt-bar" style="left:61.4%;width:13.6%;background:var(--z2)"></div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Ph 5 · Framework compare</div><div class="gantt-track"><div class="gantt-bar" style="left:63.6%;width:11.4%;background:var(--z2)"></div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Ph 6 · Writing</div><div class="gantt-track"><div class="gantt-bar" style="left:75%;width:18.2%;background:var(--brick)">wks 16.5–20.5</div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Ph 7 · Review/format</div><div class="gantt-track"><div class="gantt-bar" style="left:93.2%;width:4.5%;background:var(--brick)"></div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Ph 8 · Submit →</div><div class="gantt-track"><div class="gantt-bar" style="left:97.7%;width:2.3%;background:var(--ink)">↦</div></div></div>
+      <div class="gantt-note">Repo's own estimate (README §10): 14 weeks total, assuming near-full-time focus and the original 5-building scope. This adjusted version accounts for the ~80-building scope the infrastructure actually grew to, and part-time hours. After submission: MDPI Buildings' 2026 median first-decision is ~15 days — then budget 2–6 further weeks for a revision cycle, timing outside your control.</div>
+    </div>
+  </div>
+</section>
+
+<section id="phases">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">02</span><h2>Goal &amp; progress checklist, by phase</h2></div>
+    <p class="lede reveal">Check items off as you go — each phase tracks its own progress, and the bar at the top of the page tracks everything on this sheet combined.</p>
+
+    <details class="phase reveal" open>
+      <summary><span class="phase-num">PH 0</span><span class="phase-title">Environment &amp; codebase orientation</span><span class="status status-done">Mostly done</span><span class="phase-dur">~2–3 days</span></summary>
+      <div class="phase-body">
+        <p class="phase-goal"><b>Goal:</b> get a working Python 3.12 environment and actually read the context documents the repo's own agent instructions point to, instead of starting to code cold.</p>
+        <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/6</span></div>
+        <div data-track>
+          <div class="check"><input type="checkbox" id="c0-1"><label for="c0-1">Clone the repo, create/activate a Python 3.12 venv (not 3.14 — OpenSeesPy incompatibility noted in the repo)</label></div>
+          <div class="check"><input type="checkbox" id="c0-2"><label for="c0-2">Install requirements.txt; run <code>pip list | grep -E "openseespy|tensorflow|xgboost|shap"</code> and read the real versions printed</label></div>
+          <div class="check"><input type="checkbox" id="c0-3"><label for="c0-3">Run <code>python -c "import openseespy.opensees as ops; ops.wipe(); print('OK')"</code> yourself — this is the single highest-value 10 seconds in the whole plan</label></div>
+          <div class="check"><input type="checkbox" id="c0-4"><label for="c0-4">Read <code>.github/copilot-instructions.md</code> in full</label></div>
+          <div class="check"><input type="checkbox" id="c0-5"><label for="c0-5">Read <code>config/bnbc_parameters.yaml</code> and <code>config/analysis_config.yaml</code> top to bottom</label></div>
+          <div class="check"><input type="checkbox" id="c0-6"><label for="c0-6">Skim <code>task_plan.md</code> for the version of the plan the codebase was actually built against</label></div>
+        </div>
+        <p class="success"><b>Done when:</b> the OpenSeesPy smoke test prints OK in your real environment, and you could explain the folder structure to someone else without looking it up.</p>
+        <p class="est">Repo's estimate: not separately timed. Adjusted: 2–3 days part-time.</p>
+      </div>
+    </details>
+
+    <details class="phase reveal">
+      <summary><span class="phase-num">PH 0.5</span><span class="phase-title">Independent verification <em style="font-style:italic;color:var(--ink3);font-family:var(--serif);text-transform:none;font-weight:400;">(added — not in the repo's own plan)</em></span><span class="status status-reverify">Not started</span><span class="phase-dur">~1 week</span></summary>
+      <div class="phase-body">
+        <p class="phase-goal"><b>Goal:</b> confirm the "100% complete" Phase 1 claim and the Phase 2/3 "production ready" infrastructure actually do what they say, before anything gets built on top of them or cited in a paper.</p>
+        <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/7</span></div>
+        <div data-track>
+          <div class="check"><input type="checkbox" id="c05-1"><label for="c05-1">Read <code>project/src/modeling/rc_frame.py</code> line by line against your own RC design knowledge — fiber discretisation, Concrete02/Steel02 parameters, load path</label></div>
+          <div class="check"><input type="checkbox" id="c05-2"><label for="c05-2">Regenerate the 80 Phase 1 models yourself via <code>generate_phase1_models()</code> rather than trusting the checked-in JSON files</label></div>
+          <div class="check"><input type="checkbox" id="c05-3"><label for="c05-3">Hand-calculate T ≈ 0.0466·H^0.9 for 3 models across the height range and compare to the eigenvalue period the code reports</label></div>
+          <div class="check"><input type="checkbox" id="c05-4"><label for="c05-4">Hand-calculate base shear for one building; compare to <code>apply_lateral_loads()</code> output</label></div>
+          <div class="check"><input type="checkbox" id="c05-5"><label for="c05-5">Resolve the Life Safety threshold conflict (2.0% vs 2.5%) — pick one, record why, fix it in one place</label></div>
+          <div class="check"><input type="checkbox" id="c05-6"><label for="c05-6">Confirm current Buildings journal metrics directly on mdpi.com rather than trusting either number in the docs</label></div>
+          <div class="check"><input type="checkbox" id="c05-7"><label for="c05-7">Run the existing 85+ pytest suite yourself; read 10 of the tests to see what they actually assert (code runs vs. code is engineering-correct are different claims)</label></div>
+        </div>
+        <p class="success"><b>Done when:</b> you can point to a specific hand calculation that matches the code's output, for at least one building — not just a green checkmark in a status doc.</p>
+        <p class="est">Repo's estimate: none — this phase isn't in the original plan. Adjusted: ~1 week part-time.</p>
+      </div>
+    </details>
+
+    <details class="phase reveal">
+      <summary><span class="phase-num">PH 1</span><span class="phase-title">Structural modelling</span><span class="status status-reverify">Claims complete</span><span class="phase-dur">~3–5 days</span></summary>
+      <div class="phase-body">
+        <p class="phase-goal"><b>Goal:</b> confirm all 80 parametric RC frame templates (5 heights × 4 frameworks × 4 zones) are genuinely present, distinct from each other in the ways BNBC 2020 requires, and not just 80 copies with different labels.</p>
+        <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/4</span></div>
+        <div data-track>
+          <div class="check"><input type="checkbox" id="c1-1"><label for="c1-1">Confirm 80 files exist in <code>models/openseespy/</code>, each 10–50 KB (repo's own sanity range)</label></div>
+          <div class="check"><input type="checkbox" id="c1-2"><label for="c1-2">Spot-check that Non-Sway / OMRF / IMRF / SMRF at the same height &amp; zone actually differ in confinement/reinforcement per BNBC Table 2.7.4, not just in a label</label></div>
+          <div class="check"><input type="checkbox" id="c1-3"><label for="c1-3">Run gravity-only analysis on 5 models spanning the height range; confirm convergence and that reactions balance applied load</label></div>
+          <div class="check"><input type="checkbox" id="c1-4"><label for="c1-4">Confirm no soft-storey or obviously unstable configuration slipped through the parametric generator</label></div>
+        </div>
+        <p class="success"><b>Done when:</b> you trust the 80 models enough to spend 8–12 hours of compute on top of them.</p>
+        <p class="est">Repo's estimate: 5–8 days (README Phase 1). Adjusted: 3–5 days, since PH 0.5 already did the deep verification.</p>
+      </div>
+    </details>
+
+    <details class="phase reveal">
+      <summary><span class="phase-num">PH 2</span><span class="phase-title">Ground motions &amp; the real IDA campaign</span><span class="status status-ready">Infra ready — not executed</span><span class="phase-dur">~3 weeks</span></summary>
+      <div class="phase-body">
+        <p class="phase-goal"><b>Goal:</b> run the actual multi-stripe incremental dynamic analysis — 80 buildings × 32–40 records × 16 intensity levels — and end up with a dataset you trust, not just a CSV that exists.</p>
+        <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/7</span></div>
+        <div data-track>
+          <div class="check"><input type="checkbox" id="c2-1"><label for="c2-1">Open several of the "32–40 verified" ground-motion files directly — confirm they're real time-history data, not placeholder metadata</label></div>
+          <div class="check"><input type="checkbox" id="c2-2"><label for="c2-2">Cross-check 3–4 records' magnitude/distance against the PEER NGA-West2 database yourself</label></div>
+          <div class="check"><input type="checkbox" id="c2-3"><label for="c2-3">Verify each record's scaled spectrum lands within ±10% of the BNBC target at T1 (README §7.2 procedure)</label></div>
+          <div class="check"><input type="checkbox" id="c2-4"><label for="c2-4">Time a small pilot campaign on your own hardware; extrapolate a real wall-clock estimate instead of trusting the repo's 8–12 hr figure, which predates the scope growing to 80 buildings</label></div>
+          <div class="check"><input type="checkbox" id="c2-5"><label for="c2-5">Decide local overnight run vs. ~1–3 hr cloud run (~$10–20 quoted — verify current pricing before booking)</label></div>
+          <div class="check"><input type="checkbox" id="c2-6"><label for="c2-6">Launch the full campaign; monitor via the log tail command in <code>START_HERE.md</code></label></div>
+          <div class="check"><input type="checkbox" id="c2-7"><label for="c2-7">QC the output before touching Phase 3: PIDR in a physically sane 0.1–8% range, no NaNs, roughly monotonic with intensity, spot-checked against your Sheet 03 Project 2 curve</label></div>
+        </div>
+        <p class="success"><b>Done when:</b> <code>ida_results_verified.csv</code> exists, is the right order of magnitude (~40–52k rows), and at least one row-level spot check matches physical intuition.</p>
+        <p class="est">Repo's estimate: 8–12 hrs compute (local) / 1–3 hrs (cloud) — wall clock only. Adjusted total incl. GM verification, monitoring and QC: ~3 weeks part-time around that compute window.</p>
+      </div>
+    </details>
+
+    <details class="phase reveal">
+      <summary><span class="phase-num">PH 3</span><span class="phase-title">ML training on the real dataset</span><span class="status status-ready">Code ready — unexecuted</span><span class="phase-dur">~2 weeks</span></summary>
+      <div class="phase-body">
+        <p class="phase-goal"><b>Goal:</b> actually train LR / RF / XGBoost / ANN on the real IDA output, not the "typical results" placeholder table, and get a model + SHAP explanation you can defend.</p>
+        <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/6</span></div>
+        <div data-track>
+          <div class="check"><input type="checkbox" id="c3-1"><label for="c3-1">Run <code>run_phase3_ml.py</code> against the real <code>ida_results_verified.csv</code></label></div>
+          <div class="check"><input type="checkbox" id="c3-2"><label for="c3-2">Compare resulting R²/RMSE/MAE against the repo's placeholder table — expect a difference, that table was never real data</label></div>
+          <div class="check"><input type="checkbox" id="c3-3"><label for="c3-3">Re-run SHAP; confirm top features make physical sense (Sa, period, zone should dominate — investigate if something odd tops the list)</label></div>
+          <div class="check"><input type="checkbox" id="c3-4"><label for="c3-4">5-fold cross-validate; confirm CV R² is consistent with the held-out test R² within ~±0.05</label></div>
+          <div class="check"><input type="checkbox" id="c3-5"><label for="c3-5">If best R² is below 0.90, run 2–3 rounds of real feature engineering/tuning — then stop and accept whatever the honest ceiling is</label></div>
+          <div class="check"><input type="checkbox" id="c3-6"><label for="c3-6">Save the best model + scaler together; you'll need both for Phase 4</label></div>
+        </div>
+        <p class="success"><b>Done when:</b> you have one clearly-best model, a defensible R² (0.90 is the target, not a requirement — see Sheet 01), and a SHAP plot that tells a physically coherent story.</p>
+        <p class="est">Repo's estimate: 6–7 min base run, 45–60 min with hyperparameter tuning (compute only). Adjusted incl. real iteration and interpretation: ~2 weeks part-time.</p>
+      </div>
+    </details>
+
+    <details class="phase reveal">
+      <summary><span class="phase-num">PH 4</span><span class="phase-title">Fragility curves &amp; figures</span><span class="status status-pending">Not started</span><span class="phase-dur">~2 weeks</span></summary>
+      <div class="phase-body">
+        <p class="phase-goal"><b>Goal:</b> turn the trained model into the 12 fragility curves (4 zones × 3 performance levels) and the full figure/table set the paper needs.</p>
+        <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/6</span></div>
+        <div data-track>
+          <div class="check"><input type="checkbox" id="c4-1"><label for="c4-1">Confirm final IO/LS/CP thresholds (post PH 0.5 resolution) before fitting anything</label></div>
+          <div class="check"><input type="checkbox" id="c4-2"><label for="c4-2">Fit the log-linear cloud regression ln(PIDR) = a + b·ln(Sa) per zone</label></div>
+          <div class="check"><input type="checkbox" id="c4-3"><label for="c4-3">Compute dispersion β and median capacity θ per performance level per zone</label></div>
+          <div class="check"><input type="checkbox" id="c4-4"><label for="c4-4">Generate the 9 required figures (spectra, model schematic, IDA curves ×2, fragility ×2, ML comparison, SHAP ×2) at ≥300 dpi</label></div>
+          <div class="check"><input type="checkbox" id="c4-5"><label for="c4-5">Compile the 5 required tables (archetypes, model properties, GM records, ML comparison, fragility parameters)</label></div>
+          <div class="check"><input type="checkbox" id="c4-6"><label for="c4-6">Sanity-check fragility medians against ASCE 41-23 acceptance criteria where comparable studies exist</label></div>
+        </div>
+        <p class="success"><b>Done when:</b> all 12 curves are generated, all 9 figures and 5 tables exist at publication resolution.</p>
+        <p class="est">Repo's estimate: ~1 week (README Phase 7). Adjusted: ~2 weeks, run partly in parallel with Phase 5.</p>
+      </div>
+    </details>
+
+    <details class="phase reveal">
+      <summary><span class="phase-num">PH 5</span><span class="phase-title">Framework comparative analysis</span><span class="status status-pending">Not started · overlaps Ph 4</span><span class="phase-dur">~2 weeks</span></summary>
+      <div class="phase-body">
+        <p class="phase-goal"><b>Goal:</b> answer the paper's most novel question — where does the Non-Sway → OMRF → IMRF → SMRF ductility staircase stop paying for itself, per zone and per height.</p>
+        <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/5</span></div>
+        <div data-track>
+          <div class="check"><input type="checkbox" id="c5-1"><label for="c5-1">Compute the Performance Gradient (% PIDR improvement vs. Non-Sway) at multiple intensities</label></div>
+          <div class="check"><input type="checkbox" id="c5-2"><label for="c5-2">Compute the Framework Complexity Index (reinforcement volume × fabrication hours, normalised to Non-Sway)</label></div>
+          <div class="check"><input type="checkbox" id="c5-3"><label for="c5-3">Compute the Cost-Benefit Ratio and locate the Pareto frontier "sweet spot"</label></div>
+          <div class="check"><input type="checkbox" id="c5-4"><label for="c5-4">Build Figures 6a–6d (multi-framework gradient, complexity trade-off, zone-dependent selection, fragility overlay)</label></div>
+          <div class="check"><input type="checkbox" id="c5-5"><label for="c5-5">Run ANOVA across frameworks per intensity level; draft the practical framework-selection matrix</label></div>
+        </div>
+        <p class="success"><b>Done when:</b> you can state, for a given zone and height, which framework is the rational choice — and defend it with a number, not intuition.</p>
+        <p class="est">Repo's estimate: 2–3 weeks (README §3.6, PROJECT_STATUS.md). Adjusted: similar, run alongside Phase 4.</p>
+      </div>
+    </details>
+
+    <details class="phase reveal">
+      <summary><span class="phase-num">PH 6</span><span class="phase-title">Writing</span><span class="status status-pending">Not started</span><span class="phase-dur">~4 weeks</span></summary>
+      <div class="phase-body">
+        <p class="phase-goal"><b>Goal:</b> a complete 7,000–8,500 word draft, written in the order that's actually easiest — results-adjacent sections first, abstract dead last.</p>
+        <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/8</span></div>
+        <div data-track>
+          <div class="check"><input type="checkbox" id="c6-1"><label for="c6-1">§2 Building Models (700–900 words) — easiest, start here</label></div>
+          <div class="check"><input type="checkbox" id="c6-2"><label for="c6-2">§3 OpenSeesPy Methodology (800–1000 words)</label></div>
+          <div class="check"><input type="checkbox" id="c6-3"><label for="c6-3">§4 Ground Motions &amp; IDA (600–800 words)</label></div>
+          <div class="check"><input type="checkbox" id="c6-4"><label for="c6-4">§5 ML Framework (800–1000 words)</label></div>
+          <div class="check"><input type="checkbox" id="c6-5"><label for="c6-5">§6 Results incl. 6a Framework Comparison (2,000–2,500 words) — the section that matters most</label></div>
+          <div class="check"><input type="checkbox" id="c6-6"><label for="c6-6">§7 Discussion (600–800 words)</label></div>
+          <div class="check"><input type="checkbox" id="c6-7"><label for="c6-7">§1 Introduction (800–1000 words) — write last, now that you know what you found</label></div>
+          <div class="check"><input type="checkbox" id="c6-8"><label for="c6-8">§8 Conclusions (300–400 words) + Abstract (250 words) — very last</label></div>
+        </div>
+        <p class="success"><b>Done when:</b> every section is drafted, every figure/table is referenced in text, and the reference list has 45–65 entries.</p>
+        <p class="est">Repo's estimate: 3 weeks (README Phase 8). Adjusted: 4 weeks part-time.</p>
+      </div>
+    </details>
+
+    <details class="phase reveal">
+      <summary><span class="phase-num">PH 7</span><span class="phase-title">Review, similarity check &amp; formatting</span><span class="status status-pending">Not started</span><span class="phase-dur">~1 week</span></summary>
+      <div class="phase-body">
+        <p class="phase-goal"><b>Goal:</b> turn a complete draft into a submission-ready manuscript.</p>
+        <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/5</span></div>
+        <div data-track>
+          <div class="check"><input type="checkbox" id="c7-1"><label for="c7-1">Self-review every equation, figure and table number against in-text references</label></div>
+          <div class="check"><input type="checkbox" id="c7-2"><label for="c7-2">Similarity check (Turnitin/iThenticate or institutional equivalent) — target &lt;15%</label></div>
+          <div class="check"><input type="checkbox" id="c7-3"><label for="c7-3">Reformat to the current MDPI Buildings template, downloaded fresh from the journal site</label></div>
+          <div class="check"><input type="checkbox" id="c7-4"><label for="c7-4">Write a one-page cover letter — why it fits the journal's scope, why it matters</label></div>
+          <div class="check"><input type="checkbox" id="c7-5"><label for="c7-5">Confirm data-availability statement — repo URL, dataset upload plan (Zenodo/Mendeley Data)</label></div>
+        </div>
+        <p class="success"><b>Done when:</b> the manuscript matches the journal's own Instructions for Authors, checked live, not from memory.</p>
+        <p class="est">Repo's estimate: ~1 week (README Phase 9, partial). Adjusted: same.</p>
+      </div>
+    </details>
+
+    <details class="phase reveal">
+      <summary><span class="phase-num">PH 8</span><span class="phase-title">Submission &amp; revision</span><span class="status status-pending">Not started</span><span class="phase-dur">ongoing</span></summary>
+      <div class="phase-body">
+        <p class="phase-goal"><b>Goal:</b> get through peer review with the paper's credibility intact — which by this point mostly means the honesty built into Phases 0.5 through 3 paying off.</p>
+        <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/4</span></div>
+        <div data-track>
+          <div class="check"><input type="checkbox" id="c8-1"><label for="c8-1">Submit via the journal portal with all supplementary files (code repo link, dataset link)</label></div>
+          <div class="check"><input type="checkbox" id="c8-2"><label for="c8-2">Track first-decision timing — 2026 median for Buildings is ~15 days</label></div>
+          <div class="check"><input type="checkbox" id="c8-3"><label for="c8-3">Prepare a point-by-point response-to-reviewers document as soon as comments arrive</label></div>
+          <div class="check"><input type="checkbox" id="c8-4"><label for="c8-4">Budget 2–6 weeks of real revision work once reviews land — timing of the review itself isn't in your control</label></div>
+        </div>
+        <p class="success"><b>Done when:</b> accepted — or, if rejected, retargeted to the secondary journal (Structures, Elsevier) with the same manuscript.</p>
+        <p class="est">Repo's estimate: 4–6 weeks (Buildings, README §2.3 — now faster per 2026 data). Adjusted: submission is quick; total time to acceptance is largely outside your control.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section id="milestones">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">03</span><h2>Milestones</h2></div>
+    <div class="milegrid reveal">
+      <div class="mile"><b>M0 · Environment verified</b><span>OpenSeesPy smoke test passes for real, in your environment</span></div>
+      <div class="mile"><b>M1 · First model verified</b><span>Hand-calc period within ~15% of eigenvalue output</span></div>
+      <div class="mile"><b>M2 · First real IDA curve</b><span>Monotonically increasing, no spurious collapse</span></div>
+      <div class="mile"><b>M3 · Dataset complete</b><span>≥5,000 clean rows after QC (target ~40–52k)</span></div>
+      <div class="mile"><b>M4 · Best ML result honest</b><span>Reported R² — 0.90 if you get there, documented ceiling if not</span></div>
+      <div class="mile"><b>M5 · All figures ready</b><span>9 figures, 5 tables, ≥300 dpi</span></div>
+      <div class="mile"><b>M6 · Draft complete</b><span>All 8 sections + abstract written</span></div>
+      <div class="mile"><b>M7 · Submitted</b><span>Journal portal confirmation received</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="risk">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">04</span><h2>Risk register</h2></div>
+    <p class="lede reveal">The repo's own risk register, plus two risks Sheet 01's read of the documents surfaced directly.</p>
+    <table class="reg reveal">
+      <tr><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Mitigation</th></tr>
+      <tr><td><b>Silent demo-mode fallback</b> — missing OpenSeesPy produces a complete-looking but non-physical dataset</td><td><span class="pill pill-med">Medium</span></td><td><span class="pill pill-hi">High</span></td><td>Verify the OpenSeesPy import smoke test in the real execution environment before every campaign run, not just once</td></tr>
+      <tr><td>OpenSeesPy convergence failures during IDA</td><td><span class="pill pill-hi">High</span></td><td><span class="pill pill-med">Medium</span></td><td>Adaptive time-stepping; classify non-convergence as collapse, don't silently drop rows</td></tr>
+      <tr><td>Dataset too small after QC (&lt;3,000 rows)</td><td><span class="pill pill-lo">Low–Med</span></td><td><span class="pill pill-hi">High</span></td><td>Scope already grew to 80 buildings/32–40 GMs — headroom exists; increase scale-factor granularity if needed</td></tr>
+      <tr><td>Best ML model R² &lt; 0.90</td><td><span class="pill pill-med">Medium</span></td><td><span class="pill pill-med">Medium</span></td><td>Treat 0.90 as aspirational (see Sheet 01); report the honest ceiling with discussion rather than force it</td></tr>
+      <tr><td><b>Undetected internal document conflicts</b> (LS threshold, journal metrics) propagate into the paper</td><td><span class="pill pill-med">Medium</span></td><td><span class="pill pill-med">Medium</span></td><td>Resolved explicitly in Phase 0.5; keep one authoritative config, not parallel numbers in multiple docs</td></tr>
+      <tr><td>Real ground-motion records unavailable/access issues</td><td><span class="pill pill-lo">Low</span></td><td><span class="pill pill-lo">Low</span></td><td>Use well-validated synthetic GMs as fallback; note explicitly as a limitation if used</td></tr>
+      <tr><td>Python/package version incompatibility</td><td><span class="pill pill-med">Medium</span></td><td><span class="pill pill-med">Medium</span></td><td>Pin Python 3.12 exactly; document in requirements.txt; don't upgrade mid-campaign</td></tr>
+      <tr><td>Journal rejects on scope before review</td><td><span class="pill pill-lo">Low</span></td><td><span class="pill pill-med">Medium</span></td><td>Re-check aims &amp; scope live on mdpi.com before submitting, not from the README's cached description</td></tr>
+      <tr><td>Compute time exceeds estimate</td><td><span class="pill pill-med">Medium</span></td><td><span class="pill pill-lo">Low</span></td><td>Time a pilot first (Phase 2 checklist); fall back to cloud burst if local run stalls</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">05</span><h2>Tools &amp; standards, quick reference</h2></div>
+    <table class="stacktable reveal">
+      <tr><th>Tool</th><th>Version / detail</th><th>Purpose</th></tr>
+      <tr><td>Python</td><td><code>3.12</code> — not 3.14</td><td>Core language; OpenSeesPy compatibility is the constraint</td></tr>
+      <tr><td>OpenSeesPy</td><td><code>3.8.0.0</code></td><td>Structural FEM + nonlinear time-history / IDA</td></tr>
+      <tr><td>scikit-learn / XGBoost / SHAP</td><td>latest</td><td>ML models + interpretability</td></tr>
+      <tr><td>TensorFlow / Keras</td><td>2.x</td><td>ANN model</td></tr>
+      <tr><td>PEER NGA-West2</td><td>account required</td><td>Verified ground-motion records — <a href="https://peer.berkeley.edu/peer-strong-ground-motion-databases" target="_blank" rel="noopener">peer.berkeley.edu</a></td></tr>
+      <tr><td>BNBC 2020 / ACI 318-19 / ASCE 7-22 / ASCE 41-23 / FEMA 356 / FEMA P-58</td><td>already in <code>docs/</code></td><td>Design + performance-based assessment code basis</td></tr>
+      <tr><td>Zotero / Mendeley</td><td>free</td><td>Reference management for the 45–65 citations</td></tr>
+      <tr><td>MDPI Buildings</td><td>Q2 Civil Eng / Q1 Architecture · ~2,600 CHF APC (2026)</td><td>Primary target journal — <a href="https://www.mdpi.com/journal/buildings/instructions" target="_blank" rel="noopener">instructions for authors</a></td></tr>
+    </table>
+  </div>
+</section>
+
+<footer><div class="wrap">
+  <p>Adapted from <code>README.md</code> §4 &amp; §10 and <code>PROJECT_STATUS.md</code>, cross-checked against <code>FINAL_STATUS_REPORT.md</code>, <code>PHASE3_COMPLETE_DELIVERY.md</code> and <code>PHASE_1_COMPLETION_REPORT.md</code>. See Sheet 01 for the specific document conflicts this phase list resolves. Checkboxes load from <code>progress.md</code> on open — use Export above to save what you check here back into it.</p>
+  <div class="zonebar" aria-hidden="true"><span style="background:var(--z1)"></span><span style="background:var(--z2)"></span><span style="background:var(--z3)"></span><span style="background:var(--z4)"></span></div>
+</div></footer>
+</main>
+
+<script>
+(function(){
+  var PROGRESS_PATH = 'progress.md';
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+  }, {threshold:.08});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  function updateGroup(root){
+    var boxes = Array.prototype.slice.call(root.querySelectorAll('input[type=checkbox]'));
+    var fill = root.querySelector('.progress-fill');
+    var label = root.querySelector('.progress-label');
+    var done = boxes.filter(function(b){return b.checked}).length;
+    var pct = boxes.length ? Math.round(done/boxes.length*100) : 0;
+    if(fill) fill.style.width = pct + '%';
+    if(label) label.textContent = done + '/' + boxes.length;
+    boxes.forEach(function(b){
+      var row = b.closest('.check');
+      if(row) row.classList.toggle('done', b.checked);
+    });
+  }
+  function updateGlobal(){
+    var all = Array.prototype.slice.call(document.querySelectorAll('input[type=checkbox]'));
+    var done = all.filter(function(b){return b.checked}).length;
+    var pct = all.length ? Math.round(done/all.length*100) : 0;
+    document.getElementById('gfill').style.width = pct + '%';
+    document.getElementById('glabel').textContent = done + ' / ' + all.length + ' — ' + pct + '%';
+  }
+  function refreshAll(){
+    document.querySelectorAll('[data-track]').forEach(function(group){ updateGroup(group); });
+    updateGlobal();
+  }
+  refreshAll();
+  document.addEventListener('change', function(e){
+    if(e.target.matches('input[type=checkbox]')){
+      var group = e.target.closest('[data-track]');
+      if(group) updateGroup(group);
+      updateGlobal();
+    }
+  });
+
+  /* ---- progress.md sync ---- */
+  function parseProgressMd(text){
+    var map = {};
+    var re = /^-\s*\[([ xX])\][^\n]*?<!--\s*id:([a-zA-Z0-9-]+)\s*-->/gm;
+    var m;
+    while((m = re.exec(text))){ map[m[2]] = (m[1].toLowerCase() === 'x'); }
+    return map;
+  }
+  function applyMap(map){
+    document.querySelectorAll('input[type=checkbox][id]').forEach(function(cb){
+      if(Object.prototype.hasOwnProperty.call(map, cb.id)){ cb.checked = map[cb.id]; }
+    });
+  }
+  fetch(PROGRESS_PATH, {cache:'no-store'}).then(function(res){
+    if(!res.ok) throw new Error('not found');
+    return res.text();
+  }).then(function(text){
+    applyMap(parseProgressMd(text));
+    refreshAll();
+  }).catch(function(){
+    var note = document.getElementById('syncNote');
+    if(note) note.hidden = false;
+  });
+
+  function domPartialMd(){
+    var lines = ['<!-- Partial export — progress.md could not be loaded, so this only covers this sheet. Merge it into your main progress.md by hand, or serve the folder (see index.html) and export again for a full merge. -->', ''];
+    document.querySelectorAll('input[type=checkbox][id]').forEach(function(cb){
+      var label = document.querySelector('label[for="' + cb.id + '"]');
+      var text = label ? label.textContent.trim() : cb.id;
+      lines.push('- [' + (cb.checked ? 'x' : ' ') + '] ' + text + ' <!-- id:' + cb.id + ' -->');
+    });
+    return lines.join('\n');
+  }
+  function mergeIntoBaseline(baseline){
+    var text = baseline;
+    document.querySelectorAll('input[type=checkbox][id]').forEach(function(cb){
+      var mark = cb.checked ? 'x' : ' ';
+      var re = new RegExp('(^-\\s*\\[)[ xX](\\][^\\n]*?<!--\\s*id:' + cb.id + '\\s*-->)', 'm');
+      if(re.test(text)) text = text.replace(re, '$1' + mark + '$2');
+    });
+    return text;
+  }
+  function download(filename, text){
+    var blob = new Blob([text], {type: 'text/markdown'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+  var exportBtn = document.getElementById('exportBtn');
+  if(exportBtn){
+    exportBtn.addEventListener('click', function(){
+      fetch(PROGRESS_PATH, {cache:'no-store'}).then(function(res){
+        if(!res.ok) throw new Error('not found');
+        return res.text();
+      }).then(function(text){
+        download('progress.md', mergeIntoBaseline(text));
+      }).catch(function(){
+        download('progress-partial.md', domPartialMd());
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>

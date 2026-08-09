@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sheet 4/4 — Skills &amp; Expertise Tracker · ML‑BNBC PIDR Surrogate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --paper:#F3ECDC; --paper2:#EAE0C7; --paper3:#E3D6B8;
+  --ink:#241C15; --ink2:#5B5142; --ink3:#8A7F6B;
+  --rust:#C1521A; --rust2:#96380F;
+  --brick:#7A2E2E; --brick2:#5E2222;
+  --steel:#3B5166; --steel2:#28394A;
+  --moss:#5C6E4A; --moss2:#3F4E31;
+  --line:#D8CBB0; --line2:#E7DCC3;
+  --z1:#E8C468; --z2:#DB9A4E; --z3:#C1521A; --z4:#7A2E2E;
+  --disp:'Space Grotesk',sans-serif; --serif:'Source Serif 4',Georgia,serif; --mono:'IBM Plex Mono',monospace;
+  --maxw:1120px;
+}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}}
+body{margin:0;background:var(--paper);
+  background-image:repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(36,28,21,.032) 28px),repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(36,28,21,.022) 28px);
+  color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;}
+a{color:var(--rust2)} a:hover{color:var(--rust)}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--paper);padding:.6rem 1rem;z-index:100}
+.skip-link:focus{left:1rem;top:1rem}
+:focus-visible{outline:2px solid var(--steel);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--disp);color:var(--ink);margin:0 0 .5em;letter-spacing:-.01em}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rust2);font-weight:600}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 1.75rem}
+code{font-family:var(--mono)}
+.sheetnav{background:var(--ink);color:var(--paper2)}
+.sheetnav .wrap{display:flex;gap:0;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:0 1.75rem}
+.sheetnav-links{display:flex}
+.sheetnav a{font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;color:var(--paper3);text-decoration:none;padding:.75rem .95rem;border-right:1px solid rgba(243,236,220,.14);display:block}
+.sheetnav a:hover{background:rgba(243,236,220,.08);color:var(--paper)}
+.sheetnav a.active{background:var(--rust2);color:var(--paper)}
+.sheetnav a.home{background:var(--brick2);color:var(--paper)}
+.sheetnav a.home:hover{background:var(--brick)}
+.sheetnav .repo-link{font-family:var(--mono);font-size:.7rem;color:var(--paper3);text-decoration:none;padding:.75rem 0}
+.sheetnav .repo-link:hover{color:var(--paper)}
+.titleblock{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;border:1.5px solid var(--ink);font-family:var(--mono);font-size:.7rem;background:var(--paper2)}
+.titleblock>div{padding:.55rem .7rem;border-right:1px solid var(--line)}
+.titleblock>div:last-child{border-right:none}
+.tb-label{display:block;text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);font-size:.6rem;margin-bottom:.2rem}
+.tb-value{font-weight:600;color:var(--ink)}
+@media(max-width:720px){.titleblock{grid-template-columns:1fr 1fr}}
+.masthead{padding:2.4rem 0 2rem;border-bottom:1px solid var(--line)}
+.masthead h1{font-size:clamp(1.7rem,4vw,2.6rem);line-height:1.08;margin:.5rem 0 1rem;text-transform:uppercase}
+.masthead h1 span{color:var(--rust2)}
+.thesis{font-size:1.08rem;color:var(--ink2);max-width:68ch;margin:0 0 1.5rem}
+section{padding:2.6rem 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.sec-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:1.4rem;flex-wrap:wrap}
+.sec-head h2{font-size:1.4rem;text-transform:uppercase}
+.sec-num{font-family:var(--mono);color:var(--rust2);font-size:1.4rem;font-weight:700}
+.lede{max-width:72ch;color:var(--ink2);margin-bottom:1.4rem}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.reveal.is-visible{opacity:1;transform:translateY(0)}
+footer{padding:2rem 0 3rem}
+footer p{font-family:var(--mono);font-size:.72rem;color:var(--ink3);max-width:70ch}
+.zonebar{display:flex;height:6px;margin:2rem 0 0}
+.zonebar span{flex:1}
+.progress{height:11px;border:1px solid var(--ink);background:var(--paper2);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--z2),var(--rust));width:0%;transition:width .4s ease}
+.progress-row{display:flex;align-items:center;gap:.8rem;margin:.6rem 0 1rem}
+.progress-row .progress{flex:1}
+.progress-label{font-family:var(--mono);font-size:.72rem;color:var(--ink2);white-space:nowrap}
+.check{display:flex;gap:.7rem;align-items:flex-start;padding:.55rem .1rem;border-bottom:1px dashed var(--line)}
+.check:last-child{border-bottom:none}
+.check input[type=checkbox]{appearance:none;-webkit-appearance:none;width:1.1rem;height:1.1rem;flex:0 0 auto;margin-top:.22rem;border:1.5px solid var(--ink);border-radius:2px;background:var(--paper);cursor:pointer;position:relative}
+.check input[type=checkbox]:checked{background:var(--moss);border-color:var(--moss2)}
+.check input[type=checkbox]:checked::after{content:'';position:absolute;left:2.5px;top:-1.5px;width:5px;height:9px;border:solid var(--paper);border-width:0 2px 2px 0;transform:rotate(40deg)}
+.check label{cursor:pointer;font-size:.96rem}
+.check.done label{color:var(--ink3);text-decoration:line-through;text-decoration-color:var(--line)}
+#globalbar{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line);padding:.6rem 0}
+#globalbar .wrap{display:flex;align-items:center;gap:1rem}
+#globalbar .progress{flex:1}
+@media(max-width:640px){#globalbar .wrap{flex-wrap:wrap}.export-btn{margin-left:auto}}
+.export-btn{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.04em;background:var(--ink);color:var(--paper2);border:1px solid var(--ink);padding:.4rem .7rem;border-radius:2px;cursor:pointer;white-space:nowrap}
+.export-btn:hover{background:var(--rust2);border-color:var(--rust2)}
+.export-btn:disabled{opacity:.5;cursor:default}
+.sync-note{background:var(--paper3);border-bottom:1px solid var(--line);padding:.55rem 0}
+.sync-note .wrap{font-family:var(--mono);font-size:.72rem;color:var(--ink2)}
+.sync-note a{color:var(--rust2)}
+/* legend */
+.legend{display:flex;gap:1.4rem;flex-wrap:wrap;font-family:var(--mono);font-size:.68rem;color:var(--ink2);align-items:center;margin-bottom:1.6rem}
+.legend .dots{display:flex;gap:2px}
+.legend .dot{width:8px;height:8px;border-radius:1px;background:var(--line)}
+.legend-item{display:flex;align-items:center;gap:.4rem}
+/* skill domain (details) */
+details.skill{border:1px solid var(--ink);background:var(--paper2);margin-bottom:1rem}
+details.skill[open]{background:var(--paper)}
+details.skill summary{list-style:none;cursor:pointer;padding:.95rem 1.15rem;display:flex;align-items:center;gap:.9rem;flex-wrap:wrap}
+details.skill summary::-webkit-details-marker{display:none}
+details.skill summary::before{content:'▸';font-family:var(--disp);color:var(--rust2);transition:transform .15s ease;flex:0 0 auto}
+details.skill[open] summary::before{transform:rotate(90deg)}
+.skill-num{font-family:var(--mono);font-weight:700;color:var(--rust2);font-size:.85rem;flex:0 0 auto}
+.skill-title{font-family:var(--disp);font-weight:600;font-size:1.05rem;text-transform:uppercase;flex:1 1 220px}
+.gap{display:flex;align-items:center;gap:.4rem;font-family:var(--mono);font-size:.65rem;color:var(--ink2)}
+.gap .dots{display:flex;gap:2px}
+.gap .dot{width:8px;height:8px;border-radius:1px;background:var(--line)}
+.gap .dot.on{background:var(--dotcolor,var(--rust))}
+.skill-body{padding:0 1.15rem 1.3rem}
+.calibration{background:var(--paper2);border-left:3px solid var(--steel);padding:.7rem .9rem;font-size:.92rem;margin-bottom:1rem;color:var(--ink2)}
+.calibration b{color:var(--ink)}
+.bar-row{background:var(--paper);border-left:3px solid var(--moss);padding:.7rem .9rem;font-size:.92rem;margin:1rem 0;}
+.bar-row b{display:block;font-family:var(--mono);font-size:.65rem;text-transform:uppercase;color:var(--moss2);letter-spacing:.05em;margin-bottom:.2rem}
+.skillgrid{display:grid;grid-template-columns:1.4fr 1fr;gap:2rem}
+@media(max-width:900px){.skillgrid{grid-template-columns:1fr}}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem}
+.tag{font-family:var(--mono);font-size:.63rem;background:var(--ink);color:var(--paper2);padding:.2rem .5rem;border-radius:2px}
+.side h4{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);margin-bottom:.5rem}
+.side-block{margin-bottom:1.1rem}
+.resources{list-style:none;margin:0;padding:0;font-size:.86rem}
+.resources li{padding:.35rem 0;border-bottom:1px dashed var(--line)}
+.resources li:last-child{border-bottom:none}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<nav class="sheetnav" aria-label="Sheet navigation">
+  <div class="wrap">
+    <div class="sheetnav-links">
+      <a href="index.html" class="home">⌂ Set Index</a>
+      <a href="../overview/">Sheet 01 · Overview</a>
+      <a href="../research-roadmap/">Sheet 02 · Roadmap</a>
+      <a href="../preparation-projects/">Sheet 03 · Prep Projects</a>
+      <a href="../skills-tracker/" class="active">Sheet 04 · Skills Tracker</a>
+    </div>
+    <a class="repo-link" href="https://github.com/AnwayDiptaPaul/ML-RCC-Research" target="_blank" rel="noopener">↗ source repo</a>
+  </div>
+</nav>
+<div id="globalbar"><div class="wrap">
+  <span class="progress-label">Your progress on this sheet</span>
+  <div class="progress"><div class="progress-fill" id="gfill"></div></div>
+  <span class="progress-label" id="glabel">0 / 0 — 0%</span>
+  <button type="button" id="exportBtn" class="export-btn">⇩ Export progress.md</button>
+</div></div>
+<div id="syncNote" class="sync-note" hidden><div class="wrap">Couldn't load <code>progress.md</code> from this folder — expected if you opened this file directly. Serve the folder instead (GitHub Pages, or <code>python3 -m http.server</code>) for live sync. Checkboxes below still work for this session, and Export will still give you a partial file.</div></div>
+
+<main id="main">
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Sheet 04 / 04 — Skills &amp; Expertise Tracker</div>
+    <h1>Nine Domains,<br>Calibrated to <span>What You Already Carry</span></h1>
+    <p class="thesis">Not every domain here is a gap. You already carry BNBC 2020, ACI 318-19 and ASCE 7-22 expertise and a published-writing background — those domains are cross-checks, not from-scratch learning. OpenSeesPy and applied ML are the real climbs. Each domain names what "good enough to proceed" looks like, not "expert" — this research needs competent and honest, not exhaustive.</p>
+    <div class="titleblock reveal">
+      <div><span class="tb-label">Sheet</span><span class="tb-value">04 of 04 — Skills Tracker</span></div>
+      <div><span class="tb-label">Domains</span><span class="tb-value">9 — 8 required, 1 optional</span></div>
+      <div><span class="tb-label">Cross-refs to</span><span class="tb-value">Sheet 02 phases · Sheet 03 projects</span></div>
+      <div><span class="tb-label">Bar</span><span class="tb-value">"Good enough to proceed," not mastery</span></div>
+    </div>
+    <div class="legend reveal">
+      <div class="legend-item"><span>Gap size relative to your background:</span></div>
+      <div class="legend-item"><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span> small — mostly a refresher/cross-check</div>
+      <div class="legend-item"><span class="dots"><span class="dot" style="background:var(--brick)"></span><span class="dot" style="background:var(--brick)"></span><span class="dot" style="background:var(--brick)"></span><span class="dot" style="background:var(--brick)"></span></span> large — genuinely new territory</div>
+      <div class="legend-item">Domains 08 &amp; 09 skip the scale — one's universal, the other's optional, both explained inline</div>
+    </div>
+  </div>
+</header>
+
+<section id="skills">
+  <div class="wrap">
+
+    <details class="skill reveal">
+      <summary><span class="skill-num">01</span><span class="skill-title">Python engineering fundamentals</span><span class="gap" style="--dotcolor:var(--z1)"><span class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>small gap</span></summary>
+      <div class="skill-body">
+        <div class="calibration"><b>Calibration:</b> you already do Python automation work — this domain is a targeted refresh for research-code habits (venvs, config files, tests, CI), not a start from zero.</div>
+        <div class="skillgrid">
+          <div>
+            <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/5</span></div>
+            <div data-track>
+              <div class="check"><input type="checkbox" id="s1-1"><label for="s1-1">Confirm comfort with venv/pip workflows pinned to Python 3.12 specifically</label></div>
+              <div class="check"><input type="checkbox" id="s1-2"><label for="s1-2">Do one "code archaeology" pass: read <code>rc_frame.py</code> and <code>phase1_generator.py</code> line by line, annotate what each part does</label></div>
+              <div class="check"><input type="checkbox" id="s1-3"><label for="s1-3">Run <code>pytest -v</code> locally; read at least 3 pass/fail outputs and understand exactly what's being asserted</label></div>
+              <div class="check"><input type="checkbox" id="s1-4"><label for="s1-4">Skim <code>.github/workflows/tests.yml</code> to understand what the CI pipeline actually checks</label></div>
+              <div class="check"><input type="checkbox" id="s1-5"><label for="s1-5">Practice one full git workflow — branch, commit, review your own diff — on a fork</label></div>
+            </div>
+            <div class="bar-row"><b>Good enough to proceed</b>You can read a 500-line module cold and explain what each class does to someone else.</div>
+          </div>
+          <div class="side">
+            <div class="side-block"><h4>Practiced in</h4><div class="tags"><span class="tag">All 4 prep projects</span></div></div>
+            <div class="side-block"><h4>Required for</h4><div class="tags"><span class="tag">Ph 0 · Ph 0.5</span></div></div>
+            <div class="side-block"><h4>Resources</h4><ul class="resources"><li><a href="https://docs.python.org/3/library/venv.html" target="_blank" rel="noopener">docs.python.org — venv</a></li><li><a href="https://docs.pytest.org/" target="_blank" rel="noopener">docs.pytest.org</a></li></ul></div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="skill reveal" open>
+      <summary><span class="skill-num">02</span><span class="skill-title">OpenSeesPy &amp; nonlinear structural dynamics</span><span class="gap" style="--dotcolor:var(--z4)"><span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></span>large gap</span></summary>
+      <div class="skill-body">
+        <div class="calibration"><b>Calibration:</b> the largest real gap relative to your ETABS / SAP2000 / Perform3D background. The structural-engineering judgment transfers directly; the scripting paradigm — building a model line by line in code instead of a GUI — doesn't, and neither does fiber-section / IDA-specific theory.</div>
+        <div class="skillgrid">
+          <div>
+            <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/6</span></div>
+            <div data-track>
+              <div class="check"><input type="checkbox" id="s2-1"><label for="s2-1">Complete Prep Projects 01 and 02 (Sheet 03)</label></div>
+              <div class="check"><input type="checkbox" id="s2-2"><label for="s2-2">Work through 3–5 OpenSeesPy official example scripts beyond your own</label></div>
+              <div class="check"><input type="checkbox" id="s2-3"><label for="s2-3">Read enough of Portwood Digital to recognise "convergence," "corotational" and "force-based element" on sight</label></div>
+              <div class="check"><input type="checkbox" id="s2-4"><label for="s2-4">Explain Concrete02 vs Concrete01 and Steel02 vs Steel01 from memory</label></div>
+              <div class="check"><input type="checkbox" id="s2-5"><label for="s2-5">Explain Newmark-β (γ = 0.5, β = 0.25) and why the repo uses those specific values</label></div>
+              <div class="check"><input type="checkbox" id="s2-6"><label for="s2-6">Explain what a forceBeamColumn element does differently from a displacement-based element</label></div>
+            </div>
+            <div class="bar-row"><b>Good enough to proceed</b>You can read the repo's modelling/analysis modules and correctly predict what they'll output before running them — and diagnose a non-convergence instead of just re-running until it passes.</div>
+          </div>
+          <div class="side">
+            <div class="side-block"><h4>Practiced in</h4><div class="tags"><span class="tag">Prep 01</span><span class="tag">Prep 02</span></div></div>
+            <div class="side-block"><h4>Required for</h4><div class="tags"><span class="tag">Ph 0.5</span><span class="tag">Ph 1</span><span class="tag">Ph 2</span></div></div>
+            <div class="side-block"><h4>Resources</h4><ul class="resources">
+              <li><a href="https://openseespydoc.readthedocs.io/" target="_blank" rel="noopener">openseespydoc.readthedocs.io</a></li>
+              <li><a href="https://portwooddigital.com/" target="_blank" rel="noopener">portwooddigital.com</a> — Michael Scott's OpenSees blog</li>
+            </ul></div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="skill reveal">
+      <summary><span class="skill-num">03</span><span class="skill-title">Earthquake engineering theory</span><span class="gap" style="--dotcolor:var(--z3)"><span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></span>medium–large gap</span></summary>
+      <div class="skill-body">
+        <div class="calibration"><b>Calibration:</b> your structural background gives you the mechanics intuition; IDA methodology, ground-motion selection/scaling, and performance-based earthquake engineering (PBEE) specifics are likely newer territory.</div>
+        <div class="skillgrid">
+          <div>
+            <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/5</span></div>
+            <div data-track>
+              <div class="check"><input type="checkbox" id="s3-1"><label for="s3-1">Read Vamvatsikos &amp; Cornell (2002) in full — the IDA paper itself</label></div>
+              <div class="check"><input type="checkbox" id="s3-2"><label for="s3-2">Read FEMA 356 Ch. 5 (plastic hinge / component acceptance criteria) — already in your <code>docs/</code></label></div>
+              <div class="check"><input type="checkbox" id="s3-3"><label for="s3-3">Read the relevant ASCE 41-23 chapter on performance levels</label></div>
+              <div class="check"><input type="checkbox" id="s3-4"><label for="s3-4">Skim the FEMA P-58 Vol. 1 methodology overview</label></div>
+              <div class="check"><input type="checkbox" id="s3-5"><label for="s3-5">Complete Prep Projects 02 and 04</label></div>
+            </div>
+            <div class="bar-row"><b>Good enough to proceed</b>You can explain IDA methodology to a colleague in two minutes, and justify why PIDR is the damage measure rather than, say, peak floor acceleration.</div>
+          </div>
+          <div class="side">
+            <div class="side-block"><h4>Practiced in</h4><div class="tags"><span class="tag">Prep 02</span><span class="tag">Prep 04</span></div></div>
+            <div class="side-block"><h4>Required for</h4><div class="tags"><span class="tag">Ph 2</span><span class="tag">Ph 4</span></div></div>
+            <div class="side-block"><h4>Resources</h4><ul class="resources">
+              <li>Repo's own <code>docs/</code> — FEMA 356, FEMA P-58, ASCE 41-23 are already there</li>
+              <li>README §12.1 — the core-10 must-cite list</li>
+            </ul></div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="skill reveal">
+      <summary><span class="skill-num">04</span><span class="skill-title">BNBC 2020 &amp; design-code fluency</span><span class="gap" style="--dotcolor:var(--z1)"><span class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>small gap</span></summary>
+      <div class="skill-body">
+        <div class="calibration"><b>Calibration:</b> you already carry BNBC 2020, ACI 318-19 and ASCE 7-22 expertise. This domain is a line-by-line cross-check of the repo's config against the code, not new learning — and it's the fastest, highest-confidence verification work on this whole tracker.</div>
+        <div class="skillgrid">
+          <div>
+            <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/4</span></div>
+            <div data-track>
+              <div class="check"><input type="checkbox" id="s4-1"><label for="s4-1">Re-read BNBC 2020 Part 6 Ch. 2 (seismic provisions) with <code>config/bnbc_parameters.yaml</code> open side by side</label></div>
+              <div class="check"><input type="checkbox" id="s4-2"><label for="s4-2">Cross-reference every Z, Fa, Fv, R and I value in the yaml against the actual code table</label></div>
+              <div class="check"><input type="checkbox" id="s4-3"><label for="s4-3">Compare BNBC 2020's approach to ASCE 7-22's equivalent provisions — divergences are good discussion-section material later</label></div>
+              <div class="check"><input type="checkbox" id="s4-4"><label for="s4-4">Confirm the Non-Sway/OMRF/IMRF/SMRF detailing table matches BNBC Table 2.7.4 exactly, value for value</label></div>
+            </div>
+            <div class="bar-row"><b>Good enough to proceed</b>You can point to the exact BNBC clause behind every number in the yaml config, from memory or with one lookup.</div>
+          </div>
+          <div class="side">
+            <div class="side-block"><h4>Practiced in</h4><div class="tags"><span class="tag">Prep 01</span></div></div>
+            <div class="side-block"><h4>Required for</h4><div class="tags"><span class="tag">Ph 0.5</span><span class="tag">Ph 1</span></div></div>
+            <div class="side-block"><h4>Resources</h4><ul class="resources"><li>BNBC 2020 Part 6, already in your <code>docs/</code> folder</li></ul></div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="skill reveal" open>
+      <summary><span class="skill-num">05</span><span class="skill-title">Machine learning &amp; statistics</span><span class="gap" style="--dotcolor:var(--z4)"><span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></span>large gap</span></summary>
+      <div class="skill-body">
+        <div class="calibration"><b>Calibration:</b> the second real climb alongside OpenSeesPy. Automation scripting doesn't automatically transfer to model training, validation methodology, or interpretability — treat this as genuinely new.</div>
+        <div class="skillgrid">
+          <div>
+            <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/6</span></div>
+            <div data-track>
+              <div class="check"><input type="checkbox" id="s5-1"><label for="s5-1">Complete Prep Project 03</label></div>
+              <div class="check"><input type="checkbox" id="s5-2"><label for="s5-2">Kaggle Learn: Intro to Machine Learning + Intermediate Machine Learning (free, ~3–5 hrs each)</label></div>
+              <div class="check"><input type="checkbox" id="s5-3"><label for="s5-3">Understand random forest vs. gradient boosting mechanically — not just "one usually scores higher"</label></div>
+              <div class="check"><input type="checkbox" id="s5-4"><label for="s5-4">Read SHAP's own documentation theory page</label></div>
+              <div class="check"><input type="checkbox" id="s5-5"><label for="s5-5">Understand what ANOVA is actually testing in the Phase 5 framework-comparison context</label></div>
+              <div class="check"><input type="checkbox" id="s5-6"><label for="s5-6">Understand lognormal distribution basics (median vs. dispersion) for fragility fitting</label></div>
+            </div>
+            <div class="bar-row"><b>Good enough to proceed</b>You can explain train/val/test leakage in your own words, read the repo's <code>ml_pipeline.py</code> and predict its behaviour, and talk through a SHAP summary plot out loud.</div>
+          </div>
+          <div class="side">
+            <div class="side-block"><h4>Practiced in</h4><div class="tags"><span class="tag">Prep 03</span></div></div>
+            <div class="side-block"><h4>Required for</h4><div class="tags"><span class="tag">Ph 3</span><span class="tag">Ph 4</span><span class="tag">Ph 5</span></div></div>
+            <div class="side-block"><h4>Resources</h4><ul class="resources">
+              <li><a href="https://scikit-learn.org/stable/" target="_blank" rel="noopener">scikit-learn.org</a></li>
+              <li><a href="https://www.kaggle.com/learn" target="_blank" rel="noopener">kaggle.com/learn</a></li>
+              <li><a href="https://shap.readthedocs.io/" target="_blank" rel="noopener">shap.readthedocs.io</a></li>
+              <li><a href="https://xgboost.readthedocs.io/" target="_blank" rel="noopener">xgboost.readthedocs.io</a></li>
+              <li>StatQuest (YouTube) — intuitive walk-throughs of RF, XGBoost, cross-validation</li>
+            </ul></div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="skill reveal">
+      <summary><span class="skill-num">06</span><span class="skill-title">Software engineering practice for research code</span><span class="gap" style="--dotcolor:var(--z2)"><span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></span>moderate gap</span></summary>
+      <div class="skill-body">
+        <div class="calibration"><b>Calibration:</b> the repo already ships CI/CD and 85+ tests — the task is understanding and safely extending that scaffolding, not building it from nothing.</div>
+        <div class="skillgrid">
+          <div>
+            <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/4</span></div>
+            <div data-track>
+              <div class="check"><input type="checkbox" id="s6-1"><label for="s6-1">Refresh pytest basics — fixtures, assert, parametrize — if unfamiliar</label></div>
+              <div class="check"><input type="checkbox" id="s6-2"><label for="s6-2">Write 1–2 new unit tests for a function you didn't write, matching the existing test style</label></div>
+              <div class="check"><input type="checkbox" id="s6-3"><label for="s6-3">Understand what the multi-Python-version CI matrix (3.9–3.12) is actually protecting against</label></div>
+              <div class="check"><input type="checkbox" id="s6-4"><label for="s6-4">Practice reading a git diff carefully before merging your own changes</label></div>
+            </div>
+            <div class="bar-row"><b>Good enough to proceed</b>You can add a test that would have caught a real bug, and explain why the CI pipeline exists rather than treating it as background noise.</div>
+          </div>
+          <div class="side">
+            <div class="side-block"><h4>Practiced in</h4><div class="tags"><span class="tag">All 4 prep projects</span></div></div>
+            <div class="side-block"><h4>Required for</h4><div class="tags"><span class="tag">Ph 0.5</span><span class="tag">Ph 1–3</span></div></div>
+            <div class="side-block"><h4>Resources</h4><ul class="resources"><li><a href="https://docs.pytest.org/" target="_blank" rel="noopener">docs.pytest.org</a></li><li><a href="https://docs.github.com/actions" target="_blank" rel="noopener">docs.github.com/actions</a></li></ul></div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="skill reveal">
+      <summary><span class="skill-num">07</span><span class="skill-title">Scientific &amp; academic writing for publication</span><span class="gap" style="--dotcolor:var(--z1)"><span class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>small gap</span></summary>
+      <div class="skill-body">
+        <div class="calibration"><b>Calibration:</b> you're already a published author of books and magazine articles on physics — the writing ability transfers. What's specific here is journal conventions: MDPI structure, citation density at 45–65 references, and reviewer-facing methods sections.</div>
+        <div class="skillgrid">
+          <div>
+            <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/5</span></div>
+            <div data-track>
+              <div class="check"><input type="checkbox" id="s7-1"><label for="s7-1">Complete Prep Project 04</label></div>
+              <div class="check"><input type="checkbox" id="s7-2"><label for="s7-2">Read MDPI Buildings' Instructions for Authors cover to cover</label></div>
+              <div class="check"><input type="checkbox" id="s7-3"><label for="s7-3">Set up Zotero or Mendeley; import the repo's core-10 reference list</label></div>
+              <div class="check"><input type="checkbox" id="s7-4"><label for="s7-4">Study one recently-published Buildings paper on a related topic for structure and tone calibration</label></div>
+              <div class="check"><input type="checkbox" id="s7-5"><label for="s7-5">Draft a one-paragraph novelty statement early — it anchors the whole introduction later</label></div>
+            </div>
+            <div class="bar-row"><b>Good enough to proceed</b>You can write a methods section detailed enough that a stranger could reproduce the analysis from it alone.</div>
+          </div>
+          <div class="side">
+            <div class="side-block"><h4>Practiced in</h4><div class="tags"><span class="tag">Prep 04</span></div></div>
+            <div class="side-block"><h4>Required for</h4><div class="tags"><span class="tag">Ph 6</span><span class="tag">Ph 7</span><span class="tag">Ph 8</span></div></div>
+            <div class="side-block"><h4>Resources</h4><ul class="resources">
+              <li><a href="https://www.mdpi.com/journal/buildings/instructions" target="_blank" rel="noopener">mdpi.com/journal/buildings/instructions</a></li>
+              <li><a href="https://www.zotero.org/" target="_blank" rel="noopener">zotero.org</a></li>
+            </ul></div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="skill reveal" open>
+      <summary><span class="skill-num">08</span><span class="skill-title">Auditing AI-generated research code &amp; claims</span><span class="gap"><span style="font-family:var(--mono);font-size:.65rem;color:var(--ink2);text-transform:uppercase;letter-spacing:.05em">universal — not personal</span></span></summary>
+      <div class="skill-body">
+        <div class="calibration"><b>Calibration:</b> this domain exists because of what Sheet 01 found, not because of any gap in your background — it applies to anyone inheriting a large AI-assisted codebase. The core habit: a status document is a claim, not a fact, until you've reproduced it yourself.</div>
+        <div class="skillgrid">
+          <div>
+            <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/4</span></div>
+            <div data-track>
+              <div class="check"><input type="checkbox" id="s8-1"><label for="s8-1">For every "✅ Complete" claim in the repo's docs, personally reproduce it once before relying on it</label></div>
+              <div class="check"><input type="checkbox" id="s8-2"><label for="s8-2">Treat every pre-filled numeric result (R², RMSE, timing estimates) as a placeholder until you've regenerated it yourself</label></div>
+              <div class="check"><input type="checkbox" id="s8-3"><label for="s8-3">Keep a personal, dated verification log — separate from the repo's own self-reported status files</label></div>
+              <div class="check"><input type="checkbox" id="s8-4"><label for="s8-4">When two of the repo's own documents disagree (Sheet 01 lists several), resolve to one source of truth and record why</label></div>
+            </div>
+            <div class="bar-row"><b>Good enough to proceed</b>Reading "100% complete" produces an instinct to check, not an instinct to relax.</div>
+          </div>
+          <div class="side">
+            <div class="side-block"><h4>Practiced in</h4><div class="tags"><span class="tag">Ph 0.5 itself</span></div></div>
+            <div class="side-block"><h4>Required for</h4><div class="tags"><span class="tag">Every phase, continuously</span></div></div>
+            <div class="side-block"><h4>Resources</h4><ul class="resources"><li>Sheet 01's "Reality check" section — the six findings that motivated this domain</li></ul></div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="skill reveal">
+      <summary><span class="skill-num">09</span><span class="skill-title">Abaqus / SIMULIA — continuum FEA for concrete</span><span class="gap"><span style="font-family:var(--mono);font-size:.65rem;color:var(--steel2);text-transform:uppercase;letter-spacing:.05em">optional — enrichment, not required</span></span></summary>
+      <div class="skill-body">
+        <div class="calibration" style="border-left-color:var(--steel)"><b>Calibration:</b> you said this won't be used in the actual research — it's here purely to deepen intuition. Comparing OpenSeesPy's fiber-section approach against Abaqus's continuum/Concrete Damaged Plasticity (CDP) approach on the same structure (Prep Project 05) is one of the fastest ways to understand what "nonlinear concrete behaviour" really means underneath both tools. Nothing on Sheet 02's roadmap depends on this domain — skip it entirely with zero cost to the research.</div>
+        <div class="skillgrid">
+          <div>
+            <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/5</span></div>
+            <div data-track>
+              <div class="check"><input type="checkbox" id="s9-1"><label for="s9-1">Complete Prep Project 05</label></div>
+              <div class="check"><input type="checkbox" id="s9-2"><label for="s9-2">Understand what each CDP parameter (dilation angle, eccentricity, fb0/fc0 ratio, K, viscosity) physically represents, not just which defaults to type in</label></div>
+              <div class="check"><input type="checkbox" id="s9-3"><label for="s9-3">Understand continuum/solid element meshing trade-offs (element type, integration scheme, mesh density) against OpenSeesPy's 1D fiber-section approach</label></div>
+              <div class="check"><input type="checkbox" id="s9-4"><label for="s9-4">Compare embedded-rebar constraint modelling (Abaqus) against explicit fiber-layer reinforcement (OpenSeesPy) conceptually</label></div>
+              <div class="check"><input type="checkbox" id="s9-5"><label for="s9-5">Skim Abaqus's own concrete-modelling example problems (bundled with the Student Edition documentation) for calibration guidance</label></div>
+            </div>
+            <div class="bar-row"><b>Worth it once you can</b>explain, in physical terms, what CDP is doing differently from a fiber-section model — and have a specific, defensible guess for why the two tools' results diverge on the same building, rather than shrugging at a difference.</div>
+          </div>
+          <div class="side">
+            <div class="side-block"><h4>Practiced in</h4><div class="tags"><span class="tag">Prep 05 (optional)</span></div></div>
+            <div class="side-block"><h4>Required for</h4><div class="tags"><span class="tag">Nothing — by design</span></div></div>
+            <div class="side-block"><h4>Resources</h4><ul class="resources">
+              <li><a href="https://edu.3ds.com/en/software/abaqus-student-edition" target="_blank" rel="noopener">edu.3ds.com — Abaqus Student Edition</a> — free, 1,000-node limit, full documentation bundled</li>
+              <li>Lee &amp; Fenves (1998), <em>Plastic-Damage Model for Cyclic Loading of Concrete Structures</em>, J. Eng. Mech. 124(8) — what CDP is actually built on</li>
+            </ul></div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+  </div>
+</section>
+
+<footer><div class="wrap">
+  <p>Gap ratings are this sheet's own judgment, calibrated against the background stated in your profile (BNBC 2020 / ACI 318-19 / ASCE 7-22 code expertise, ETABS / SAP2000 / Perform3D / PLAXIS tooling, Python automation, published technical writing) — recalibrate them yourself as you go; nobody's starting position is exactly this tracker's guess. Checkboxes load from <code>progress.md</code> on open — use Export above to save what you check here back into it.</p>
+  <div class="zonebar" aria-hidden="true"><span style="background:var(--z1)"></span><span style="background:var(--z2)"></span><span style="background:var(--z3)"></span><span style="background:var(--z4)"></span></div>
+</div></footer>
+</main>
+
+<script>
+(function(){
+  var PROGRESS_PATH = 'progress.md';
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+  }, {threshold:.08});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  function updateGroup(root){
+    var boxes = Array.prototype.slice.call(root.querySelectorAll('input[type=checkbox]'));
+    var fill = root.querySelector('.progress-fill');
+    var label = root.querySelector('.progress-label');
+    var done = boxes.filter(function(b){return b.checked}).length;
+    var pct = boxes.length ? Math.round(done/boxes.length*100) : 0;
+    if(fill) fill.style.width = pct + '%';
+    if(label) label.textContent = done + '/' + boxes.length;
+    boxes.forEach(function(b){
+      var row = b.closest('.check');
+      if(row) row.classList.toggle('done', b.checked);
+    });
+  }
+  function updateGlobal(){
+    var all = Array.prototype.slice.call(document.querySelectorAll('input[type=checkbox]'));
+    var done = all.filter(function(b){return b.checked}).length;
+    var pct = all.length ? Math.round(done/all.length*100) : 0;
+    document.getElementById('gfill').style.width = pct + '%';
+    document.getElementById('glabel').textContent = done + ' / ' + all.length + ' — ' + pct + '%';
+  }
+  function refreshAll(){
+    document.querySelectorAll('[data-track]').forEach(function(group){ updateGroup(group); });
+    updateGlobal();
+  }
+  refreshAll();
+  document.addEventListener('change', function(e){
+    if(e.target.matches('input[type=checkbox]')){
+      var group = e.target.closest('[data-track]');
+      if(group) updateGroup(group);
+      updateGlobal();
+    }
+  });
+
+  /* ---- progress.md sync ---- */
+  function parseProgressMd(text){
+    var map = {};
+    var re = /^-\s*\[([ xX])\][^\n]*?<!--\s*id:([a-zA-Z0-9-]+)\s*-->/gm;
+    var m;
+    while((m = re.exec(text))){ map[m[2]] = (m[1].toLowerCase() === 'x'); }
+    return map;
+  }
+  function applyMap(map){
+    document.querySelectorAll('input[type=checkbox][id]').forEach(function(cb){
+      if(Object.prototype.hasOwnProperty.call(map, cb.id)){ cb.checked = map[cb.id]; }
+    });
+  }
+  fetch(PROGRESS_PATH, {cache:'no-store'}).then(function(res){
+    if(!res.ok) throw new Error('not found');
+    return res.text();
+  }).then(function(text){
+    applyMap(parseProgressMd(text));
+    refreshAll();
+  }).catch(function(){
+    var note = document.getElementById('syncNote');
+    if(note) note.hidden = false;
+  });
+
+  function domPartialMd(){
+    var lines = ['<!-- Partial export — progress.md could not be loaded, so this only covers this sheet. Merge it into your main progress.md by hand, or serve the folder (see index.html) and export again for a full merge. -->', ''];
+    document.querySelectorAll('input[type=checkbox][id]').forEach(function(cb){
+      var label = document.querySelector('label[for="' + cb.id + '"]');
+      var text = label ? label.textContent.trim() : cb.id;
+      lines.push('- [' + (cb.checked ? 'x' : ' ') + '] ' + text + ' <!-- id:' + cb.id + ' -->');
+    });
+    return lines.join('\n');
+  }
+  function mergeIntoBaseline(baseline){
+    var text = baseline;
+    document.querySelectorAll('input[type=checkbox][id]').forEach(function(cb){
+      var mark = cb.checked ? 'x' : ' ';
+      var re = new RegExp('(^-\\s*\\[)[ xX](\\][^\\n]*?<!--\\s*id:' + cb.id + '\\s*-->)', 'm');
+      if(re.test(text)) text = text.replace(re, '$1' + mark + '$2');
+    });
+    return text;
+  }
+  function download(filename, text){
+    var blob = new Blob([text], {type: 'text/markdown'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+  var exportBtn = document.getElementById('exportBtn');
+  if(exportBtn){
+    exportBtn.addEventListener('click', function(){
+      fetch(PROGRESS_PATH, {cache:'no-store'}).then(function(res){
+        if(!res.ok) throw new Error('not found');
+        return res.text();
+      }).then(function(text){
+        download('progress.md', mergeIntoBaseline(text));
+      }).catch(function(){
+        download('progress-partial.md', domPartialMd());
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>

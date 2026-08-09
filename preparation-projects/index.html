@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sheet 3/4 — Preparation Projects · ML‑BNBC PIDR Surrogate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --paper:#F3ECDC; --paper2:#EAE0C7; --paper3:#E3D6B8;
+  --ink:#241C15; --ink2:#5B5142; --ink3:#8A7F6B;
+  --rust:#C1521A; --rust2:#96380F;
+  --brick:#7A2E2E; --brick2:#5E2222;
+  --steel:#3B5166; --steel2:#28394A;
+  --moss:#5C6E4A; --moss2:#3F4E31;
+  --line:#D8CBB0; --line2:#E7DCC3;
+  --z1:#E8C468; --z2:#DB9A4E; --z3:#C1521A; --z4:#7A2E2E;
+  --disp:'Space Grotesk',sans-serif; --serif:'Source Serif 4',Georgia,serif; --mono:'IBM Plex Mono',monospace;
+  --maxw:1120px;
+}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}}
+body{margin:0;background:var(--paper);
+  background-image:repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(36,28,21,.032) 28px),repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(36,28,21,.022) 28px);
+  color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;}
+a{color:var(--rust2)} a:hover{color:var(--rust)}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--paper);padding:.6rem 1rem;z-index:100}
+.skip-link:focus{left:1rem;top:1rem}
+:focus-visible{outline:2px solid var(--steel);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--disp);color:var(--ink);margin:0 0 .5em;letter-spacing:-.01em}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rust2);font-weight:600}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 1.75rem}
+code{font-family:var(--mono)}
+.sheetnav{background:var(--ink);color:var(--paper2)}
+.sheetnav .wrap{display:flex;gap:0;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:0 1.75rem}
+.sheetnav-links{display:flex}
+.sheetnav a{font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;color:var(--paper3);text-decoration:none;padding:.75rem .95rem;border-right:1px solid rgba(243,236,220,.14);display:block}
+.sheetnav a:hover{background:rgba(243,236,220,.08);color:var(--paper)}
+.sheetnav a.active{background:var(--rust2);color:var(--paper)}
+.sheetnav a.home{background:var(--brick2);color:var(--paper)}
+.sheetnav a.home:hover{background:var(--brick)}
+.sheetnav .repo-link{font-family:var(--mono);font-size:.7rem;color:var(--paper3);text-decoration:none;padding:.75rem 0}
+.sheetnav .repo-link:hover{color:var(--paper)}
+.titleblock{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;border:1.5px solid var(--ink);font-family:var(--mono);font-size:.7rem;background:var(--paper2)}
+.titleblock>div{padding:.55rem .7rem;border-right:1px solid var(--line)}
+.titleblock>div:last-child{border-right:none}
+.tb-label{display:block;text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);font-size:.6rem;margin-bottom:.2rem}
+.tb-value{font-weight:600;color:var(--ink)}
+@media(max-width:720px){.titleblock{grid-template-columns:1fr 1fr}}
+.masthead{padding:2.4rem 0 2rem;border-bottom:1px solid var(--line)}
+.masthead h1{font-size:clamp(1.7rem,4vw,2.6rem);line-height:1.08;margin:.5rem 0 1rem;text-transform:uppercase}
+.masthead h1 span{color:var(--rust2)}
+.thesis{font-size:1.08rem;color:var(--ink2);max-width:68ch;margin:0 0 1.5rem}
+section{padding:2.6rem 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.sec-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:1.4rem;flex-wrap:wrap}
+.sec-head h2{font-size:1.4rem;text-transform:uppercase}
+.sec-num{font-family:var(--mono);color:var(--rust2);font-size:1.4rem;font-weight:700}
+.lede{max-width:72ch;color:var(--ink2);margin-bottom:1.4rem}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.reveal.is-visible{opacity:1;transform:translateY(0)}
+footer{padding:2rem 0 3rem}
+footer p{font-family:var(--mono);font-size:.72rem;color:var(--ink3);max-width:70ch}
+.zonebar{display:flex;height:6px;margin:2rem 0 0}
+.zonebar span{flex:1}
+.progress{height:11px;border:1px solid var(--ink);background:var(--paper2);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--z2),var(--rust));width:0%;transition:width .4s ease}
+.progress-row{display:flex;align-items:center;gap:.8rem;margin:.6rem 0 1rem}
+.progress-row .progress{flex:1}
+.progress-label{font-family:var(--mono);font-size:.72rem;color:var(--ink2);white-space:nowrap}
+.check{display:flex;gap:.7rem;align-items:flex-start;padding:.55rem .1rem;border-bottom:1px dashed var(--line)}
+.check:last-child{border-bottom:none}
+.check input[type=checkbox]{appearance:none;-webkit-appearance:none;width:1.1rem;height:1.1rem;flex:0 0 auto;margin-top:.22rem;border:1.5px solid var(--ink);border-radius:2px;background:var(--paper);cursor:pointer;position:relative}
+.check input[type=checkbox]:checked{background:var(--moss);border-color:var(--moss2)}
+.check input[type=checkbox]:checked::after{content:'';position:absolute;left:2.5px;top:-1.5px;width:5px;height:9px;border:solid var(--paper);border-width:0 2px 2px 0;transform:rotate(40deg)}
+.check label{cursor:pointer;font-size:.96rem}
+.check.done label{color:var(--ink3);text-decoration:line-through;text-decoration-color:var(--line)}
+#globalbar{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line);padding:.6rem 0}
+#globalbar .wrap{display:flex;align-items:center;gap:1rem}
+#globalbar .progress{flex:1}
+@media(max-width:640px){#globalbar .wrap{flex-wrap:wrap}.export-btn{margin-left:auto}}
+.export-btn{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.04em;background:var(--ink);color:var(--paper2);border:1px solid var(--ink);padding:.4rem .7rem;border-radius:2px;cursor:pointer;white-space:nowrap}
+.export-btn:hover{background:var(--rust2);border-color:var(--rust2)}
+.export-btn:disabled{opacity:.5;cursor:default}
+.sync-note{background:var(--paper3);border-bottom:1px solid var(--line);padding:.55rem 0}
+.sync-note .wrap{font-family:var(--mono);font-size:.72rem;color:var(--ink2)}
+.sync-note a{color:var(--rust2)}
+/* project cards */
+.project{border:1px solid var(--ink);background:var(--paper2);margin-bottom:1.75rem}
+.project-head{padding:1.3rem 1.4rem 1.1rem;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:flex-start}
+.project-head-l{flex:1 1 320px}
+.project-eyebrow{font-family:var(--mono);font-size:.68rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem}
+.project-head h3{font-size:1.4rem;text-transform:uppercase;margin-bottom:.4rem}
+.project-goal{color:var(--ink2);max-width:60ch;margin:0}
+.project-meta{display:flex;flex-direction:column;gap:.5rem;align-items:flex-end;flex:0 0 auto}
+.difficulty{display:flex;align-items:center;gap:.4rem;font-family:var(--mono);font-size:.68rem;color:var(--ink2)}
+.difficulty .dots{display:flex;gap:2px}
+.difficulty .dot{width:9px;height:9px;border-radius:1px;background:var(--line)}
+.difficulty .dot.on{background:var(--dotcolor,var(--rust))}
+.timebadge{font-family:var(--mono);font-size:.72rem;background:var(--ink);color:var(--paper2);padding:.25rem .6rem;border-radius:2px}
+.timebadge.optional{background:var(--steel2)}
+.project.optional{border-color:var(--steel2)}
+.project.optional .project-head{background:var(--paper3)}
+.addendum{border:1px dashed var(--steel);background:var(--paper2);padding:.9rem 1.1rem;margin-bottom:1.5rem;font-size:.94rem;color:var(--ink2);max-width:80ch}
+.addendum b{color:var(--steel2);font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:.3rem}
+.project-body{padding:1.3rem 1.4rem 1.5rem}
+.pgrid{display:grid;grid-template-columns:1.5fr 1fr;gap:2rem}
+@media(max-width:900px){.pgrid{grid-template-columns:1fr}}
+.deliverable{background:var(--paper);border-left:3px solid var(--rust2);padding:.75rem .9rem;margin-bottom:1.1rem;font-size:.95rem}
+.deliverable b{display:block;font-family:var(--mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;color:var(--rust2);margin-bottom:.2rem}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem}
+.tag{font-family:var(--mono);font-size:.63rem;background:var(--ink);color:var(--paper2);padding:.2rem .5rem;border-radius:2px;text-decoration:none;display:inline-block}
+.tag:hover{background:var(--rust2);color:var(--paper)}
+.side h4{font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);margin-bottom:.5rem}
+.side-block{margin-bottom:1.3rem}
+.resources{list-style:none;margin:0;padding:0;font-size:.87rem}
+.resources li{padding:.4rem 0;border-bottom:1px dashed var(--line)}
+.resources li:last-child{border-bottom:none}
+/* sequencing timeline */
+.seq{border:1px solid var(--ink);background:var(--paper2);padding:1.2rem}
+.seq-axis{display:flex;font-family:var(--mono);font-size:.62rem;color:var(--ink3);margin-bottom:.5rem;padding-left:9rem}
+.seq-axis span{flex:1;border-left:1px solid var(--line)}
+.seq-row{display:flex;align-items:center;margin-bottom:.4rem}
+.seq-label{width:9rem;flex:0 0 auto;font-family:var(--mono);font-size:.7rem;color:var(--ink2)}
+.seq-track{flex:1;position:relative;height:16px;background:var(--paper3);border-radius:2px}
+.seq-bar{position:absolute;top:0;height:100%;border-radius:2px;color:var(--paper);font-family:var(--mono);font-size:.6rem;display:flex;align-items:center;padding-left:.4rem}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<nav class="sheetnav" aria-label="Sheet navigation">
+  <div class="wrap">
+    <div class="sheetnav-links">
+      <a href="index.html" class="home">⌂ Set Index</a>
+      <a href="../overview/">Sheet 01 · Overview</a>
+      <a href="../research-roadmap/">Sheet 02 · Roadmap</a>
+      <a href="../preparation-projects/" class="active">Sheet 03 · Prep Projects</a>
+      <a href="../skills-tracker/">Sheet 04 · Skills Tracker</a>
+    </div>
+    <a class="repo-link" href="https://github.com/AnwayDiptaPaul/ML-RCC-Research" target="_blank" rel="noopener">↗ source repo</a>
+  </div>
+</nav>
+<div id="globalbar"><div class="wrap">
+  <span class="progress-label">Your progress on this sheet</span>
+  <div class="progress"><div class="progress-fill" id="gfill"></div></div>
+  <span class="progress-label" id="glabel">0 / 0 — 0%</span>
+  <button type="button" id="exportBtn" class="export-btn">⇩ Export progress.md</button>
+</div></div>
+<div id="syncNote" class="sync-note" hidden><div class="wrap">Couldn't load <code>progress.md</code> from this folder — expected if you opened this file directly. Serve the folder instead (GitHub Pages, or <code>python3 -m http.server</code>) for live sync. Checkboxes below still work for this session, and Export will still give you a partial file.</div></div>
+
+<main id="main">
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Sheet 03 / 04 — Preparation Workbook</div>
+    <h1>Four Small Projects<br>Before <span>One Big One</span></h1>
+    <p class="thesis">The main campaign is 80 buildings × ~35 ground motions × 16 intensity levels run all at once. That is a brutal place to debug a convergence error or a data-leakage bug for the first time. Each project below isolates one subsystem — structural scripting, nonlinear dynamics, ML, and writing/statistics — at a scale small enough to fully understand before it has to work unattended for 8 hours.</p>
+    <div class="titleblock reveal">
+      <div><span class="tb-label">Sheet</span><span class="tb-value">03 of 04 — Prep Projects</span></div>
+      <div><span class="tb-label">Projects</span><span class="tb-value">4 required + 1 optional</span></div>
+      <div><span class="tb-label">Total time</span><span class="tb-value">~4–5 wks sequential / ~3 wks with overlap</span></div>
+      <div><span class="tb-label">Unlocks</span><span class="tb-value">Sheet 02, Phases 0.5–4 &amp; 6</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="sequencing">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">00</span><h2>Sequencing</h2></div>
+    <p class="lede reveal">Projects 1 → 2 build on the same frame, so they run in order. Project 3 needs nothing from either — it can run in parallel, any time. Project 4 needs some curve data (Project 2's, ideally), but its writing/reference-setup half can start on day one. The optional Project 5 (below, after Project 4) isn't on this chart — it doesn't gate anything and can slot in whenever there's spare time, most naturally right after Project 1.</p>
+    <div class="seq reveal">
+      <div class="seq-axis"><span>wk 1</span><span>wk 2</span><span>wk 3</span><span>wk 4</span><span>wk 5</span></div>
+      <div class="seq-row"><div class="seq-label">01 · Frame check</div><div class="seq-track"><div class="seq-bar" style="left:0%;width:26%;background:var(--steel)">wks 1–1.5</div></div></div>
+      <div class="seq-row"><div class="seq-label">02 · IDA curve</div><div class="seq-track"><div class="seq-bar" style="left:26%;width:34%;background:var(--brick)">wks 1.5–3</div></div></div>
+      <div class="seq-row"><div class="seq-label">03 · ML sprint</div><div class="seq-track"><div class="seq-bar" style="left:0%;width:20%;background:var(--moss)">wks 1–2, parallel</div></div></div>
+      <div class="seq-row"><div class="seq-label">04 · Micro-paper</div><div class="seq-track"><div class="seq-bar" style="left:56%;width:24%;background:var(--rust2)">wks 3–4</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="p1">
+  <div class="wrap">
+    <div class="project reveal">
+      <div class="project-head">
+        <div class="project-head-l">
+          <div class="project-eyebrow">Preparation Project 01 · Structural scripting</div>
+          <h3>Single-Frame Sanity Check</h3>
+          <p class="project-goal">Build one 3-storey, single-bay RC frame in OpenSeesPy entirely by hand — not the repo's generator — so you understand every material definition and fiber section before you trust 80 of them at once.</p>
+        </div>
+        <div class="project-meta">
+          <span class="timebadge">~1–1.5 weeks</span>
+          <div class="difficulty" style="--dotcolor:var(--z3)"><span>Difficulty</span><span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></span></div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="pgrid">
+          <div>
+            <div class="deliverable"><b>Deliverable</b>One working script/notebook (gravity + eigenvalue analysis) plus a one-page validation memo comparing computed period to the BNBC hand-calc.</div>
+            <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/10</span></div>
+            <div data-track>
+              <div class="check"><input type="checkbox" id="p1-1"><label for="p1-1">Install OpenSeesPy in a clean venv; confirm <code>import openseespy.opensees</code> works</label></div>
+              <div class="check"><input type="checkbox" id="p1-2"><label for="p1-2">Work through OpenSeesPy's basic model-building examples (nodes, elements, fix, mass)</label></div>
+              <div class="check"><input type="checkbox" id="p1-3"><label for="p1-3">Define Concrete02 (unconfined + Mander-confined core) and Steel02 by hand with real values (f′c = 25 MPa, fy = 415 MPa)</label></div>
+              <div class="check"><input type="checkbox" id="p1-4"><label for="p1-4">Build one fiber column section and one fiber beam section</label></div>
+              <div class="check"><input type="checkbox" id="p1-5"><label for="p1-5">Define geometry: 3 storeys, 3.5 m storey height, 1 bay, 6 m wide (matches the repo's own convention)</label></div>
+              <div class="check"><input type="checkbox" id="p1-6"><label for="p1-6">Assign nodes, forceBeamColumn elements, fixed-base boundary conditions</label></div>
+              <div class="check"><input type="checkbox" id="p1-7"><label for="p1-7">Apply gravity loads (dead + live per BNBC), run gravity analysis, confirm convergence</label></div>
+              <div class="check"><input type="checkbox" id="p1-8"><label for="p1-8">Check column axial reactions sum to applied load — hand-calc cross-check</label></div>
+              <div class="check"><input type="checkbox" id="p1-9"><label for="p1-9">Run eigenvalue analysis; extract T1; compare to T ≈ 0.0466·H^0.9</label></div>
+              <div class="check"><input type="checkbox" id="p1-10"><label for="p1-10">Write the one-page memo: geometry, materials, T1 comparison, what surprised you</label></div>
+            </div>
+          </div>
+          <div class="side">
+            <div class="side-block">
+              <h4>Builds</h4>
+              <div class="tags"><span class="tag">OpenSeesPy scripting</span><span class="tag">Fiber sections</span><span class="tag">Modal analysis</span><span class="tag">BNBC compliance checks</span></div>
+            </div>
+            <div class="side-block">
+              <h4>Unlocks on Sheet 02</h4>
+              <div class="tags"><span class="tag">Ph 0.5 Verification</span><span class="tag">Ph 1 Re-verify models</span></div>
+            </div>
+            <div class="side-block">
+              <h4>Resources</h4>
+              <ul class="resources">
+                <li><a href="https://openseespydoc.readthedocs.io/" target="_blank" rel="noopener">openseespydoc.readthedocs.io</a> — official command reference</li>
+                <li><a href="https://portwooddigital.com/" target="_blank" rel="noopener">portwooddigital.com</a> — Michael Scott's OpenSees blog; search "fiber section" and "Concrete02"</li>
+                <li>Your own <code>docs/</code> folder — BNBC 2020 Part 6 Ch. 2, ACI 318-19 confinement provisions</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="p2">
+  <div class="wrap">
+    <div class="project reveal">
+      <div class="project-head">
+        <div class="project-head-l">
+          <div class="project-eyebrow">Preparation Project 02 · Nonlinear dynamics</div>
+          <h3>One Building, One Earthquake, One IDA Curve</h3>
+          <p class="project-goal">Extend Project 1's frame with a real nonlinear time-history run against one real ground motion, scaled to 8–10 intensities. This is the exact computational unit the 51,200-row campaign repeats — understand it once, by hand.</p>
+        </div>
+        <div class="project-meta">
+          <span class="timebadge">~1.5–2 weeks</span>
+          <div class="difficulty" style="--dotcolor:var(--z4)"><span>Difficulty</span><span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></span></div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="pgrid">
+          <div>
+            <div class="deliverable"><b>Deliverable</b>One real IDA curve (Sa(T1) vs. PIDR) plus a short methods note on the scaling procedure and any convergence issues hit.</div>
+            <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/11</span></div>
+            <div data-track>
+              <div class="check"><input type="checkbox" id="p2-1"><label for="p2-1">Register a PEER NGA-West2 account</label></div>
+              <div class="check"><input type="checkbox" id="p2-2"><label for="p2-2">Select 1 record matching Bangladesh-relevant criteria (M 6.0–7.5, R 20–150 km, soil C/D)</label></div>
+              <div class="check"><input type="checkbox" id="p2-3"><label for="p2-3">Download the record; plot the raw acceleration time-history yourself</label></div>
+              <div class="check"><input type="checkbox" id="p2-4"><label for="p2-4">Compute the record's own response spectrum Sa at your frame's T1</label></div>
+              <div class="check"><input type="checkbox" id="p2-5"><label for="p2-5">Compute the BNBC target spectrum for one zone; compute the scale factor</label></div>
+              <div class="check"><input type="checkbox" id="p2-6"><label for="p2-6">Extend the Project 1 script with a nonlinear time-history analysis (Newmark-β, Rayleigh damping)</label></div>
+              <div class="check"><input type="checkbox" id="p2-7"><label for="p2-7">Implement an adaptive time-stepping fallback for non-convergence</label></div>
+              <div class="check"><input type="checkbox" id="p2-8"><label for="p2-8">Loop the same record through 8–10 increasing scale factors, 0.1g → ~2.0g Sa</label></div>
+              <div class="check"><input type="checkbox" id="p2-9"><label for="p2-9">Extract peak inter-storey drift ratio at each level</label></div>
+              <div class="check"><input type="checkbox" id="p2-10"><label for="p2-10">Apply the PIDR ≥ 10% collapse stopping rule</label></div>
+              <div class="check"><input type="checkbox" id="p2-11"><label for="p2-11">Plot the curve; write the methods note</label></div>
+            </div>
+          </div>
+          <div class="side">
+            <div class="side-block">
+              <h4>Builds</h4>
+              <div class="tags"><span class="tag">Ground motion selection &amp; scaling</span><span class="tag">Nonlinear time-history</span><span class="tag">Convergence handling</span><span class="tag">IDA methodology</span></div>
+            </div>
+            <div class="side-block">
+              <h4>Unlocks on Sheet 02</h4>
+              <div class="tags"><span class="tag">Ph 2 Campaign</span></div>
+            </div>
+            <div class="side-block">
+              <h4>Resources</h4>
+              <ul class="resources">
+                <li><a href="https://peer.berkeley.edu/peer-strong-ground-motion-databases" target="_blank" rel="noopener">peer.berkeley.edu</a> — NGA-West2 record search &amp; download</li>
+                <li>Vamvatsikos &amp; Cornell (2002), <em>Earthquake Engineering &amp; Structural Dynamics</em> — the IDA paper itself; already on the repo's core-10 reading list</li>
+                <li><a href="https://portwooddigital.com/" target="_blank" rel="noopener">portwooddigital.com</a> — search "convergence" and "Newmark"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="p3">
+  <div class="wrap">
+    <div class="project reveal">
+      <div class="project-head">
+        <div class="project-head-l">
+          <div class="project-eyebrow">Preparation Project 03 · Data science</div>
+          <h3>ML Sprint on a Public Structural Dataset</h3>
+          <p class="project-goal">Skip structural analysis entirely. Run the exact ML pipeline the main research needs — feature engineering, proper splitting, four model types, SHAP — against a small, well-known public dataset so the ML learning curve isn't stacked on top of the structural one.</p>
+        </div>
+        <div class="project-meta">
+          <span class="timebadge">~1 week</span>
+          <div class="difficulty" style="--dotcolor:var(--z2)"><span>Difficulty</span><span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></span></div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="pgrid">
+          <div>
+            <div class="deliverable"><b>Deliverable</b>A notebook covering the full pipeline end to end: feature engineering → train/val/test → four trained models → cross-validation → SHAP → a model-comparison table.</div>
+            <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/11</span></div>
+            <div data-track>
+              <div class="check"><input type="checkbox" id="p3-1"><label for="p3-1">Download the UCI Concrete Compressive Strength dataset (1,030 rows, 8 features)</label></div>
+              <div class="check"><input type="checkbox" id="p3-2"><label for="p3-2">EDA: distributions, correlation matrix, confirm no missing values</label></div>
+              <div class="check"><input type="checkbox" id="p3-3"><label for="p3-3">Split 65/15/20 train/val/test — matching the repo's own Phase 3 convention</label></div>
+              <div class="check"><input type="checkbox" id="p3-4"><label for="p3-4">Fit StandardScaler on the training set only; apply to val/test — deliberately notice how easy this is to get backwards</label></div>
+              <div class="check"><input type="checkbox" id="p3-5"><label for="p3-5">Train a Linear Regression baseline</label></div>
+              <div class="check"><input type="checkbox" id="p3-6"><label for="p3-6">Train a Random Forest</label></div>
+              <div class="check"><input type="checkbox" id="p3-7"><label for="p3-7">Train an XGBoost model with early stopping</label></div>
+              <div class="check"><input type="checkbox" id="p3-8"><label for="p3-8">5-fold cross-validate each model</label></div>
+              <div class="check"><input type="checkbox" id="p3-9"><label for="p3-9">Compare R² / RMSE / MAE across models in one table</label></div>
+              <div class="check"><input type="checkbox" id="p3-10"><label for="p3-10">Run SHAP's TreeExplainer on the best model; generate a summary and a dependence plot</label></div>
+              <div class="check"><input type="checkbox" id="p3-11"><label for="p3-11">Write one paragraph: do the top SHAP features (cement, age, water/cement ratio) match civil-engineering intuition?</label></div>
+            </div>
+          </div>
+          <div class="side">
+            <div class="side-block">
+              <h4>Builds</h4>
+              <div class="tags"><span class="tag">scikit-learn</span><span class="tag">XGBoost</span><span class="tag">SHAP</span><span class="tag">Cross-validation</span><span class="tag">Leakage avoidance</span></div>
+            </div>
+            <div class="side-block">
+              <h4>Unlocks on Sheet 02</h4>
+              <div class="tags"><span class="tag">Ph 3 ML training</span></div>
+            </div>
+            <div class="side-block">
+              <h4>Resources</h4>
+              <ul class="resources">
+                <li><a href="https://archive.ics.uci.edu/dataset/165/concrete+compressive+strength" target="_blank" rel="noopener">archive.ics.uci.edu — Concrete Compressive Strength</a></li>
+                <li><a href="https://scikit-learn.org/stable/" target="_blank" rel="noopener">scikit-learn.org</a> — user guide, especially model selection &amp; pipelines</li>
+                <li><a href="https://www.kaggle.com/learn" target="_blank" rel="noopener">kaggle.com/learn</a> — free Intro/Intermediate ML micro-courses</li>
+              </ul>
+            </div>
+            <div class="side-block">
+              <h4>Optional stretch</h4>
+              <p style="font-size:.87rem;color:var(--ink2);margin:0">Once done, read the repo's actual <code>ml_pipeline.py</code> / <code>MLTrainer</code> class and compare its API to what you just built by hand — the fastest way to genuinely understand someone else's ML code is to have already written your own version of it.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="p4">
+  <div class="wrap">
+    <div class="project reveal">
+      <div class="project-head">
+        <div class="project-head-l">
+          <div class="project-eyebrow">Preparation Project 04 · Statistics &amp; writing</div>
+          <h3>Fragility Micro-Paper</h3>
+          <p class="project-goal">Fit one lognormal fragility curve from real curve data, then write a 2–3 page mock manuscript in MDPI Buildings structure. Purely a rehearsal — low stakes now beats a rough first attempt under deadline pressure later.</p>
+        </div>
+        <div class="project-meta">
+          <span class="timebadge">~1 week</span>
+          <div class="difficulty" style="--dotcolor:var(--z3)"><span>Difficulty</span><span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></span></div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="pgrid">
+          <div>
+            <div class="deliverable"><b>Deliverable</b>One fitted fragility curve (θ, β reported) plus a 2–3 page mock manuscript: Abstract / Methods / Results / Conclusion / References.</div>
+            <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/9</span></div>
+            <div data-track>
+              <div class="check"><input type="checkbox" id="p4-1"><label for="p4-1">Gather ≥6–8 (Sa, PIDR) pairs — reuse Project 2's curve if it has enough points; otherwise supplement with clearly-labelled illustrative data, never disguised as real</label></div>
+              <div class="check"><input type="checkbox" id="p4-2"><label for="p4-2">Fit the log-linear regression ln(PIDR) = a + b·ln(Sa)</label></div>
+              <div class="check"><input type="checkbox" id="p4-3"><label for="p4-3">Compute dispersion β as the standard deviation of the residuals</label></div>
+              <div class="check"><input type="checkbox" id="p4-4"><label for="p4-4">Compute P(LS | Sa) = Φ[(ln(Sa) − ln(θ))/β] at the IO/LS/CP thresholds</label></div>
+              <div class="check"><input type="checkbox" id="p4-5"><label for="p4-5">Plot the fragility curve</label></div>
+              <div class="check"><input type="checkbox" id="p4-6"><label for="p4-6">Set up a Zotero (or Mendeley) library; add the repo's core-10 references</label></div>
+              <div class="check"><input type="checkbox" id="p4-7"><label for="p4-7">Read 3–5 of those in full — especially Vamvatsikos &amp; Cornell (2002) and one Kazemi et al. paper — not just the abstracts</label></div>
+              <div class="check"><input type="checkbox" id="p4-8"><label for="p4-8">Write the mock manuscript, following the repo's own section/word-target style</label></div>
+              <div class="check"><input type="checkbox" id="p4-9"><label for="p4-9">Get one honest outside read on clarity — the cheap rehearsal for the real peer review</label></div>
+            </div>
+          </div>
+          <div class="side">
+            <div class="side-block">
+              <h4>Builds</h4>
+              <div class="tags"><span class="tag">Lognormal fragility fitting</span><span class="tag">Reference management</span><span class="tag">MDPI-format writing</span></div>
+            </div>
+            <div class="side-block">
+              <h4>Unlocks on Sheet 02</h4>
+              <div class="tags"><span class="tag">Ph 4 Fragility</span><span class="tag">Ph 6 Writing</span></div>
+            </div>
+            <div class="side-block">
+              <h4>Resources</h4>
+              <ul class="resources">
+                <li><a href="https://www.zotero.org/" target="_blank" rel="noopener">zotero.org</a> — free reference manager, cited directly by MDPI's own author instructions</li>
+                <li><a href="https://www.mdpi.com/journal/buildings/instructions" target="_blank" rel="noopener">mdpi.com/journal/buildings/instructions</a> — read this once, cover to cover, before drafting anything</li>
+                <li>Your own <code>README.md</code> §12 — the core-10 must-cite list, already assembled</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="p5">
+  <div class="wrap">
+    <div class="addendum reveal"><b>Bonus — optional, not on the critical path</b>Everything below is enrichment. It won't touch the actual research pipeline, which stays entirely OpenSeesPy per Sheet 02 — this exists purely to deepen your feel for nonlinear concrete behaviour by watching a second, quite different tool model the same building.</div>
+    <div class="project optional reveal">
+      <div class="project-head">
+        <div class="project-head-l">
+          <div class="project-eyebrow">Preparation Project 05 · Cross-tool verification (optional)</div>
+          <h3>Second Tool, Same Building</h3>
+          <p class="project-goal">Rebuild the exact same 3-storey, 1-bay frame from Project 01 in Abaqus/CAE, using the Concrete Damaged Plasticity (CDP) model instead of fiber sections, and compare period and pushover capacity against the OpenSeesPy version. Won't appear anywhere in the paper — it's here because watching two structurally different modelling approaches agree, or not, on the same building is one of the fastest ways to stress-test your own understanding of both.</p>
+        </div>
+        <div class="project-meta">
+          <span class="timebadge optional">~1.5–2 weeks · optional</span>
+          <div class="difficulty" style="--dotcolor:var(--z3)"><span>Difficulty</span><span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></span></div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="pgrid">
+          <div>
+            <div class="deliverable"><b>Deliverable</b>An Abaqus/CAE model of the same frame — a frequency step for T1, and a displacement-controlled static pushover producing a base-shear-vs-roof-drift curve — plus a short note comparing both against the OpenSeesPy results.</div>
+            <div class="progress-row"><div class="progress"><div class="progress-fill"></div></div><span class="progress-label">0/8</span></div>
+            <div data-track>
+              <div class="check"><input type="checkbox" id="p5-1"><label for="p5-1">Get Abaqus/CAE running — the free Student Edition (1,000-node limit) is enough for one simple frame</label></div>
+              <div class="check"><input type="checkbox" id="p5-2"><label for="p5-2">Build the same geometry (3 storeys, 3.5 m storey height, 1 bay, 6 m wide) as a continuum/solid model</label></div>
+              <div class="check"><input type="checkbox" id="p5-3"><label for="p5-3">Define concrete via Concrete Damaged Plasticity with matching f′c = 25 MPa; work out what each CDP parameter (dilation angle, eccentricity, fb0/fc0, K, viscosity) physically represents rather than pasting in defaults</label></div>
+              <div class="check"><input type="checkbox" id="p5-4"><label for="p5-4">Model reinforcement as embedded rebar, matching Project 01's reinforcement ratio as closely as practical</label></div>
+              <div class="check"><input type="checkbox" id="p5-5"><label for="p5-5">Mesh the model; run it at two mesh densities and see how sensitive the result is — a question OpenSeesPy's fiber approach mostly sidesteps</label></div>
+              <div class="check"><input type="checkbox" id="p5-6"><label for="p5-6">Run a frequency step; extract T1 — you now have three independent numbers for the same building (Abaqus, OpenSeesPy, BNBC hand-calc)</label></div>
+              <div class="check"><input type="checkbox" id="p5-7"><label for="p5-7">Run a displacement-controlled static pushover; plot base shear vs. roof drift</label></div>
+              <div class="check"><input type="checkbox" id="p5-8"><label for="p5-8">Write a short comparison note: where the two tools agreed, where they diverged, and your best explanation why</label></div>
+            </div>
+          </div>
+          <div class="side">
+            <div class="side-block">
+              <h4>Builds</h4>
+              <div class="tags"><span class="tag">Concrete Damaged Plasticity theory</span><span class="tag">Continuum FE meshing</span><span class="tag">Cross-tool verification instinct</span></div>
+            </div>
+            <div class="side-block">
+              <h4>Relationship to the roadmap</h4>
+              <div class="tags"><span class="tag">Optional — deepens Project 01/02 intuition, not required by any Sheet 02 phase</span></div>
+            </div>
+            <div class="side-block">
+              <h4>Resources</h4>
+              <ul class="resources">
+                <li><a href="https://edu.3ds.com/en/software/abaqus-student-edition" target="_blank" rel="noopener">edu.3ds.com — Abaqus Student Edition</a> — free, 1,000-node limit, ships with the full HTML documentation set</li>
+                <li>Lee &amp; Fenves (1998), <em>Plastic-Damage Model for Cyclic Loading of Concrete Structures</em>, J. Eng. Mech. 124(8) — the actual paper CDP is built on, worth reading before touching the parameters</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">
+  <p>Project scoping is original to this sheet, built to feed Sheet 02's phases and Sheet 04's skill domains directly — cross-check the "Unlocks" and "Builds" tags on each project against those sheets. Checkboxes load from <code>progress.md</code> on open — use Export above to save what you check here back into it.</p>
+  <div class="zonebar" aria-hidden="true"><span style="background:var(--z1)"></span><span style="background:var(--z2)"></span><span style="background:var(--z3)"></span><span style="background:var(--z4)"></span></div>
+</div></footer>
+</main>
+
+<script>
+(function(){
+  var PROGRESS_PATH = 'progress.md';
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+  }, {threshold:.08});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  function updateGroup(root){
+    var boxes = Array.prototype.slice.call(root.querySelectorAll('input[type=checkbox]'));
+    var fill = root.querySelector('.progress-fill');
+    var label = root.querySelector('.progress-label');
+    var done = boxes.filter(function(b){return b.checked}).length;
+    var pct = boxes.length ? Math.round(done/boxes.length*100) : 0;
+    if(fill) fill.style.width = pct + '%';
+    if(label) label.textContent = done + '/' + boxes.length;
+    boxes.forEach(function(b){
+      var row = b.closest('.check');
+      if(row) row.classList.toggle('done', b.checked);
+    });
+  }
+  function updateGlobal(){
+    var all = Array.prototype.slice.call(document.querySelectorAll('input[type=checkbox]'));
+    var done = all.filter(function(b){return b.checked}).length;
+    var pct = all.length ? Math.round(done/all.length*100) : 0;
+    document.getElementById('gfill').style.width = pct + '%';
+    document.getElementById('glabel').textContent = done + ' / ' + all.length + ' — ' + pct + '%';
+  }
+  function refreshAll(){
+    document.querySelectorAll('[data-track]').forEach(function(group){ updateGroup(group); });
+    updateGlobal();
+  }
+  refreshAll();
+  document.addEventListener('change', function(e){
+    if(e.target.matches('input[type=checkbox]')){
+      var group = e.target.closest('[data-track]');
+      if(group) updateGroup(group);
+      updateGlobal();
+    }
+  });
+
+  /* ---- progress.md sync ---- */
+  function parseProgressMd(text){
+    var map = {};
+    var re = /^-\s*\[([ xX])\][^\n]*?<!--\s*id:([a-zA-Z0-9-]+)\s*-->/gm;
+    var m;
+    while((m = re.exec(text))){ map[m[2]] = (m[1].toLowerCase() === 'x'); }
+    return map;
+  }
+  function applyMap(map){
+    document.querySelectorAll('input[type=checkbox][id]').forEach(function(cb){
+      if(Object.prototype.hasOwnProperty.call(map, cb.id)){ cb.checked = map[cb.id]; }
+    });
+  }
+  fetch(PROGRESS_PATH, {cache:'no-store'}).then(function(res){
+    if(!res.ok) throw new Error('not found');
+    return res.text();
+  }).then(function(text){
+    applyMap(parseProgressMd(text));
+    refreshAll();
+  }).catch(function(){
+    var note = document.getElementById('syncNote');
+    if(note) note.hidden = false;
+  });
+
+  function domPartialMd(){
+    var lines = ['<!-- Partial export — progress.md could not be loaded, so this only covers this sheet. Merge it into your main progress.md by hand, or serve the folder (see index.html) and export again for a full merge. -->', ''];
+    document.querySelectorAll('input[type=checkbox][id]').forEach(function(cb){
+      var label = document.querySelector('label[for="' + cb.id + '"]');
+      var text = label ? label.textContent.trim() : cb.id;
+      lines.push('- [' + (cb.checked ? 'x' : ' ') + '] ' + text + ' <!-- id:' + cb.id + ' -->');
+    });
+    return lines.join('\n');
+  }
+  function mergeIntoBaseline(baseline){
+    var text = baseline;
+    document.querySelectorAll('input[type=checkbox][id]').forEach(function(cb){
+      var mark = cb.checked ? 'x' : ' ';
+      var re = new RegExp('(^-\\s*\\[)[ xX](\\][^\\n]*?<!--\\s*id:' + cb.id + '\\s*-->)', 'm');
+      if(re.test(text)) text = text.replace(re, '$1' + mark + '$2');
+    });
+    return text;
+  }
+  function download(filename, text){
+    var blob = new Blob([text], {type: 'text/markdown'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+  var exportBtn = document.getElementById('exportBtn');
+  if(exportBtn){
+    exportBtn.addEventListener('click', function(){
+      fetch(PROGRESS_PATH, {cache:'no-store'}).then(function(res){
+        if(!res.ok) throw new Error('not found');
+        return res.text();
+      }).then(function(text){
+        download('progress.md', mergeIntoBaseline(text));
+      }).catch(function(){
+        download('progress-partial.md', domPartialMd());
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sheet 1/4 — Research Command Center · ML‑BNBC PIDR Surrogate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ SHARED DESIGN SYSTEM — repeated across sheets 1–4 ============ */
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --paper:#F3ECDC; --paper2:#EAE0C7; --paper3:#E3D6B8;
+  --ink:#241C15; --ink2:#5B5142; --ink3:#8A7F6B;
+  --rust:#C1521A; --rust2:#96380F;
+  --brick:#7A2E2E; --brick2:#5E2222;
+  --steel:#3B5166; --steel2:#28394A;
+  --moss:#5C6E4A; --moss2:#3F4E31;
+  --line:#D8CBB0; --line2:#E7DCC3;
+  --z1:#E8C468; --z2:#DB9A4E; --z3:#C1521A; --z4:#7A2E2E;
+  --disp:'Space Grotesk',sans-serif; --serif:'Source Serif 4',Georgia,serif; --mono:'IBM Plex Mono',monospace;
+  --maxw:1120px;
+}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+}
+body{
+  margin:0; background:var(--paper);
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(36,28,21,.032) 28px),
+    repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(36,28,21,.022) 28px);
+  color:var(--ink); font-family:var(--serif); font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+a{color:var(--rust2)}
+a:hover{color:var(--rust)}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--paper);padding:.6rem 1rem;z-index:100}
+.skip-link:focus{left:1rem;top:1rem}
+:focus-visible{outline:2px solid var(--steel);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--disp);color:var(--ink);margin:0 0 .5em;letter-spacing:-.01em}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rust2);font-weight:600}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 1.75rem}
+img,svg{max-width:100%}
+
+/* sheet nav */
+.sheetnav{background:var(--ink);color:var(--paper2)}
+.sheetnav .wrap{display:flex;gap:0;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:0 1.75rem}
+.sheetnav-links{display:flex}
+.sheetnav a{font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;color:var(--paper3);text-decoration:none;padding:.75rem .95rem;border-right:1px solid rgba(243,236,220,.14);display:block}
+.sheetnav a:hover{background:rgba(243,236,220,.08);color:var(--paper)}
+.sheetnav a.active{background:var(--rust2);color:var(--paper)}
+.sheetnav a.home{background:var(--brick2);color:var(--paper)}
+.sheetnav a.home:hover{background:var(--brick)}
+.sheetnav .repo-link{font-family:var(--mono);font-size:.7rem;color:var(--paper3);text-decoration:none;padding:.75rem 0}
+.sheetnav .repo-link:hover{color:var(--paper)}
+
+/* title block — engineering drawing signature */
+.titleblock{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;border:1.5px solid var(--ink);font-family:var(--mono);font-size:.7rem;background:var(--paper2)}
+.titleblock>div{padding:.55rem .7rem;border-right:1px solid var(--line)}
+.titleblock>div:last-child{border-right:none}
+.tb-label{display:block;text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);font-size:.6rem;margin-bottom:.2rem}
+.tb-value{font-weight:600;color:var(--ink)}
+@media(max-width:720px){.titleblock{grid-template-columns:1fr 1fr}}
+
+/* masthead */
+.masthead{padding:2.6rem 0 2rem;border-bottom:1px solid var(--line)}
+.masthead h1{font-size:clamp(1.9rem,4.4vw,3rem);line-height:1.06;margin:.5rem 0 1rem;text-transform:uppercase}
+.masthead h1 span{color:var(--rust2)}
+.thesis{font-size:1.14rem;color:var(--ink2);max-width:62ch;margin:0 0 1.5rem;font-style:italic}
+.masthead .titleblock{margin-bottom:1.75rem}
+
+/* hero svg panel */
+.hero-panel{border:1px solid var(--ink);background:var(--paper2);padding:1.1rem 1.2rem 0.6rem;display:grid;grid-template-columns:1.3fr 1fr;gap:1.5rem;align-items:center}
+@media(max-width:820px){.hero-panel{grid-template-columns:1fr}}
+.hero-caption{font-family:var(--mono);font-size:.74rem;color:var(--ink2);line-height:1.7}
+.hero-caption b{color:var(--ink)}
+.ida-svg path.curve{fill:none;stroke-width:2.4;stroke-linecap:round;stroke-dasharray:520;stroke-dashoffset:520;animation:draw 2.1s ease forwards}
+.ida-svg path.curve.c2{animation-delay:.15s}
+.ida-svg path.curve.c3{animation-delay:.3s}
+.ida-svg path.curve.c4{animation-delay:.45s}
+@keyframes draw{to{stroke-dashoffset:0}}
+.ida-svg text{font-family:var(--mono);font-size:9px;fill:var(--ink2)}
+.ida-svg .axis{stroke:var(--ink3);stroke-width:1}
+.ida-svg .thresh{stroke:var(--brick);stroke-width:1;stroke-dasharray:3 3}
+
+/* sections */
+section{padding:2.75rem 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.sec-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.sec-head h2{font-size:1.5rem;text-transform:uppercase}
+.sec-num{font-family:var(--mono);color:var(--rust2);font-size:1.5rem;font-weight:700}
+.lede{max-width:70ch;color:var(--ink2);margin-bottom:1.5rem}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.reveal.is-visible{opacity:1;transform:translateY(0)}
+
+/* objective / question lists */
+.numlist{list-style:none;margin:0;padding:0;display:grid;gap:.1rem}
+.numlist li{display:grid;grid-template-columns:2.2rem 1fr;gap:.9rem;padding:.75rem 0;border-bottom:1px dashed var(--line)}
+.numlist li:last-child{border-bottom:none}
+.numlist .n{font-family:var(--mono);color:var(--rust2);font-weight:700}
+.numlist p{margin:0}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem}
+@media(max-width:820px){.two-col{grid-template-columns:1fr}}
+
+/* fast facts strip */
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--ink);border:1px solid var(--ink)}
+@media(max-width:820px){.facts{grid-template-columns:repeat(2,1fr)}}
+.fact{background:var(--paper);padding:1.15rem 1.1rem}
+.fact .num{font-family:var(--disp);font-weight:700;font-size:1.7rem;color:var(--rust2);display:block}
+.fact .lbl{font-family:var(--mono);font-size:.7rem;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em}
+
+/* evidence cards - reality check */
+.evidence{display:grid;gap:1rem}
+.ecard{border:1px solid var(--line);background:var(--paper2);padding:1.1rem 1.25rem;position:relative}
+.ecard .tag{display:inline-block;font-family:var(--mono);font-size:.63rem;text-transform:uppercase;letter-spacing:.07em;padding:.2rem .5rem;border-radius:2px;margin-bottom:.55rem}
+.tag-risk{background:var(--brick);color:var(--paper)}
+.tag-check{background:var(--steel);color:var(--paper)}
+.tag-conflict{background:var(--rust2);color:var(--paper)}
+.ecard h4{font-family:var(--serif);font-weight:600;font-size:1.05rem;margin:0 0 .4rem;text-transform:none}
+.ecard p{margin:0 0 .5rem;color:var(--ink2)}
+.ecard .src{font-family:var(--mono);font-size:.68rem;color:var(--ink3)}
+.ecard .src code{background:var(--paper3);padding:.1rem .35rem;border-radius:2px}
+
+/* map / interconnection */
+.mapgrid{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:1rem;align-items:stretch}
+@media(max-width:900px){.mapgrid{grid-template-columns:1fr}}
+.mapcol{display:flex;flex-direction:column;gap:.6rem}
+.mapcol h3{font-family:var(--mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink2);margin-bottom:.3rem}
+.mapchevron{display:flex;align-items:center;justify-content:center;color:var(--line);font-size:1.6rem;font-family:var(--disp)}
+@media(max-width:900px){.mapchevron{transform:rotate(90deg);padding:.2rem 0}}
+.mapchip{border:1px solid var(--ink);background:var(--paper);padding:.55rem .75rem;font-size:.87rem;font-weight:500}
+.mapchip.emph{background:var(--ink);color:var(--paper)}
+.mapchip small{display:block;font-family:var(--mono);font-size:.65rem;color:var(--ink3);font-weight:400;margin-top:.15rem}
+.mapchip.emph small{color:var(--paper3)}
+
+/* sheet cards */
+.sheetcards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
+@media(max-width:900px){.sheetcards{grid-template-columns:1fr}}
+.sheetcard{border:1px solid var(--ink);background:var(--paper2);padding:1.3rem;display:flex;flex-direction:column;gap:.6rem;text-decoration:none;color:var(--ink);transition:transform .18s ease, box-shadow .18s ease}
+.sheetcard:hover{transform:translateY(-3px);box-shadow:4px 4px 0 var(--rust2)}
+.sheetcard .sheetno{font-family:var(--mono);color:var(--rust2);font-weight:700;font-size:.8rem}
+.sheetcard h4{font-family:var(--disp);text-transform:uppercase;font-size:1.05rem;margin:0}
+.sheetcard p{margin:0;color:var(--ink2);font-size:.92rem}
+.sheetcard .go{font-family:var(--mono);font-size:.72rem;margin-top:auto;color:var(--rust2)}
+.card-progress{display:flex;align-items:center;gap:.5rem}
+.card-progress .cp-bar{flex:1;height:6px;border:1px solid var(--ink);background:var(--paper);border-radius:2px;overflow:hidden}
+.card-progress .cp-fill{height:100%;background:var(--moss);width:0%;transition:width .5s ease}
+.card-progress .cp-label{font-family:var(--mono);font-size:.62rem;color:var(--ink2);white-space:nowrap}
+
+footer{padding:2rem 0 3rem}
+footer p{font-family:var(--mono);font-size:.72rem;color:var(--ink3);max-width:70ch}
+.zonebar{display:flex;height:6px;margin:2rem 0 0}
+.zonebar span{flex:1}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<nav class="sheetnav" aria-label="Sheet navigation">
+  <div class="wrap">
+    <div class="sheetnav-links">
+      <a href="../" class="home">⌂ Set Index</a>
+      <a href="../overview/" class="active">Sheet 01 · Overview</a>
+      <a href="../research-roadmap/">Sheet 02 · Roadmap</a>
+      <a href="../preparation-projects/">Sheet 03 · Prep Projects</a>
+      <a href="../skills-tracker/">Sheet 04 · Skills Tracker</a>
+    </div>
+    <a class="repo-link" href="https://github.com/AnwayDiptaPaul/ML-RCC-Research" target="_blank" rel="noopener">↗ source repo</a>
+  </div>
+</nav>
+
+<main id="main">
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Sheet 01 / 04 — Research Command Center</div>
+    <h1>ML Surrogate Modelling<br>of Seismic Drift in <span>BNBC&nbsp;2020</span> RC Frames</h1>
+    <p class="thesis">A plain-language map of what <code style="font-family:var(--mono);font-style:normal;background:var(--paper2);padding:.05em .3em;">ML_RCC_Research-share</code> is actually trying to do, what state it's genuinely in versus what it claims, and how the other three sheets fit together to get you from where you are to a submitted paper.</p>
+
+    <div class="titleblock reveal">
+      <div><span class="tb-label">Project</span><span class="tb-value">ML Surrogate — Peak Inter-story Drift (PIDR), RC Frames, BNBC 2020</span></div>
+      <div><span class="tb-label">Prepared for</span><span class="tb-value">Anway Dipta Paul · Civion BD</span></div>
+      <div><span class="tb-label">Target journal</span><span class="tb-value">MDPI Buildings (primary)</span></div>
+      <div><span class="tb-label">Sheet status</span><span class="tb-value">Reviewed 06 Aug 2026</span></div>
+    </div>
+
+    <div class="hero-panel reveal">
+      <svg class="ida-svg" viewBox="0 0 420 260" role="img" aria-labelledby="idatitle idadesc">
+        <title id="idatitle">Incremental Dynamic Analysis stripes</title>
+        <desc id="idadesc">Four schematic IDA curves rising from the origin, one reaching a collapse plateau, illustrating the core method behind the dataset.</desc>
+        <line class="axis" x1="50" y1="230" x2="400" y2="230"/>
+        <line class="axis" x1="50" y1="230" x2="50" y2="20"/>
+        <text x="330" y="245">Sa(T1) →</text>
+        <text x="10" y="28">PIDR</text>
+        <text x="10" y="40">↑</text>
+        <line class="thresh" x1="50" y1="46" x2="400" y2="46"/>
+        <text x="322" y="42">collapse · PIDR ≥ 10%</text>
+        <path class="curve c1" d="M50,230 C120,225 220,190 340,140" stroke="#3B5166"/>
+        <path class="curve c2" d="M50,230 C110,222 200,175 300,110" stroke="#5C6E4A"/>
+        <path class="curve c3" d="M50,230 C100,220 180,150 260,80" stroke="#C1521A"/>
+        <path class="curve c4" d="M50,230 C90,215 140,120 170,70 C185,45 260,45 320,44" stroke="#7A2E2E"/>
+      </svg>
+      <div class="hero-caption">
+        <b>What an IDA stripe is:</b> one ground motion, scaled to increasing intensity, run through a nonlinear time-history analysis at each step. Plot Sa(T1) against peak drift and you get one curve. Do this for ~35 records × 80 buildings × 16 intensity levels and you get the ~51,200-row dataset the ML models are meant to learn from.<br><br>
+        <b>Nothing on this page is simulated</b> — the curves above are illustrative only. Whether the real pipeline produces curves like these, or something else, is the first thing Sheet 02 asks you to check.
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="what-is-this">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">01</span><h2>What this project is actually trying to do</h2></div>
+    <p class="lede reveal">In one line: build the first open-source, Python-native ML model that predicts peak inter-story drift ratio (PIDR) for reinforced-concrete moment frames designed to <b>BNBC 2020</b>, trained on <b>OpenSeesPy</b> incremental dynamic analysis (IDA) data across all four of Bangladesh's seismic zones — then use that same dataset to compare four framing systems (Non-Sway, OMRF, IMRF, SMRF) and find where extra ductility detailing stops paying for itself.</p>
+
+    <div class="two-col">
+      <div class="reveal">
+        <h3 style="font-family:var(--mono);font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);margin-bottom:.9rem;">Six research objectives</h3>
+        <ol class="numlist">
+          <li><span class="n">01</span><p>Build parametric RC frame models, 5–15 storeys, coded to BNBC 2020.</p></li>
+          <li><span class="n">02</span><p>Run IDA with scaled ground motions to generate a large seismic-response dataset.</p></li>
+          <li><span class="n">03</span><p>Train and benchmark four ML families — linear regression, random forest, XGBoost, ANN — against each other for PIDR prediction.</p></li>
+          <li><span class="n">04</span><p>Derive fragility curves at Immediate Occupancy, Life Safety and Collapse Prevention.</p></li>
+          <li><span class="n">05</span><p>Use SHAP to find which structural and seismic parameters actually drive drift.</p></li>
+          <li><span class="n">06</span><p>Compare Non-Sway / OMRF / IMRF / SMRF to locate the cost-vs-performance "sweet spot" across all four zones.</p></li>
+        </ol>
+      </div>
+      <div class="reveal">
+        <h3 style="font-family:var(--mono);font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);margin-bottom:.9rem;">Six questions the paper has to answer</h3>
+        <ol class="numlist">
+          <li><span class="n">Q1</span><p>Can ML models hit R² &gt; 0.90 predicting PIDR from structural + seismic features?</p></li>
+          <li><span class="n">Q2</span><p>Which features — period, zone, soil class, height — matter most?</p></li>
+          <li><span class="n">Q3</span><p>How do fragility curves differ across zones (Z = 0.12 to 0.36)?</p></li>
+          <li><span class="n">Q4</span><p>Does building height or the zone coefficient dominate drift response?</p></li>
+          <li><span class="n">Q5</span><p>What's the performance gradient between the four framework types, by height?</p></li>
+          <li><span class="n">Q6</span><p>Which framework is the optimal pick, balancing complexity against performance, per zone?</p></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="facts">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">02</span><h2>Fast facts</h2></div>
+    <div class="facts reveal">
+      <div class="fact"><span class="num">80</span><span class="lbl">RC buildings · 5 heights × 4 frameworks × 4 zones</span></div>
+      <div class="fact"><span class="num">32–40</span><span class="lbl">Verified PEER NGA‑West2 records</span></div>
+      <div class="fact"><span class="num">~51,200</span><span class="lbl">Target IDA time-history rows</span></div>
+      <div class="fact"><span class="num">R² ≥ 0.90</span><span class="lbl">Stated success target (see Sheet 02 risk note)</span></div>
+      <div class="fact"><span class="num">12</span><span class="lbl">Fragility curves · 4 zones × 3 levels</span></div>
+      <div class="fact"><span class="num">4</span><span class="lbl">ML models benchmarked · LR / RF / XGB / ANN</span></div>
+      <div class="fact"><span class="num">7–8.5k</span><span class="lbl">Target word count, main paper</span></div>
+      <div class="fact"><span class="num">MDPI Buildings</span><span class="lbl">Primary target · Q2 Civil Eng / Q1 Architecture, 2026</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="reality-check">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">03</span><h2>Reality check — verify before you trust</h2></div>
+    <p class="lede reveal">The repo's own documents describe Phase 1 and Phase 2 as <b>"100% complete"</b> and Phase 3 as <b>"production ready."</b> Reading all of them side by side tells a more specific story: the <em>code and scaffolding</em> are genuinely thorough, but as of the most recent dated entry (22 Apr 2026), the actual 8–12 hour compute campaign that produces real data <b>had not been run yet</b> — and everything downstream of it is illustrative. These six items are worth 20 minutes each before you plan around any number in the repo, including the ones on this page.</p>
+
+    <div class="evidence">
+      <div class="ecard reveal">
+        <span class="tag tag-risk">Highest priority</span>
+        <h4>The pipeline has a silent "demo mode"</h4>
+        <p>If OpenSeesPy isn't actually importable in the execution environment, the campaign script doesn't fail — it substitutes synthetic placeholder data and calls this "OK." Run the full pipeline in an environment where OpenSeesPy is broken or missing, and you can end up with a complete-looking 51,200-row CSV, trained models, R² scores and plots that contain zero real structural physics.</p>
+        <p class="src">Source: <code>START_HERE.md</code>, "OpenSeesPy not available (Demo Mode)" note. <b>Action:</b> before trusting any output, run <code>python -c "import openseespy.opensees as ops; ops.wipe(); print('OK')"</code> yourself, in the exact environment that will run the campaign, and confirm it prints OK — not just that the pipeline "completed."</p>
+      </div>
+      <div class="ecard reveal">
+        <span class="tag tag-check">Nothing downstream is real yet</span>
+        <h4>Phase 3's own performance numbers are labelled "typical," not measured</h4>
+        <p>The Phase 3 ML delivery doc presents a full model-comparison table (XGBoost test R² ≈ 0.81, etc.) under the heading "Expected Performance (Typical Results)" — before Phase 2's real dataset existed. It's a plausibility sketch, not a result. Treat every number in the repo as a placeholder until you've regenerated it yourself from real IDA output.</p>
+        <p class="src">Source: <code>PHASE3_COMPLETE_DELIVERY.md</code> vs. <code>FINAL_STATUS_REPORT.md</code> (both dated 22 Apr 2026 — the latter still lists the campaign as the "next action").</p>
+      </div>
+      <div class="ecard reveal">
+        <span class="tag tag-conflict">Internal conflict</span>
+        <h4>The Life Safety drift threshold disagrees with itself</h4>
+        <p>The README's fragility framework sets Life Safety at PIDR = 2.0%. The project status doc's Phase 4 success criteria list Life Safety at &lt; 2.5%. A 25% difference in the LS threshold changes every fragility curve and every "P(LS | Sa)" number in the eventual paper.</p>
+        <p class="src">Source: <code>README.md</code> §3.3 vs. <code>PROJECT_STATUS.md</code>, Phase 4 deliverables. <b>Action:</b> pick one value, record why, and hard-code it once in <code>config/bnbc_parameters.yaml</code> rather than leaving two numbers live in two documents.</p>
+      </div>
+      <div class="ecard reveal">
+        <span class="tag tag-conflict">Internal conflict</span>
+        <h4>Even the target journal's impact factor disagrees with itself</h4>
+        <p>The README lists Buildings (MDPI) at IF 3.1; the project status doc lists 3.8. Neither may be current — Buildings is presently ranked Q2 in Engineering (Civil) and Q1 in Architecture, with the article processing charge risen to roughly 2,600 CHF (the README's ~1,800 CHF estimate is stale) and a median first-decision time near 15 days as of 2026. Small thing, but it's a clean example of why nothing in these documents should be cited into the actual paper without re-checking it live.</p>
+        <p class="src">Source: <code>README.md</code> §2.3 vs. <code>PROJECT_STATUS.md</code> executive summary, cross-checked against <a href="https://www.mdpi.com/journal/buildings" target="_blank" rel="noopener">mdpi.com/journal/buildings</a> on 06 Aug 2026.</p>
+      </div>
+      <div class="ecard reveal">
+        <span class="tag tag-check">Scope grew — re-time before committing</span>
+        <h4>The dataset target roughly quintupled between the original plan and the built infrastructure</h4>
+        <p>The README's original Phase 4/execution-plan math (5 buildings × 500 GMs × 4 zones, trimmed to non-collapse runs) targets ~7,500–10,000 records. The infrastructure that actually got built targets 80 buildings × 32–40 verified records × 16 levels ≈ 51,200 — almost certainly because the four-framework comparison got folded into the core matrix rather than staying a side study. That's a reasonable evolution, but it means the "8–12 hours" compute estimate deserves a timed pilot run on your own hardware before you block out a day around it.</p>
+        <p class="src">Source: <code>README.md</code> §4 Phase 5, §7.3 vs. <code>FINAL_STATUS_REPORT.md</code> campaign configuration.</p>
+      </div>
+      <div class="ecard reveal">
+        <span class="tag tag-risk">Sets expectations</span>
+        <h4>The stated success target and the illustrative result don't match</h4>
+        <p>Success criteria call for the best model to reach R² ≥ 0.90 on held-out data. The same document's own "typical results" table shows its best illustrative model — XGBoost — landing at R² ≈ 0.81. Treat 0.90 as aspirational. A well-argued 0.80–0.85 with honest discussion of why is a publishable, defensible result; chasing 0.90 by overfitting feature engineering to the test set is not.</p>
+        <p class="src">Source: <code>PROJECT_STATUS.md</code>, Phase 3 success criteria vs. <code>PHASE3_COMPLETE_DELIVERY.md</code>, expected performance table.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="map">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">04</span><h2>How the three moving parts connect</h2></div>
+    <p class="lede reveal">Skills, preparation projects and research phases aren't three separate to-do lists — each prep project exists to build specific skills, and each skill exists because a specific research phase will fail without it. Sheets 03 and 04 cross-reference each other item by item; this is the compressed version.</p>
+    <div class="mapgrid reveal">
+      <div class="mapcol">
+        <h3>Skill domain (Sheet 04)</h3>
+        <div class="mapchip">OpenSeesPy &amp; nonlinear dynamics<small>the biggest gap</small></div>
+        <div class="mapchip">Earthquake engineering theory<small>IDA, GM scaling, fragility</small></div>
+        <div class="mapchip">ML &amp; statistics<small>sklearn / XGBoost / SHAP</small></div>
+        <div class="mapchip">Scientific writing<small>MDPI structure, citations</small></div>
+      </div>
+      <div class="mapchevron" aria-hidden="true">→</div>
+      <div class="mapcol">
+        <h3>Prep project (Sheet 03)</h3>
+        <div class="mapchip emph">01 · Single-Frame Sanity Check<small>OpenSeesPy fundamentals</small></div>
+        <div class="mapchip emph">02 · One Building, One Quake, One Curve<small>IDA end‑to‑end at 1/1000 scale</small></div>
+        <div class="mapchip emph">03 · ML Sprint, Public Dataset<small>full sklearn/XGB/SHAP pipeline</small></div>
+        <div class="mapchip emph">04 · Fragility Micro‑Paper<small>stats + MDPI‑format writing</small></div>
+      </div>
+      <div class="mapchevron" aria-hidden="true">→</div>
+      <div class="mapcol">
+        <h3>Research phase unlocked (Sheet 02)</h3>
+        <div class="mapchip">Ph 0.5 — Verify existing code<small>+ Ph 1 re‑verification</small></div>
+        <div class="mapchip">Ph 2 — Run the real IDA campaign<small>debug it because you've done it once</small></div>
+        <div class="mapchip">Ph 3 — Train on the real dataset<small>+ sanity‑check the repo's ml_pipeline.py</small></div>
+        <div class="mapchip">Ph 4 + Ph 6 — Fragility curves &amp; the paper itself</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sheets">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">05</span><h2>The other three sheets</h2></div>
+    <div class="sheetcards reveal">
+      <a class="sheetcard" href="../research-roadmap/">
+        <span class="sheetno">Sheet 02 / 04</span>
+        <h4>Research Roadmap</h4>
+        <p>Phase-by-phase timeline (Phase 0 through submission), a live progress checklist per phase, the milestone table, and a risk register that folds in what Sheet 01 found.</p>
+        <div class="card-progress" data-sheet="02" hidden><div class="cp-bar"><div class="cp-fill"></div></div><span class="cp-label"></span></div>
+        <span class="go">Open the roadmap →</span>
+      </a>
+      <a class="sheetcard" href="../preparation-projects/">
+        <span class="sheetno">Sheet 03 / 04</span>
+        <h4>Preparation Projects</h4>
+        <p>Four small, self-contained projects — structural scripting, nonlinear dynamics, an ML sprint, and a fragility micro-paper — each with its own step checklist.</p>
+        <div class="card-progress" data-sheet="03" hidden><div class="cp-bar"><div class="cp-fill"></div></div><span class="cp-label"></span></div>
+        <span class="go">Open the workbook →</span>
+      </a>
+      <a class="sheetcard" href="../skills-tracker/">
+        <span class="sheetno">Sheet 04 / 04</span>
+        <h4>Skills &amp; Expertise Tracker</h4>
+        <p>Every skill domain the research needs, what "good enough to proceed" looks like, and concrete resources — cross-linked back to the projects and phases that need it.</p>
+        <div class="card-progress" data-sheet="04" hidden><div class="cp-bar"><div class="cp-fill"></div></div><span class="cp-label"></span></div>
+        <span class="go">Open the tracker →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Built from a full read of <code>README.md</code>, <code>START_HERE.md</code>, <code>PROJECT_STATUS.md</code>, <code>FINAL_STATUS_REPORT.md</code>, <code>PHASE3_COMPLETE_DELIVERY.md</code>, <code>DOCUMENTATION_INDEX.md</code> and <code>PHASE_1_COMPLETION_REPORT.md</code> in github.com/AndrewDsn/ML_RCC_Research-share (a fork of AnwayDiptaPaul/ML_RCC_Research-share). The repo's own newest dated entry is 22 Apr 2026 — this was compiled 06 Aug 2026, so re-check the live repo for anything more recent before acting on dates or "complete" claims here. Checkboxes on Sheets 02–04 reset on reload — they're for a single working session, not permanent storage.</p>
+    <div class="zonebar" aria-hidden="true"><span style="background:var(--z1)"></span><span style="background:var(--z2)"></span><span style="background:var(--z3)"></span><span style="background:var(--z4)"></span></div>
+  </div>
+</footer>
+</main>
+
+<script>
+(function(){
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+  }, {threshold:.1});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  /* ---- read-only live progress on the sheet cards, pulled from progress.md ---- */
+  function parseProgressMd(text){
+    var map = {};
+    var re = /^-\s*\[([ xX])\][^\n]*?<!--\s*id:([a-zA-Z0-9-]+)\s*-->/gm;
+    var m;
+    while((m = re.exec(text))){ map[m[2]] = (m[1].toLowerCase() === 'x'); }
+    return map;
+  }
+  var PREFIX_TO_SHEET = {c:'02', p:'03', s:'04'};
+
+  fetch('progress.md', {cache:'no-store'}).then(function(res){
+    if(!res.ok) throw new Error('not found');
+    return res.text();
+  }).then(function(text){
+    var map = parseProgressMd(text);
+    var ids = Object.keys(map);
+    var buckets = {'02':[], '03':[], '04':[]};
+    ids.forEach(function(id){
+      var sheet = PREFIX_TO_SHEET[id.charAt(0)];
+      if(sheet) buckets[sheet].push(id);
+    });
+    ['02','03','04'].forEach(function(sheet){
+      var arr = buckets[sheet];
+      var done = arr.filter(function(id){ return map[id]; }).length;
+      var total = arr.length;
+      var pct = total ? Math.round(done / total * 100) : 0;
+      var card = document.querySelector('.card-progress[data-sheet="' + sheet + '"]');
+      if(card){
+        card.hidden = false;
+        card.querySelector('.cp-fill').style.width = pct + '%';
+        card.querySelector('.cp-label').textContent = done + '/' + total;
+      }
+    });
+  }).catch(function(){ /* no progress.md yet, or opened directly — cards just stay as they were */ });
+})();
+</script>
+</body>
+</html>
